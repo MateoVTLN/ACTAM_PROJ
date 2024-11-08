@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Famous Room Acoustics Simulator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Simulator of Famous Room Acoustics Effects</h1>
+        
+        <div class="controls">
+            <label for="audioFile">Select Audio File:</label>
+            <input type="file" id="audioFile" accept="audio/*">
+
+            <label for="irSelect">Select Room Impulse Response:</label>
+            <select id="irSelect">
+                <!-- Options filled by JavaScript -->
+            </select>
+
+            <button id="playButton">Play with Reverb</button>
+        </div>
+
+        <audio id="audioPlayer" controls></audio>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
