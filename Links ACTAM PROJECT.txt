@@ -1,0 +1,74 @@
+Links ACTAM PROJECT
+
+Impulse responses Library: consulted the 5/11/2024
+https://www.waves.com/downloads/ir-convolution-reverb-library
+
+Study UNiv PARMA
+http://pcfarina.eng.unipr.it/Public/Papers/185-AES24.PDF
+
+
+
+
+
+
+
+
+
+PLAN DU PROJET :
+
+Projet Simplifié : Simulateur d'Effets Acoustiques de Salles de Concert
+Objectif
+Permettre aux utilisateurs de sélectionner ou d’enregistrer un fichier audio (instrument, voix, ambiance sonore) et d’appliquer des effets d'acoustique propres à des salles de concert célèbres, comme le Carnegie Hall ou le Royal Albert Hall.
+
+Fonctionnalités Principales
+Choix et chargement de l’audio :
+
+L’utilisateur peut charger un fichier audio (par exemple, un enregistrement de sa voix ou de son instrument).
+Une petite base de données d’audios pré-enregistrés pourrait être intégrée (sons d’instruments ou autres extraits typiques).
+Application des effets de salle :
+
+L'application applique un effet acoustique spécifique correspondant à une salle de concert choisie dans une liste.
+Les effets sont simulés à l’aide de filtres d'égalisation (EQ), de réverbération, et de filtres de retard pour recréer l'acoustique de chaque salle.
+Restitution et comparaison en temps réel :
+
+L’utilisateur écoute son audio transformé par les effets de la salle sélectionnée.
+Possibilité d’écouter et de comparer l’audio original et celui transformé.
+Implémentation et Technologies
+Technologies Principales :
+
+HTML/CSS : pour la structure de la page et le style.
+JavaScript et Web Audio API : pour le traitement sonore et l’application d'effets acoustiques.
+Bibliothèque de filtres de réverbération (via Web Audio API) : pour intégrer des réponses impulsionnelles simples correspondant aux salles de concert.
+Étapes de Mise en Œuvre :
+
+Étape 1 : Création de la base de données d'effets :
+
+Pour chaque salle, on utilise une réponse impulsionnelle simplifiée correspondant à l’acoustique de la salle. Ces réponses peuvent être trouvées dans des bibliothèques de réponses impulsionnelles ou recréées à partir d'effets de réverbération et de filtre.
+Étape 2 : Chargement et lecture de l’audio utilisateur :
+
+L'utilisateur charge un fichier audio ou en choisit un dans la base.
+Le fichier est traité par la Web Audio API pour être lu en temps réel.
+Étape 3 : Application de l'effet de salle :
+
+Selon la salle choisie, un effet de réverbération avec la signature acoustique correspondante est appliqué.
+Des filtres d’égalisation simples peuvent être ajoutés pour reproduire l’égalisation spectrale propre à chaque salle (ajustement des basses, médiums, aigus).
+Étape 4 : Comparaison audio :
+
+L’interface permet de basculer entre le son original et le son traité pour comparaison.
+Une option de téléchargement de l’audio transformé pourrait être ajoutée.
+Estimation de Temps de Développement
+Phase	Tâches principales	Estimation (en jours)
+Phase 1 : Base de Données des Effets	Rassembler ou générer des réponses impulsionnelles simplifiées.	2 jours
+Phase 2 : Interface Utilisateur	Création de l’interface web avec HTML/CSS.	1 jour
+Phase 3 : Chargement et Lecture Audio	Gestion de l'upload et lecture du fichier audio en temps réel.	1-2 jours
+Phase 4 : Application des Effets	Intégration des effets de réverbération avec la Web Audio API.	2-3 jours
+Phase 5 : Comparaison et Téléchargement	Comparaison audio et ajout d’une option de téléchargement.	1-2 jours
+Tests et Ajustements	Tests d’interface et optimisation pour la fluidité.	2 jours
+Temps total estimé : 9 à 12 jours (environ 2 semaines).
+
+Points Clés et Originalité
+Expérience Utilisateur : Le projet permet une immersion rapide et simple dans l’acoustique de salles de concert mythiques, accessible depuis un navigateur.
+Réalisme des effets : En utilisant la Web Audio API, on peut reproduire une réverbération approximative mais convaincante, qui donne une bonne idée des caractéristiques acoustiques de chaque salle.
+Portabilité : L’application reste légère et peut être hébergée sur une simple page web sans serveur.
+Ce projet, bien qu’allégé, permet de toucher aux aspects fondamentaux de l’acoustique des salles tout en restant dans un cadre de développement réalisable en peu de temps.
+
