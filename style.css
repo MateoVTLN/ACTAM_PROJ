@@ -62,41 +62,6 @@ body {
     cursor: not-allowed;
 }
 
-/* Styling for the dropdown menus */
-.controls select {
-    font-size: 16px;
-}
-
-/* Spacing for the container */
-.container {
-    padding: 30px;
-    background: #fff;
-    border-radius: 8px;
-    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
-    width: 90%;
-    max-width: 600px;
-}
-
-/* Minor adjustments to the play button */
-button {
-    padding: 12px 24px;
-    background-color: #007bff;
-    border: none;
-    color: white;
-    font-size: 16px;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-button:hover {
-    background-color: #0056b3;
-}
-
-button:disabled {
-    background-color: #b0b0b0;
-    cursor: not-allowed;
-}
-
 /* Mobile responsiveness */
 @media (max-width: 600px) {
     .container {
