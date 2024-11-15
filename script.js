@@ -131,37 +131,30 @@ async function loadAudioFile(file) {
 // Apply reverb and play the audio
 async function applyReverbAndPlay() {
     const irUrl = document.getElementById("irSelect").value;
-    const audioFile = document.getElementById("audioFile").files[0] || new File([document.getElementById("audioSelect").value], "audio.wav");
+    const audioFile = document.getElementById("audioFile").files[0];
+    const audioUrl = audioFile ? URL.createObjectURL(audioFile) : document.getElementById("audioSelect").value;
 
-    // Load audio and IR
-    audioBuffer = await loadAudioFile(audioFile);
+    // Load audio and impulse response (IR)
+    const audioBuffer = await loadAudioFile(audioFile || new File([audioUrl], "audio.wav"));
     const irBuffer = await loadImpulseResponse(irUrl);
 
-    // Calculate RT60 values for the selected audio file
+    // Apply RT60 calculation and convolve with IR
     const rt60Values = await calculateRT60(audioBuffer);
+    console.log("RT60 Values for each band:", rt60Values);
 
-    console.log("RT60 values for each band:", rt60Values);
+    // Create convolver node and apply IR
+    const convolver = audioContext.createConvolver();
+    convolver.buffer = irBuffer;
 
-    // Setup convolution reverb
-    convolverNode = audioContext.createConvolver();
-    convolverNode.buffer = irBuffer;
-    convolverNode.normalize = true; // Normalize the impulse response to avoid clipping
-
-    // Create an audio source node and connect it to the convolver node
+    // Create source node and connect to convolver
     sourceNode = audioContext.createBufferSource();
     sourceNode.buffer = audioBuffer;
-    sourceNode.connect(convolverNode);
-    convolverNode.connect(audioContext.destination);
+    sourceNode.connect(convolver);
+    convolver.connect(audioContext.destination);
 
-    // Play the audio with reverb applied
+    // Play audio
     sourceNode.start();
-
-    // Update the audio player to play the processed audio
-    const audioPlayer = document.getElementById("audioPlayer");
-    const processedAudio = new Blob([audioBuffer], { type: "audio/wav" });
-    const audioURL = URL.createObjectURL(processedAudio);
-    audioPlayer.src = audioURL;
 }
 
-// Event listener to apply reverb when the button is clicked
+// Event listener for the "Apply Reverb" button
 document.getElementById("applyReverbBtn").addEventListener("click", applyReverbAndPlay);
