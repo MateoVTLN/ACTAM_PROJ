@@ -1,41 +1,40 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Audio IR et RT60</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Link to external CSS -->
+    <title>Reverb Effect with RT60</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
-        <h1>Réverbération RT60 avec Audio</h1>
+        <h1>Apply RT60 Reverb to Audio</h1>
 
-        <div class="controls">
-            <!-- Input for selecting custom audio file -->
-            <label for="audioFile">Choisir un fichier audio :</label>
-            <input type="file" id="audioFile" accept=".wav" />
+        <!-- File input for personal audio file -->
+        <label for="audioFile">Choose your audio file:</label>
+        <input type="file" id="audioFile" accept=".wav" />
 
-            <!-- Dropdown to select from pre-stored audio files -->
-            <label for="audioSelect">Ou choisissez un fichier audio prédéfini :</label>
-            <select id="audioSelect">
-                <!-- Options added dynamically by JavaScript -->
-            </select>
+        <!-- Select audio file from the repo -->
+        <label for="audioSelect">Or choose from available samples:</label>
+        <select id="audioSelect">
+            <option value="onclassical_demo_demicheli_geminiani_pieces_allegro-in-f-major_small-version.wav">Allegro in F major (Demo)</option>
+        </select>
 
-            <br><br>
+        <!-- Select room IR file -->
+        <label for="irSelect">Choose Room (IR File):</label>
+        <select id="irSelect">
+            <option value="assets/ir_files/Taormina_scd1_32b_aio.wav">Taormina</option>
+            <option value="assets/ir_files/Wembley Arena_mcg1v2.wav">Wembley</option>
+            <option value="assets/ir_files/SOH Concert Hall_SBg2v2_32b_aio.wav">Sydney Opera House</option>
+        </select>
 
-            <!-- Dropdown to select IR file -->
-            <label for="irSelect">Choisir une réponse impulsionnelle (IR) :</label>
-            <select id="irSelect">
-                <!-- Options added dynamically by JavaScript -->
-            </select>
+        <!-- Button to apply reverb -->
+        <button id="applyReverbBtn">Apply Reverb and Play</button>
 
-            <br><br>
-
-            <!-- Button to play the audio with reverb effect -->
-            <button id="playButton">Jouer l'audio avec réverbération</button>
-        </div>
+        <!-- Audio element to listen to processed audio -->
+        <audio id="audioPlayer" controls></audio>
     </div>
 
-    <script src="script.js"></script> <!-- Link to external JavaScript -->
+    <script src="script.js"></script>
 </body>
 </html>
