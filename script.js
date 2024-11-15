@@ -36,9 +36,7 @@ document.getElementById('audioFile').addEventListener('change', async (event) =>
 
 // Liste des fichiers audio pré-stockés sur le site (affichés dans un menu déroulant)
 const audioFiles = [
-    "sample1.wav",  // Exemple de fichier audio dans le dossier assets/audio_samples/
-    "sample2.wav",
-    "sample3.wav"
+    "assets/audio_samples/onclassical_demo_demicheli_geminiani_pieces_allegro-in-f-major_small-version.wav",  // Exemple de fichier audio dans le dossier assets/audio_samples/
 ];
 
 // Remplir le menu de sélection des fichiers audio
