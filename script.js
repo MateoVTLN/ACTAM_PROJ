@@ -132,7 +132,8 @@ async function loadAudioFile(file) {
 async function applyReverbAndPlay() {
     const irUrl = document.getElementById("irSelect").value;
     const audioFile = document.getElementById("audioFile").files[0];
-    const audioUrl = audioFile ? URL.createObjectURL(audioFile) : document.getElementById("audioSelect").value;
+    const audioSelect = document.getElementById("audioSelect");
+    const audioUrl = audioFile ? URL.createObjectURL(audioFile) : audioSelect.value;
 
     // Load audio and impulse response (IR)
     const audioBuffer = await loadAudioFile(audioFile || new File([audioUrl], "audio.wav"));
@@ -158,3 +159,28 @@ async function applyReverbAndPlay() {
 
 // Event listener for the "Apply Reverb" button
 document.getElementById("applyReverbBtn").addEventListener("click", applyReverbAndPlay);
+
+// Handling file selection from local device or website
+const audioFileInput = document.getElementById("audioFile");
+const audioSelect = document.getElementById("audioSelect");
+
+// Disable the audio select dropdown if a file is selected from the device
+audioFileInput.addEventListener("change", (event) => {
+    if (event.target.files.length > 0) {
+        // Disable the audio selection dropdown
+        audioSelect.disabled = true;
+        // Clear the audio select dropdown (to avoid confusion)
+        audioSelect.selectedIndex = -1;
+    } else {
+        // Re-enable the audio selection dropdown
+        audioSelect.disabled = false;
+    }
+});
+
+// Reset audio selection when no file is selected from the device
+audioSelect.addEventListener("change", (event) => {
+    if (audioFileInput.files.length === 0) {
+        // Re-enable the dropdown
+        audioSelect.disabled = false;
+    }
+});
