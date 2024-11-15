@@ -3,28 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Famous Room Acoustics Simulator</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Reverb Simulator</title>
 </head>
 <body>
-    <div class="container">
-        <h1>Simulator of Famous Room Acoustics Effects</h1>
-        
-        <div class="controls">
-            <label for="audioFile">Select Audio File:</label>
-            <input type="file" id="audioFile" accept="audio/*">
+    <h1>Reverb Simulator</h1>
 
-            <label for="irSelect">Select Room Impulse Response:</label>
-            <select id="irSelect">
-                <!-- Options filled by JavaScript -->
-            </select>
+    <label for="audioFile">Select Audio File:</label>
+    <input type="file" id="audioFile" accept="audio/*">
 
-            <button id="playButton">Play with Reverb</button>
-        </div>
+    <label for="irSelect">Select Impulse Response:</label>
+    <select id="irSelect">
+        <option value="">Choose a Room</option>
+    </select>
 
-        <audio id="audioPlayer" controls></audio>
-    </div>
-    
-    <script src="script.js"></script>
+    <button id="playButton">Play Audio with Reverb</button>
+
+    <script src="your_script.js"></script>
 </body>
 </html>
