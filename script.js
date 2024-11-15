@@ -4,7 +4,7 @@ let audioBuffer, convolverNode, sourceNode;
 // Liste des URLs pour les fichiers IR (wav) convertis
 const irFiles = {
     "Taormina": "assets/ir_files/Taormina_scd1_32b_aio.wav",  // Assurez-vous que ces fichiers sont au format WAV
-    "Wembley": "assets/ir_files/Wembley Arena_scg1v2.wav",
+    "Wembley": "assets/ir_files/Wembley Arena_mcg1v2.wav",
     "Sydney": "assets/ir_files/SOH Concert Hall_SBg2v2_32b_aio.wav"
 };
 
