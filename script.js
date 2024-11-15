@@ -17,14 +17,39 @@ Object.keys(irFiles).forEach(room => {
     irSelect.appendChild(option);
 });
 
-// Charger un fichier audio choisi par l'utilisateur
+// Charger un fichier audio choisi par l'utilisateur ou depuis le site
 document.getElementById('audioFile').addEventListener('change', async (event) => {
     const file = event.target.files[0];
     if (file) {
+        // Si l'utilisateur choisit un fichier depuis son appareil
         const arrayBuffer = await file.arrayBuffer();
+        audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
+    } else {
+        // Si l'utilisateur n'a pas sélectionné de fichier, charge un fichier par défaut du site
+        const selectedAudio = document.getElementById('audioSelect').value; // Récupérer le fichier audio sélectionné dans la liste
+        const audioPath = `assets/audio_samples/${selectedAudio}`;  // Chemin du fichier audio
+        const response = await fetch(audioPath);
+        const arrayBuffer = await response.arrayBuffer();
         audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
     }
 });
+
+// Liste des fichiers audio pré-stockés sur le site (affichés dans un menu déroulant)
+const audioFiles = [
+    "sample1.wav",  // Exemple de fichier audio dans le dossier assets/audio_samples/
+    "sample2.wav",
+    "sample3.wav"
+];
+
+// Remplir le menu de sélection des fichiers audio
+const audioSelect = document.getElementById('audioSelect');
+audioFiles.forEach(file => {
+    const option = document.createElement('option');
+    option.value = file;
+    option.text = file;
+    audioSelect.appendChild(option);
+});
+
 
 // Charger le fichier IR choisi
 async function loadImpulseResponse(url) {
