@@ -50,7 +50,7 @@ async function calculateRT60(audioBuffer) {
 
         // Try to find -5 dB and -65 dB points for linear regression
         const startIdx = decayDb.findIndex(d => d <= -5);
-        const endIdx = decayDb.findIndex(d => d <= -65);
+        const endIdx = decayDb.findIndex(d => d <= -35);
 
         if (startIdx === -1 || endIdx === -1) continue; // Skip this band if decay curve isn't valid
 
