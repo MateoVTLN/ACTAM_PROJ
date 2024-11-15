@@ -1,108 +1,167 @@
-const audioContext = new (window.AudioContext || window.AudioContext)();
+const audioContext = new (window.AudioContext || window.webkitAudioContext)();
 let audioBuffer, convolverNode, sourceNode;
 
-// List of URLs for IR files
+// List of available IR files (Room Impulse Responses)
 const irFiles = {
     "Taormina": "assets/ir_files/Taormina_scd1_32b_aio.wav",
     "Wembley": "assets/ir_files/Wembley Arena_mcg1v2.wav",
     "Sydney": "assets/ir_files/SOH Concert Hall_SBg2v2_32b_aio.wav"
 };
 
-// Fill the IR selection dropdown
-const irSelect = document.getElementById('irSelect');
-Object.keys(irFiles).forEach(room => {
-    const option = document.createElement('option');
-    option.value = irFiles[room];
-    option.text = room;
-    irSelect.appendChild(option);
-});
-
-// Load an audio file chosen by the user or from the website
-document.getElementById('audioFile').addEventListener('change', async (event) => {
-    const file = event.target.files[0];
-    if (file) {
-        // If the user selects a file from their device
-        const arrayBuffer = await file.arrayBuffer();
-        audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
-    } else {
-        // If no file is selected, load the default audio from the site
-        const selectedAudio = document.getElementById('audioSelect').value;
-        const audioPath = `assets/audio_samples/${selectedAudio}`;
-        const response = await fetch(audioPath);
-        const arrayBuffer = await response.arrayBuffer();
-        audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
-    }
-});
-
-// List of audio files available on the site
-const audioFiles = [
-    "assets/audio_samples/onclassical_demo_demicheli_geminiani_pieces_allegro-in-f-major_small-version.wav"
+// Define 1/3-octave bands for filtering (same bands as in the Python code)
+const bands = [
+    [50, 63], [63, 79], [79, 100], [100, 126], [126, 159], [159, 200],
+    [200, 252], [252, 317], [317, 400], [400, 504], [504, 635], [635, 800],
+    [800, 1008], [1008, 1270], [1270, 1600], [1600, 2016], [2016, 2540],
+    [2540, 3200], [3200, 4032], [4032, 5080], [5080, 6400], [6400, 8063],
+    [8063, 10159], [10159, 12800], [12800, 16127]
 ];
 
-// Populate the audio selection dropdown
-const audioSelect = document.getElementById('audioSelect');
-audioFiles.forEach(file => {
-    const option = document.createElement('option');
-    option.value = file;
-    option.text = file;
-    audioSelect.appendChild(option);
-});
+// Bandpass filter function using Web Audio API
+function bandpassFilter(audioBuffer, sampleRate, lowcut, highcut) {
+    const filterNode = audioContext.createBiquadFilter();
+    filterNode.type = "bandpass";
+    filterNode.frequency.value = (lowcut + highcut) / 2;
+    filterNode.Q.value = (highcut / lowcut); // Q-factor to define the band width
 
-// Load the chosen IR file
+    const bufferSource = audioContext.createBufferSource();
+    bufferSource.buffer = audioBuffer;
+
+    bufferSource.connect(filterNode);
+    filterNode.connect(audioContext.destination);
+    bufferSource.start();
+
+    return bufferSource;
+}
+
+// Function to calculate energy decay and RT60 for each frequency band
+async function calculateRT60(audioBuffer) {
+    const sampleRate = audioBuffer.sampleRate;
+    const rt60Values = [];
+
+    // For each frequency band, we apply bandpass filter and calculate RT60
+    for (const [lowcut, highcut] of bands) {
+        const filteredSignal = await applyBandpassFilter(audioBuffer, sampleRate, lowcut, highcut);
+
+        // Compute energy decay curve (cumulative energy)
+        const energy = filteredSignal.map(sample => Math.pow(sample, 2));
+        const energyDecay = energy.reverse().map((e, idx, arr) => arr.slice(0, idx + 1).reduce((sum, val) => sum + val, 0)).reverse();
+        const decayDb = energyDecay.map(e => 10 * Math.log10(e / Math.max(...energyDecay)));
+
+        // Try to find -5 dB and -65 dB points for linear regression
+        const startIdx = decayDb.findIndex(d => d <= -5);
+        const endIdx = decayDb.findIndex(d => d <= -65);
+
+        if (startIdx === -1 || endIdx === -1) continue; // Skip this band if decay curve isn't valid
+
+        // Time array for linear regression
+        const times = decayDb.map((_, idx) => idx / sampleRate);
+
+        // Linear regression to estimate RT60
+        const slope = linearRegression(times.slice(startIdx, endIdx), decayDb.slice(startIdx, endIdx)).slope;
+        const rt60 = -60 / slope; // Calculate RT60 from the slope
+
+        rt60Values.push({ band: `${lowcut}-${highcut} Hz`, rt60 });
+    }
+
+    return rt60Values;
+}
+
+// Linear regression function (simple linear regression)
+function linearRegression(x, y) {
+    const n = x.length;
+    const sumX = x.reduce((sum, xi) => sum + xi, 0);
+    const sumY = y.reduce((sum, yi) => sum + yi, 0);
+    const sumXY = x.reduce((sum, xi, idx) => sum + xi * y[idx], 0);
+    const sumX2 = x.reduce((sum, xi) => sum + xi * xi, 0);
+
+    const slope = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX);
+    const intercept = (sumY - slope * sumX) / n;
+
+    return { slope, intercept };
+}
+
+// Function to apply the bandpass filter and get the processed signal
+async function applyBandpassFilter(audioBuffer, sampleRate, lowcut, highcut) {
+    const filterNode = audioContext.createBiquadFilter();
+    filterNode.type = "bandpass";
+    filterNode.frequency.value = (lowcut + highcut) / 2;
+    filterNode.Q.value = highcut / lowcut;
+
+    const bufferSource = audioContext.createBufferSource();
+    bufferSource.buffer = audioBuffer;
+
+    bufferSource.connect(filterNode);
+    filterNode.connect(audioContext.destination);
+    bufferSource.start();
+
+    const signal = await getFilteredSignal(bufferSource);
+    return signal;
+}
+
+// Function to fetch the filtered signal from the audio node
+function getFilteredSignal(sourceNode) {
+    return new Promise((resolve, reject) => {
+        const buffer = new Float32Array(sourceNode.buffer.length);
+        const scriptProcessor = audioContext.createScriptProcessor(2048, 1, 1);
+        
+        scriptProcessor.onaudioprocess = (e) => {
+            buffer.set(e.inputBuffer.getChannelData(0));
+            resolve(buffer);
+        };
+        
+        sourceNode.connect(scriptProcessor);
+        scriptProcessor.connect(audioContext.destination);
+    });
+}
+
+// Load the selected IR file (Impulse Response)
 async function loadImpulseResponse(url) {
     const response = await fetch(url);
     const arrayBuffer = await response.arrayBuffer();
     return await audioContext.decodeAudioData(arrayBuffer);
 }
 
-// Function to apply RT60 Reverb effect
-function applyRT60Reverb(audioBuffer, rt60Values) {
-    rt60Values.forEach(({ band, rt60 }) => {
-        console.log(`Band: ${band}, RT60: ${rt60.toFixed(2)} seconds`);
-    });
-
-    return new Promise(async (resolve) => {
-        const irUrl = irSelect.value;
-        const irBuffer = await loadImpulseResponse(irUrl);
-
-        convolverNode = audioContext.createConvolver();
-        convolverNode.buffer = irBuffer;
-
-        sourceNode = audioContext.createBufferSource();
-        sourceNode.buffer = audioBuffer;
-
-        sourceNode.connect(convolverNode);
-        convolverNode.connect(audioContext.destination);
-        sourceNode.start();
-        resolve();
-    });
+// Load the audio file
+async function loadAudioFile(file) {
+    const arrayBuffer = await file.arrayBuffer();
+    return await audioContext.decodeAudioData(arrayBuffer);
 }
 
-// Example RT60 Calculation
-function calculateRT60(audioSamples, sampleRate, bands) {
-    const rt60Values = [];
+// Apply reverb and play the audio
+async function applyReverbAndPlay() {
+    const irUrl = document.getElementById("irSelect").value;
+    const audioFile = document.getElementById("audioFile").files[0] || new File([document.getElementById("audioSelect").value], "audio.wav");
 
-    bands.forEach(([lowcut, highcut]) => {
-        // Filter and calculate energy decay, etc.
-        // (Full RT60 calculation here...)
-    });
+    // Load audio and IR
+    audioBuffer = await loadAudioFile(audioFile);
+    const irBuffer = await loadImpulseResponse(irUrl);
 
-    return rt60Values;
+    // Calculate RT60 values for the selected audio file
+    const rt60Values = await calculateRT60(audioBuffer);
+
+    console.log("RT60 values for each band:", rt60Values);
+
+    // Setup convolution reverb
+    convolverNode = audioContext.createConvolver();
+    convolverNode.buffer = irBuffer;
+    convolverNode.normalize = true; // Normalize the impulse response to avoid clipping
+
+    // Create an audio source node and connect it to the convolver node
+    sourceNode = audioContext.createBufferSource();
+    sourceNode.buffer = audioBuffer;
+    sourceNode.connect(convolverNode);
+    convolverNode.connect(audioContext.destination);
+
+    // Play the audio with reverb applied
+    sourceNode.start();
+
+    // Update the audio player to play the processed audio
+    const audioPlayer = document.getElementById("audioPlayer");
+    const processedAudio = new Blob([audioBuffer], { type: "audio/wav" });
+    const audioURL = URL.createObjectURL(processedAudio);
+    audioPlayer.src = audioURL;
 }
 
-// Event listener to play the audio when the button is clicked
-document.getElementById('playButton').addEventListener('click', async () => {
-    if (!audioBuffer) {
-        alert('Veuillez charger un fichier audio d\'abord!');
-        return;
-    }
-
-    const sampleRate = audioBuffer.sampleRate;
-    const bands = [
-        [50, 63], [63, 79], [79, 100], [100, 126], [126, 159]
-        // Other bands can be added here
-    ];
-
-    const rt60Results = calculateRT60(audioBuffer, sampleRate, bands);
-    await applyRT60Reverb(audioBuffer, rt60Results);
-});
+// Event listener to apply reverb when the button is clicked
+document.getElementById("applyReverbBtn").addEventListener("click", applyReverbAndPlay);
