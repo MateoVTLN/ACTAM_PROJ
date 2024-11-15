@@ -4,33 +4,34 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Audio IR et RT60</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/dsp.js/1.2.5/dsp.min.js"></script> <!-- Si vous utilisez DSP.js -->
+    <link rel="stylesheet" href="styles.css"> <!-- Link to your CSS file -->
 </head>
 <body>
+    <div class="container">
+        <h1>Réverbération RT60 avec Audio</h1>
 
-    <h1>Réverbération RT60 avec Audio</h1>
+        <div class="controls">
+            <label for="audioFile">Choisir un fichier audio :</label>
+            <input type="file" id="audioFile" accept=".wav" />
 
-    <!-- Sélection de l'audio -->
-    <label for="audioFile">Choisir un fichier audio :</label>
-    <input type="file" id="audioFile" accept=".wav" />
+            <label for="audioSelect">Ou choisissez un fichier audio prédéfini :</label>
+            <select id="audioSelect">
+                <!-- Options ajoutées dynamiquement par JavaScript -->
+            </select>
 
-    <label for="audioSelect">Ou choisissez un fichier audio prédéfini :</label>
-    <select id="audioSelect">
-        <!-- Options ajoutées dynamiquement par JavaScript -->
-    </select>
+            <br><br>
 
-    <br><br>
+            <label for="irSelect">Choisir une réponse impulsionnelle (IR) :</label>
+            <select id="irSelect">
+                <!-- Options ajoutées dynamiquement par JavaScript -->
+            </select>
 
-    <!-- Sélection de la salle / Réponse impulsionnelle (IR) -->
-    <label for="irSelect">Choisir une réponse impulsionnelle (IR) :</label>
-    <select id="irSelect">
-        <!-- Options ajoutées dynamiquement par JavaScript -->
-    </select>
+            <br><br>
 
-    <br><br>
+            <button id="playButton">Jouer l'audio avec réverbération</button>
+        </div>
+    </div>
 
-    <button id="playButton">Jouer l'audio avec réverbération</button>
-
-    <script src="script.js"></script>
+    <script src="script.js"></script> <!-- Link to your JavaScript file -->
 </body>
 </html>
