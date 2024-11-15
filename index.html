@@ -1,31 +1,36 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reverb Simulator</title>
+    <title>Audio IR et RT60</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dsp.js/1.2.5/dsp.min.js"></script> <!-- Si vous utilisez DSP.js -->
 </head>
 <body>
-    <h1>Reverb Simulator</h1>
 
-    <label for="audioFile">Select Audio File:</label>
-    <input type="file" id="audioFile" accept="audio/*">
+    <h1>Réverbération RT60 avec Audio</h1>
 
-    <label for="irSelect">Select Impulse Response:</label>
-    <select id="irSelect">
-        <option value="">Choose a Room</option>
+    <!-- Sélection de l'audio -->
+    <label for="audioFile">Choisir un fichier audio :</label>
+    <input type="file" id="audioFile" accept=".wav" />
+
+    <label for="audioSelect">Ou choisissez un fichier audio prédéfini :</label>
+    <select id="audioSelect">
+        <!-- Options ajoutées dynamiquement par JavaScript -->
     </select>
 
-    <button id="playButton">Play Audio with Reverb</button>
+    <br><br>
 
-    <script src="your_script.js"></script>
-    <label for="audioSelect">Choose an audio sample:</label>
-<select id="audioSelect">
-    <!-- Les options seront ajoutées dynamiquement via le script -->
-</select>
+    <!-- Sélection de la salle / Réponse impulsionnelle (IR) -->
+    <label for="irSelect">Choisir une réponse impulsionnelle (IR) :</label>
+    <select id="irSelect">
+        <!-- Options ajoutées dynamiquement par JavaScript -->
+    </select>
 
-<!-- Champ pour charger un fichier audio depuis l'appareil -->
-<input type="file" id="audioFile" accept="audio/*">
+    <br><br>
 
+    <button id="playButton">Jouer l'audio avec réverbération</button>
+
+    <script src="script.js"></script>
 </body>
 </html>
