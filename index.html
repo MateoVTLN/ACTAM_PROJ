@@ -4,34 +4,38 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Audio IR et RT60</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Link to your CSS file -->
+    <link rel="stylesheet" href="styles.css"> <!-- Link to external CSS -->
 </head>
 <body>
     <div class="container">
         <h1>Réverbération RT60 avec Audio</h1>
 
         <div class="controls">
+            <!-- Input for selecting custom audio file -->
             <label for="audioFile">Choisir un fichier audio :</label>
             <input type="file" id="audioFile" accept=".wav" />
 
+            <!-- Dropdown to select from pre-stored audio files -->
             <label for="audioSelect">Ou choisissez un fichier audio prédéfini :</label>
             <select id="audioSelect">
-                <!-- Options ajoutées dynamiquement par JavaScript -->
+                <!-- Options added dynamically by JavaScript -->
             </select>
 
             <br><br>
 
+            <!-- Dropdown to select IR file -->
             <label for="irSelect">Choisir une réponse impulsionnelle (IR) :</label>
             <select id="irSelect">
-                <!-- Options ajoutées dynamiquement par JavaScript -->
+                <!-- Options added dynamically by JavaScript -->
             </select>
 
             <br><br>
 
+            <!-- Button to play the audio with reverb effect -->
             <button id="playButton">Jouer l'audio avec réverbération</button>
         </div>
     </div>
 
-    <script src="script.js"></script> <!-- Link to your JavaScript file -->
+    <script src="script.js"></script> <!-- Link to external JavaScript -->
 </body>
 </html>
