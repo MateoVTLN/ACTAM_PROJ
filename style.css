@@ -1,4 +1,4 @@
-/* General body styles */
+/* General body and container styling */
 body {
     font-family: Arial, sans-serif;
     display: flex;
@@ -6,80 +6,64 @@ body {
     align-items: center;
     height: 100vh;
     margin: 0;
-    background-color: #f0f0f0;
+    background-color: #f9f9f9;
     box-sizing: border-box;
 }
 
-/* Container for all content */
 .container {
     text-align: center;
     padding: 20px;
-    background: white;
+    background-color: white;
     border-radius: 8px;
-    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     width: 90%;
     max-width: 600px;
 }
 
-/* Styling for labels, inputs, selects, and buttons */
-.controls label {
+/* Form controls (input, select, button) styling */
+label {
+    display: block;
+    margin-bottom: 8px;
     font-weight: bold;
-    margin-bottom: 5px;
 }
 
-.controls select, .controls input {
+input[type="file"],
+select {
     width: 100%;
     padding: 10px;
     margin: 8px 0;
-    border: 1px solid #ccc;
     border-radius: 5px;
-    font-size: 16px;
+    border: 1px solid #ccc;
 }
 
-.controls select:focus, .controls input:focus {
-    outline: none;
-    border-color: #0056b3;
-}
-
-/* Button styling */
-.controls button {
+button {
     padding: 12px 20px;
     background-color: #4CAF50;
     color: white;
     border: none;
     border-radius: 5px;
-    font-size: 16px;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
 
-.controls button:hover {
+button:hover {
     background-color: #45a049;
 }
 
-.controls button:disabled {
-    background-color: #cccccc;
-    cursor: not-allowed;
+audio {
+    margin-top: 20px;
+    width: 100%;
 }
 
-/* Mobile responsiveness */
+/* Media query for mobile responsiveness */
 @media (max-width: 600px) {
     .container {
-        width: 100%;
         padding: 15px;
+        width: 100%;
     }
 
-    .controls label {
+    button {
         font-size: 14px;
-    }
-
-    .controls select, .controls input {
-        font-size: 14px;
-        padding: 8px;
-    }
-
-    .controls button {
-        font-size: 14px;
-        padding: 10px 18px;
+        padding: 10px 16px;
     }
 }
