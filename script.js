@@ -10,13 +10,13 @@ const irFiles = {
 
 // Define 1/3-octave bands for filtering (same bands as in the Python code)
 const bands = [
-    [50, 63], [63, 79], [79, 100], [100, 126] ]; /*, [126, 159], [159, 200],
+    [50, 63], [63, 79], [79, 100], [100, 126] , [126, 159], [159, 200],
     [200, 252], [252, 317], [317, 400], [400, 504], [504, 635], [635, 800],
     [800, 1008], [1008, 1270], [1270, 1600], [1600, 2016], [2016, 2540],
     [2540, 3200], [3200, 4032], [4032, 5080], [5080, 6400], [6400, 8063],
     [8063, 10159], [10159, 12800], [12800, 16127]
 ];
-*/
+
 // Bandpass filter function using Web Audio API
 function bandpassFilter(audioBuffer, sampleRate, lowcut, highcut) {
     const filterNode = audioContext.createBiquadFilter();
@@ -130,32 +130,60 @@ async function loadAudioFile(file) {
 
 // Apply reverb and play the audio
 async function applyReverbAndPlay() {
-    const irUrl = document.getElementById("irSelect").value;
-    const audioFile = document.getElementById("audioFile").files[0];
-    const audioSelect = document.getElementById("audioSelect");
-    const audioUrl = audioFile ? URL.createObjectURL(audioFile) : audioSelect.value;
+    try {
+        if (audioContext.state === "suspended") {
+            await audioContext.resume();
+            console.log("AudioContext resumed.");
+        }
+        // Fetch the selected IR file
+        const irUrl = document.getElementById("irSelect").value;
 
-    // Load audio and impulse response (IR)
-    const audioBuffer = await loadAudioFile(audioFile || new File([audioUrl], "audio.wav"));
-    const irBuffer = await loadImpulseResponse(irUrl);
+        // Fetch the uploaded audio file or selected audio URL
+        const audioFileInput = document.getElementById("audioFile");
+        const audioSelect = document.getElementById("audioSelect");
+        let audioBuffer;
+        
+        if (audioFileInput.files.length > 0) {
+            const audioFile = audioFileInput.files[0];
+            const arrayBuffer = await audioFile.arrayBuffer();
+            audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
+        } else if (audioSelect.value) {
+            const response = await fetch(audioSelect.value);
+            const arrayBuffer = await response.arrayBuffer();
+            audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
+        } else {
+            throw new Error("No audio source selected.");
+        }
 
-    // Apply RT60 calculation and convolve with IR
-    const rt60Values = await calculateRT60(audioBuffer);
-    console.log("RT60 Values for each band:", rt60Values);
+        // Fetch and decode the Impulse Response (IR)
+        const response = await fetch(irUrl);
+        const irArrayBuffer = await response.arrayBuffer();
+        const irBuffer = await audioContext.decodeAudioData(irArrayBuffer);
 
-    // Create convolver node and apply IR
-    const convolver = audioContext.createConvolver();
-    convolver.buffer = irBuffer;
+        // Validate audio and IR buffers
+        if (!audioBuffer) throw new Error("Failed to load audio buffer.");
+        if (!irBuffer) throw new Error("Failed to load IR buffer.");
 
-    // Create source node and connect to convolver
-    sourceNode = audioContext.createBufferSource();
-    sourceNode.buffer = audioBuffer;
-    sourceNode.connect(convolver);
-    convolver.connect(audioContext.destination);
+        // Create a ConvolverNode and apply the IR
+        const convolver = audioContext.createConvolver();
+        convolver.buffer = irBuffer;
 
-    // Play audio
-    sourceNode.start();
+        // Create a BufferSource for the audio
+        const sourceNode = audioContext.createBufferSource();
+        sourceNode.buffer = audioBuffer;
+        sourceNode.connect(convolver);
+        convolver.connect(audioContext.destination);
+
+        // Start the audio
+        sourceNode.start();
+
+        console.log("Reverb applied and audio is playing.");
+    } catch (error) {
+        console.error("Error applying reverb:", error.message);
+        alert(`An error occurred: ${error.message}`);
+    }
 }
+
 
 // Event listener for the "Apply Reverb" button
 document.getElementById("applyReverbBtn").addEventListener("click", applyReverbAndPlay);
