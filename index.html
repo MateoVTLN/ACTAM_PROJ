@@ -3,28 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reverb Application</title>
+    <title>Audio Reverb Application</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Apply Reverb Effect</h1>
-        <div class="input-section">
-            <label for="audioFile">Upload an Audio File:</label>
-            <input type="file" id="audioFile" accept="audio/*">
-        </div>
-        <div class="select-section">
-            <label for="irSelect">Select a Room (Impulse Response):</label>
-            <select id="irSelect">
-                <option value="Wembley">Wembley</option>
-                <option value="Taormina">Taormina</option>
-                <option value="Sydney">Sydney</option>
-            </select>
-        </div>
-        <button id="applyReverbBtn">Apply Reverb</button>
-        <audio id="outputAudio" controls></audio>
+    <h1>Audio Reverb Application</h1>
+
+    <!-- Select Audio -->
+    <div id="audio-selection">
+        <label for="audioFile">Upload an audio file:</label>
+        <input type="file" id="audioFile" accept="audio/*">
+
+        <label for="audioSelect">Or choose a sample audio:</label>
+        <select id="audioSelect">
+            <option value="">-- Select Sample --</option>
+            <option value="assets/audio/sample1.mp3">Sample 1</option>
+            <option value="assets/audio/sample2.mp3">Sample 2</option>
+        </select>
     </div>
 
-    <script src="app.js"></script>
+    <!-- Select Room -->
+    <div id="room-selection">
+        <label for="roomSelect">Choose a room for reverb:</label>
+        <select id="roomSelect">
+            <option value="Wembley">Wembley</option>
+            <option value="Sydney">Sydney</option>
+            <option value="Taormina">Taormina</option>
+        </select>
+    </div>
+
+    <!-- Apply Reverb Button -->
+    <button id="applyReverbBtn">Apply Reverb</button>
+
+    <!-- Debugging Area -->
+    <div id="debug"></div>
+
+    <script src="script.js"></script>
 </body>
 </html>
