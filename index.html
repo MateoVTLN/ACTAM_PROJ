@@ -3,48 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reverb Effect Web App</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Reverb Application</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
-        <h1>Reverb Effect Audio Processor</h1>
-
-        <!-- File Select for Personal Audio File -->
-        <div class="controls">
-            <label for="audioFile">Select your audio file:</label>
+        <h1>Apply Reverb Effect</h1>
+        <div class="input-section">
+            <label for="audioFile">Upload an Audio File:</label>
             <input type="file" id="audioFile" accept="audio/*">
         </div>
-
-        <!-- File Select for Pre-stored Audio Samples -->
-        <div class="controls">
-            <label for="audioSelect">Or choose a pre-recorded audio sample:</label>
-            <select id="audioSelect">
-                <option value="assets/audio_samples/onclassical_demo_demicheli_geminiani_pieces_allegro-in-f-major_small-version_32b_aio.wav">Short demo Classical Audio </option>
-            </select>
-        </div>
-
-        <!-- Room Select for Impulse Response (IR) Files -->
-        <div class="controls">
-            <label for="irSelect">Choose a room for reverb (IR file):</label>
+        <div class="select-section">
+            <label for="irSelect">Select a Room (Impulse Response):</label>
             <select id="irSelect">
-                <option value="assets/ir_files/Taormina_scd1_32b_aio.wav">Taormina</option>
-                <option value="assets/ir_files/Wembley Arena_mcg1v2.wav">Wembley Arena</option>
-                <option value="assets/ir_files/SOH Concert Hall_SBg2v2_32b_aio.wav">Sydney Opera House</option>
+                <option value="Wembley">Wembley</option>
+                <option value="Taormina">Taormina</option>
+                <option value="Sydney">Sydney</option>
             </select>
         </div>
-
-        <!-- Button to Apply Reverb -->
-        <div class="controls">
-            <button id="applyReverbBtn">Apply Reverb</button>
-        </div>
-
-        <!-- Audio Player to Listen to Processed Audio -->
-        <div class="controls">
-            <audio id="audioPlayer" controls></audio>
-        </div>
+        <button id="applyReverbBtn">Apply Reverb</button>
+        <audio id="outputAudio" controls></audio>
     </div>
 
-    <script src="script.js"></script>
+    <script src="app.js"></script>
 </body>
 </html>
