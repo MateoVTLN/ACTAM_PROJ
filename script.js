@@ -10,13 +10,13 @@ const irFiles = {
 
 // Define 1/3-octave bands for filtering (same bands as in the Python code)
 const bands = [
-    [50, 63], [63, 79], [79, 100], [100, 126], [126, 159], [159, 200],
+    [50, 63], [63, 79], [79, 100], [100, 126] ]; /*, [126, 159], [159, 200],
     [200, 252], [252, 317], [317, 400], [400, 504], [504, 635], [635, 800],
     [800, 1008], [1008, 1270], [1270, 1600], [1600, 2016], [2016, 2540],
     [2540, 3200], [3200, 4032], [4032, 5080], [5080, 6400], [6400, 8063],
     [8063, 10159], [10159, 12800], [12800, 16127]
 ];
-
+*/
 // Bandpass filter function using Web Audio API
 function bandpassFilter(audioBuffer, sampleRate, lowcut, highcut) {
     const filterNode = audioContext.createBiquadFilter();
