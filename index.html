@@ -3,53 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Audio Reverb Application</title>
+    <title>Application de Réverbération</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
-        <h1>Audio Reverb Application</h1>
-
-        <div class="input-section">
-            <h2>Choisissez un fichier audio :</h2>
-            <div class="audio-options">
-                <div>
-                    <input type="radio" id="local-audio" name="audio-source" value="local">
-                    <label for="local-audio">Importer un fichier audio personnel</label>
-                    <input type="file" id="audio-file-input" accept="audio/wav" disabled>
-                </div>
-
-                <div>
-                    <input type="radio" id="site-audio" name="audio-source" value="site">
-                    <label for="site-audio">Sélectionner un fichier audio du site</label>
-                    <select id="site-audio-select" disabled>
-                        <option value="" disabled selected>Choisissez un fichier</option>
-                        <option value="assets/audio_samples/sample1.wav">Sample 1</option>
-                        <option value="assets/audio_samples/sample2.wav">Sample 2</option>
-                        <option value="assets/audio_samples/sample3.wav">Sample 3</option>
-                    </select>
-                </div>
-            </div>
-        </div>
-
-        <div class="room-selection">
-            <h2>Sélectionnez une salle :</h2>
-            <select id="room-select">
-                <option value="" disabled selected>Choisissez une salle</option>
-                <option value="assets/ir_files/Taormina_scd1_32b_aio.wav">Taormina</option>
-                <option value="assets/ir_files/Wembley Arena_mcg1v2.wav">Wembley</option>
-                <option value="assets/ir_files/SOH Concert Hall_SBg2v2_32b_aio.wav">Sydney</option>
+        <h1>Ajouter une réverbération</h1>
+        <div class="audio-options">
+            <label>
+                <input type="radio" id="local-audio" name="audio-source" value="local">
+                Importer un fichier audio personnel
+            </label>
+            <input type="file" id="audio-file-input" accept="audio/wav">
+            
+            <label>
+                <input type="radio" id="site-audio" name="audio-source" value="site">
+                Choisir un fichier du site
+            </label>
+            <select id="site-audio-select">
+                <option value="" disabled selected>Choisissez un fichier</option>
+                <option value="assets/audio_samples/sample1.wav">Sample 1</option>
+                <option value="assets/audio_samples/sample2.wav">Sample 2</option>
+                <option value="assets/audio_samples/sample3.wav">Sample 3</option>
             </select>
         </div>
-
         <button id="apply-reverb">Appliquer la réverbération</button>
-
-        <div class="output">
-            <h2>Résultat :</h2>
-            <audio id="result-audio" controls></audio>
-        </div>
     </div>
-
     <script src="script.js"></script>
 </body>
 </html>
