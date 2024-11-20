@@ -1,26 +1,46 @@
-body {
-    font-family: Arial, sans-serif;
-    margin: 20px;
-}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apply Reverb</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>Apply Reverb to Your Audio</h1>
 
-h1 {
-    color: #333;
-}
+    <div>
+        <!-- Radio buttons to select audio source -->
+        <label>
+            <input type="radio" id="site-audio" name="audio-source"> Select Predefined Audio (Classical)
+        </label>
+        <label>
+            <input type="radio" id="local-audio" name="audio-source"> Upload Your Own Audio
+        </label>
+    </div>
 
-div {
-    margin-bottom: 15px;
-}
+    <!-- Audio file selection -->
+    <div id="audio-selection">
+        <input type="file" id="audio-file-input" disabled />
+        <select id="site-audio-select" disabled>
+            <option value="assets/audio_samples/onclassical_demo_demicheli_geminiani_pieces_allegro-in-f-major_small-version_32b_aio.wav">Classical</option>
+        </select>
+    </div>
 
-label {
-    margin-right: 10px;
-}
+    <!-- Room selection -->
+    <div>
+        <label for="room-select">Select Room:</label>
+        <select id="room-select">
+            <option value="">--Choose a Room--</option>
+            <option value="Taormina">Taormina</option>
+            <option value="Wembley">Wembley</option>
+            <option value="Sydney">Sydney</option>
+        </select>
+    </div>
 
-#audio-selection {
-    display: flex;
-    flex-direction: column;
-}
+    <!-- Button to apply reverb -->
+    <button id="apply-reverb">Apply Reverb</button>
 
-#site-audio-select,
-#audio-file-input {
-    margin-top: 5px;
-}
+    <script src="script.js"></script>
+</body>
+</html>
