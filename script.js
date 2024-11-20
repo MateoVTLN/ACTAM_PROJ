@@ -1,15 +1,33 @@
 // Références aux éléments HTML
 const localAudioRadio = document.getElementById("local-audio");
-const siteAudioRadio = document.getElementById("site-audio");
 const audioFileInput = document.getElementById("audio-file-input");
-const siteAudioSelect = document.getElementById("site-audio-select");
 const roomSelect = document.getElementById("room-select");
 const applyReverbButton = document.getElementById("apply-reverb");
+
+// Liste Of Adio Files presents on the site
+const siteAudioFiles = {
+    "Classical": "Classical": "assets/audio_samples/onclassical_demo_demicheli_geminiani_pieces_allegro-in-f-major_small-version_32b_aio.wav"
+};
+
+// Initialiser les éléments au chargement de la page
+window.addEventListener("DOMContentLoaded", () => {
+    populateSiteAudioSelect();
+});
 
 // Initialisation : désactiver les champs non sélectionnés
 audioFileInput.disabled = true;
 siteAudioSelect.disabled = true;
 
+// Web Audio Files menu
+function populateSiteAudioSelect() {
+    const siteAudioSelect = document.getElementById("site-audio-select");
+    for (const [name, path] of Object.entries(siteAudioFiles)) {
+        const option = document.createElement("option");
+        option.value = path;
+        option.textContent = name;
+        siteAudioSelect.appendChild(option);
+    }
+}
 // Gestion du changement des options d'entrée
 function handleAudioSourceChange() {
     if (localAudioRadio.checked) {
