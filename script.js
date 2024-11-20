@@ -6,7 +6,7 @@ const applyReverbButton = document.getElementById("apply-reverb");
 
 // Liste Of Adio Files presents on the site
 const siteAudioFiles = {
-    "Classical": "Classical": "assets/audio_samples/onclassical_demo_demicheli_geminiani_pieces_allegro-in-f-major_small-version_32b_aio.wav"
+    "Classical": "assets/audio_samples/onclassical_demo_demicheli_geminiani_pieces_allegro-in-f-major_small-version_32b_aio.wav"
 };
 
 // Initialiser les éléments au chargement de la page
