@@ -21,9 +21,7 @@ const audioFiles = {
 window.addEventListener("DOMContentLoaded", () => {
     handleAudioSourceChange();
 });
-console.log("IR size:", irData.length);
-console.log("Input size:", inputData.length);
-console.log("Padded IR size:", irPadded.length);
+
 
 // Function to handle audio source selection
 function handleAudioSourceChange() {
