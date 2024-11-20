@@ -1,20 +1,26 @@
 body {
     font-family: Arial, sans-serif;
     margin: 20px;
-    padding: 0;
 }
 
-.container {
-    max-width: 600px;
-    margin: 0 auto;
+h1 {
+    color: #333;
 }
 
-.audio-options {
-    margin: 20px 0;
+div {
+    margin-bottom: 15px;
 }
 
-button {
-    padding: 10px 20px;
-    font-size: 16px;
-    cursor: pointer;
+label {
+    margin-right: 10px;
+}
+
+#audio-selection {
+    display: flex;
+    flex-direction: column;
+}
+
+#site-audio-select,
+#audio-file-input {
+    margin-top: 5px;
 }
