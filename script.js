@@ -1,32 +1,34 @@
-// Variables pour suivre l'état
-let selectedAudioUrl = null;
-let selectedRoomIR = null;
-let localAudioFile = null;
-
 // Références DOM
+const audioSourceRadios = document.querySelectorAll('input[name="audio-source"]');
 const audioFileInput = document.getElementById("audio-file-input");
 const siteAudioSelect = document.getElementById("site-audio-select");
 const roomSelect = document.getElementById("room-select");
 const applyReverbButton = document.getElementById("apply-reverb");
 const resultAudio = document.getElementById("result-audio");
 
-// Gestion de la sélection de source audio
-document.querySelectorAll('input[name="audio-source"]').forEach((radio) => {
+// État global
+let selectedAudioUrl = null;
+let localAudioFile = null;
+let selectedRoomIR = null;
+
+// Gestion des boutons radio pour la source audio
+audioSourceRadios.forEach((radio) => {
     radio.addEventListener("change", (event) => {
         const source = event.target.value;
 
         if (source === "local") {
+            // Activer l'import local et désactiver le menu de sélection
             audioFileInput.disabled = false;
             siteAudioSelect.disabled = true;
             siteAudioSelect.value = "";
+            selectedAudioUrl = null; // Réinitialiser l'URL de l'échantillon
         } else if (source === "site") {
+            // Activer le menu de sélection et désactiver l'import local
             audioFileInput.disabled = true;
             siteAudioSelect.disabled = false;
             audioFileInput.value = "";
+            localAudioFile = null; // Réinitialiser le fichier local
         }
-
-        selectedAudioUrl = null;
-        localAudioFile = null;
     });
 });
 
@@ -38,12 +40,12 @@ audioFileInput.addEventListener("change", (event) => {
     }
 });
 
-// Gestion des fichiers audio du site
+// Gestion de la sélection de l'audio du site
 siteAudioSelect.addEventListener("change", (event) => {
     selectedAudioUrl = event.target.value;
 });
 
-// Gestion de la sélection de salle
+// Gestion de la sélection de la salle
 roomSelect.addEventListener("change", (event) => {
     selectedRoomIR = event.target.value;
 });
@@ -81,7 +83,7 @@ applyReverbButton.addEventListener("click", async () => {
     const processedData = partitionedConvolution(audioBuffer, irBuffer, 4096);
     const resultBuffer = createAudioBufferFromData(processedData, audioContext.sampleRate, audioContext);
 
-    // Créer un Blob pour permettre le téléchargement
+    // Créer un Blob pour permettre le téléchargement ou la lecture
     const blob = new Blob([resultBuffer], { type: "audio/wav" });
     resultAudio.src = URL.createObjectURL(blob);
     resultAudio.play();
