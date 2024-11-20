@@ -6,65 +6,51 @@ const siteAudioSelect = document.getElementById("site-audio-select");
 const roomSelect = document.getElementById("room-select");
 const applyReverbButton = document.getElementById("apply-reverb");
 
-// List of audio files available on the site
-const siteAudioFiles = {
-    "Classical": "assets/audio_samples/onclassical_demo_demicheli_geminiani_pieces_allegro-in-f-major_small-version_32b_aio.wav",
-    "Jazz": "assets/audio_samples/jazz_sample.wav",
-    "Pop": "assets/audio_samples/pop_sample.wav"
-};
-
-// List of impulse responses for different rooms
+// Audio files and IR files (impulse responses)
 const irFiles = {
     "Taormina": "assets/ir_files/Taormina_scd1_32b_aio.wav",
     "Wembley": "assets/ir_files/Wembley Arena_mcg1v2.wav",
     "Sydney": "assets/ir_files/SOH Concert Hall_SBg2v2_32b_aio.wav"
 };
 
-// Initialize elements on page load
+const audioFiles = {
+    "Classical": "assets/audio_samples/onclassical_demo_demicheli_geminiani_pieces_allegro-in-f-major_small-version_32b_aio.wav"
+};
+
+// Initialize UI elements
 window.addEventListener("DOMContentLoaded", () => {
-    populateSiteAudioSelect();
-    handleAudioSourceChange(); // Ensure correct initial state
+    handleAudioSourceChange();
 });
 
-// Function to populate the site audio select dropdown
-function populateSiteAudioSelect() {
-    for (const [name, path] of Object.entries(siteAudioFiles)) {
-        const option = document.createElement("option");
-        option.value = path;
-        option.textContent = name;
-        siteAudioSelect.appendChild(option);
-    }
-}
-
-// Handle changes in audio source selection
+// Function to handle audio source selection
 function handleAudioSourceChange() {
     if (localAudioRadio.checked) {
-        // Enable local file input and disable site audio selection
+        // Enable the file input and disable the site audio select
         audioFileInput.disabled = false;
         siteAudioSelect.disabled = true;
-        siteAudioSelect.value = ""; // Reset site audio selection
+        siteAudioSelect.value = ""; // Reset the selection
     } else if (siteAudioRadio.checked) {
-        // Enable site audio selection and disable local file input
+        // Enable the site audio select and disable the file input
         audioFileInput.disabled = true;
         siteAudioSelect.disabled = false;
-        audioFileInput.value = ""; // Reset local file input
+        audioFileInput.value = ""; // Reset the file input
     }
 }
 
-// Add event listeners for radio buttons
+// Event listeners for the radio buttons
 localAudioRadio.addEventListener("change", handleAudioSourceChange);
 siteAudioRadio.addEventListener("change", handleAudioSourceChange);
 
-// Function to load an audio file and decode it into an AudioBuffer
+// Function to load an audio file into an AudioBuffer
 async function loadAudioFile(audioUrl, audioContext) {
     const response = await fetch(audioUrl);
     const arrayBuffer = await response.arrayBuffer();
     return audioContext.decodeAudioData(arrayBuffer);
 }
 
-// Perform partitioned convolution using FFT
+// Convolution function for applying reverb
 function partitionedConvolution(inputBuffer, irBuffer, fftSize) {
-    const inputData = inputBuffer.getChannelData(0); // Mono input
+    const inputData = inputBuffer.getChannelData(0); // Mono audio
     const irData = irBuffer.getChannelData(0);
 
     const irPadded = new Float32Array(fftSize);
@@ -91,14 +77,14 @@ function partitionedConvolution(inputBuffer, irBuffer, fftSize) {
     return output;
 }
 
-// Create an AudioBuffer from processed data
+// Function to create an AudioBuffer from data
 function createAudioBufferFromData(data, sampleRate, context) {
     const buffer = context.createBuffer(1, data.length, sampleRate);
     buffer.getChannelData(0).set(data);
     return buffer;
 }
 
-// Apply reverb and play the processed audio
+// Function to apply reverb and play the audio
 async function applyReverbAndPlay(audioUrl, irUrl, fftSize) {
     const audioContext = new (window.AudioContext || window.webkitAudioContext)();
 
@@ -111,25 +97,25 @@ async function applyReverbAndPlay(audioUrl, irUrl, fftSize) {
 
     const resultBuffer = createAudioBufferFromData(processedData, audioContext.sampleRate, audioContext);
 
-    // Play the result
+    // Play the processed audio
     const source = audioContext.createBufferSource();
     source.buffer = resultBuffer;
     source.connect(audioContext.destination);
     source.start();
 }
 
-// Handle the "Apply Reverb" button click
+// Event listener for applying reverb
 applyReverbButton.addEventListener("click", async () => {
     let audioUrl;
     const room = roomSelect.value;
 
+    const irUrl = irFiles[room];
     if (!room) {
-        alert("Please select a room to apply reverb.");
+        alert("Please select a room to apply the reverb.");
         return;
     }
 
-    const irUrl = irFiles[room];
-
+    // Determine which audio file to use
     if (localAudioRadio.checked && audioFileInput.files.length > 0) {
         const file = audioFileInput.files[0];
         audioUrl = URL.createObjectURL(file);
@@ -141,7 +127,7 @@ applyReverbButton.addEventListener("click", async () => {
     }
 
     try {
-        await applyReverbAndPlay(audioUrl, irUrl, 2048); // Use an FFT size of 2048
+        await applyReverbAndPlay(audioUrl, irUrl, 2048); // FFT size set to 2048
     } catch (error) {
         console.error("Error applying reverb:", error);
         alert("An error occurred while applying the reverb.");
