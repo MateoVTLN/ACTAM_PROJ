@@ -21,6 +21,9 @@ const audioFiles = {
 window.addEventListener("DOMContentLoaded", () => {
     handleAudioSourceChange();
 });
+console.log("IR size:", irData.length);
+console.log("Input size:", inputData.length);
+console.log("Padded IR size:", irPadded.length);
 
 // Function to handle audio source selection
 function handleAudioSourceChange() {
@@ -58,37 +61,35 @@ async function loadAudioFile(audioUrl, audioContext) {
 
 // Convolution function for applying reverb
 function partitionedConvolution(inputBuffer, irBuffer, fftSize) {
-    try {
-        const inputData = inputBuffer.getChannelData(0); // Mono audio
-        const irData = irBuffer.getChannelData(0);
+    const inputData = inputBuffer.getChannelData(0); // Mono
+    const irData = irBuffer.getChannelData(0);
 
-        const irPadded = new Float32Array(fftSize);
-        irPadded.set(irData);
-        const irFFT = fft(irPadded);
+    // Ensure IR data is padded to match fftSize
+    const irPadded = new Float32Array(fftSize); // Create an array of size fftSize
+    irPadded.set(irData.slice(0, fftSize)); // Copy the IR data into the padded array, slicing if necessary
 
-        const output = new Float32Array(inputData.length + irData.length - 1);
+    const irFFT = fft(irPadded);
 
-        for (let start = 0; start < inputData.length; start += fftSize / 2) {
-            const segment = new Float32Array(fftSize);
-            segment.set(inputData.slice(start, start + fftSize));
+    const output = new Float32Array(inputData.length + irData.length - 1);
 
-            const segmentFFT = fft(segment);
+    for (let start = 0; start < inputData.length; start += fftSize / 2) {
+        const segment = new Float32Array(fftSize);
+        segment.set(inputData.slice(start, start + fftSize));
 
-            const convolvedFFT = segmentFFT.map((value, index) => value * irFFT[index]);
+        const segmentFFT = fft(segment);
 
-            const convolvedSegment = ifft(convolvedFFT);
+        const convolvedFFT = segmentFFT.map((value, index) => value * irFFT[index]);
 
-            for (let i = 0; i < convolvedSegment.length; i++) {
-                output[start + i] += convolvedSegment[i];
-            }
+        const convolvedSegment = ifft(convolvedFFT);
+
+        for (let i = 0; i < convolvedSegment.length; i++) {
+            output[start + i] += convolvedSegment[i];
         }
-
-        return output;
-    } catch (error) {
-        console.error("Error during convolution:", error);
-        throw error;
     }
+
+    return output;
 }
+
 
 // Function to create an AudioBuffer from data
 function createAudioBufferFromData(data, sampleRate, context) {
