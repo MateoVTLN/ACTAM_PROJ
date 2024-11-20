@@ -1,26 +1,33 @@
-// Références aux éléments HTML
+// References to HTML elements
 const localAudioRadio = document.getElementById("local-audio");
+const siteAudioRadio = document.getElementById("site-audio");
 const audioFileInput = document.getElementById("audio-file-input");
+const siteAudioSelect = document.getElementById("site-audio-select");
 const roomSelect = document.getElementById("room-select");
 const applyReverbButton = document.getElementById("apply-reverb");
 
-// Liste Of Adio Files presents on the site
+// List of audio files available on the site
 const siteAudioFiles = {
-    "Classical": "assets/audio_samples/onclassical_demo_demicheli_geminiani_pieces_allegro-in-f-major_small-version_32b_aio.wav"
+    "Classical": "assets/audio_samples/onclassical_demo_demicheli_geminiani_pieces_allegro-in-f-major_small-version_32b_aio.wav",
+    "Jazz": "assets/audio_samples/jazz_sample.wav",
+    "Pop": "assets/audio_samples/pop_sample.wav"
 };
 
-// Initialiser les éléments au chargement de la page
+// List of impulse responses for different rooms
+const irFiles = {
+    "Taormina": "assets/ir_files/Taormina_scd1_32b_aio.wav",
+    "Wembley": "assets/ir_files/Wembley Arena_mcg1v2.wav",
+    "Sydney": "assets/ir_files/SOH Concert Hall_SBg2v2_32b_aio.wav"
+};
+
+// Initialize elements on page load
 window.addEventListener("DOMContentLoaded", () => {
     populateSiteAudioSelect();
+    handleAudioSourceChange(); // Ensure correct initial state
 });
 
-// Initialisation : désactiver les champs non sélectionnés
-audioFileInput.disabled = true;
-siteAudioSelect.disabled = true;
-
-// Web Audio Files menu
+// Function to populate the site audio select dropdown
 function populateSiteAudioSelect() {
-    const siteAudioSelect = document.getElementById("site-audio-select");
     for (const [name, path] of Object.entries(siteAudioFiles)) {
         const option = document.createElement("option");
         option.value = path;
@@ -28,33 +35,36 @@ function populateSiteAudioSelect() {
         siteAudioSelect.appendChild(option);
     }
 }
-// Gestion du changement des options d'entrée
+
+// Handle changes in audio source selection
 function handleAudioSourceChange() {
     if (localAudioRadio.checked) {
+        // Enable local file input and disable site audio selection
         audioFileInput.disabled = false;
         siteAudioSelect.disabled = true;
-        siteAudioSelect.value = ""; // Réinitialiser la sélection du fichier du site
+        siteAudioSelect.value = ""; // Reset site audio selection
     } else if (siteAudioRadio.checked) {
+        // Enable site audio selection and disable local file input
         audioFileInput.disabled = true;
         siteAudioSelect.disabled = false;
-        audioFileInput.value = ""; // Réinitialiser le champ de fichier local
+        audioFileInput.value = ""; // Reset local file input
     }
 }
 
-// Ajouter les gestionnaires d'événements pour les boutons radio
+// Add event listeners for radio buttons
 localAudioRadio.addEventListener("change", handleAudioSourceChange);
 siteAudioRadio.addEventListener("change", handleAudioSourceChange);
 
-// Charger un fichier audio en tant qu'AudioBuffer
+// Function to load an audio file and decode it into an AudioBuffer
 async function loadAudioFile(audioUrl, audioContext) {
     const response = await fetch(audioUrl);
     const arrayBuffer = await response.arrayBuffer();
     return audioContext.decodeAudioData(arrayBuffer);
 }
 
-// Convolution par FFT (partitionnée pour l'efficacité)
+// Perform partitioned convolution using FFT
 function partitionedConvolution(inputBuffer, irBuffer, fftSize) {
-    const inputData = inputBuffer.getChannelData(0); // Mono
+    const inputData = inputBuffer.getChannelData(0); // Mono input
     const irData = irBuffer.getChannelData(0);
 
     const irPadded = new Float32Array(fftSize);
@@ -81,14 +91,14 @@ function partitionedConvolution(inputBuffer, irBuffer, fftSize) {
     return output;
 }
 
-// Créer un AudioBuffer à partir des données calculées
+// Create an AudioBuffer from processed data
 function createAudioBufferFromData(data, sampleRate, context) {
     const buffer = context.createBuffer(1, data.length, sampleRate);
     buffer.getChannelData(0).set(data);
     return buffer;
 }
 
-// Appliquer la réverbération et lire l'audio traité
+// Apply reverb and play the processed audio
 async function applyReverbAndPlay(audioUrl, irUrl, fftSize) {
     const audioContext = new (window.AudioContext || window.webkitAudioContext)();
 
@@ -101,29 +111,24 @@ async function applyReverbAndPlay(audioUrl, irUrl, fftSize) {
 
     const resultBuffer = createAudioBufferFromData(processedData, audioContext.sampleRate, audioContext);
 
-    // Lire le résultat
+    // Play the result
     const source = audioContext.createBufferSource();
     source.buffer = resultBuffer;
     source.connect(audioContext.destination);
     source.start();
 }
 
-// Gérer le clic sur le bouton "Appliquer"
+// Handle the "Apply Reverb" button click
 applyReverbButton.addEventListener("click", async () => {
     let audioUrl;
     const room = roomSelect.value;
-    const irFiles = {
-        "Taormina": "assets/ir_files/Taormina_scd1_32b_aio.wav",
-        "Wembley": "assets/ir_files/Wembley Arena_mcg1v2.wav",
-        "Sydney": "assets/ir_files/SOH Concert Hall_SBg2v2_32b_aio.wav"
-    };
-
-    const irUrl = irFiles[room];
 
     if (!room) {
-        alert("Veuillez sélectionner une salle pour appliquer la réverbération.");
+        alert("Please select a room to apply reverb.");
         return;
     }
+
+    const irUrl = irFiles[room];
 
     if (localAudioRadio.checked && audioFileInput.files.length > 0) {
         const file = audioFileInput.files[0];
@@ -131,14 +136,14 @@ applyReverbButton.addEventListener("click", async () => {
     } else if (siteAudioRadio.checked && siteAudioSelect.value) {
         audioUrl = siteAudioSelect.value;
     } else {
-        alert("Veuillez sélectionner une source audio avant d'appliquer la réverbération.");
+        alert("Please select an audio source before applying reverb.");
         return;
     }
 
     try {
-        await applyReverbAndPlay(audioUrl, irUrl, 2048); // Taille de FFT fixée à 2048 pour cet exemple
+        await applyReverbAndPlay(audioUrl, irUrl, 2048); // Use an FFT size of 2048
     } catch (error) {
-        console.error("Erreur lors de l'application de la réverbération :", error);
-        alert("Une erreur est survenue lors de l'application de la réverbération.");
+        console.error("Error applying reverb:", error);
+        alert("An error occurred while applying the reverb.");
     }
 });
