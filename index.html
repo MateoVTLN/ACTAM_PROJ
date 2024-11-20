@@ -1,34 +1,26 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Application de Réverbération</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <div class="container">
-        <h1>Ajouter une réverbération</h1>
-        <div class="audio-options">
-            <label>
-                <input type="radio" id="local-audio" name="audio-source" value="local">
-                Importer un fichier audio personnel
-            </label>
-            <input type="file" id="audio-file-input" accept="audio/wav">
-            
-            <label>
-                <input type="radio" id="site-audio" name="audio-source" value="site">
-                Choisir un fichier du site
-            </label>
-            <select id="site-audio-select">
-                <option value="" disabled selected>Choisissez un fichier</option>
-                <option value="assets/audio_samples/sample1.wav">Sample 1</option>
-                <option value="assets/audio_samples/sample2.wav">Sample 2</option>
-                <option value="assets/audio_samples/sample3.wav">Sample 3</option>
-            </select>
-        </div>
-        <button id="apply-reverb">Appliquer la réverbération</button>
-    </div>
-    <script src="script.js"></script>
-</body>
-</html>
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+}
+
+h1 {
+    color: #333;
+}
+
+div {
+    margin-bottom: 15px;
+}
+
+label {
+    margin-right: 10px;
+}
+
+#audio-selection {
+    display: flex;
+    flex-direction: column;
+}
+
+#site-audio-select,
+#audio-file-input {
+    margin-top: 5px;
+}
