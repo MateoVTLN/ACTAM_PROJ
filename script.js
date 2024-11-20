@@ -43,38 +43,51 @@ siteAudioRadio.addEventListener("change", handleAudioSourceChange);
 
 // Function to load an audio file into an AudioBuffer
 async function loadAudioFile(audioUrl, audioContext) {
-    const response = await fetch(audioUrl);
-    const arrayBuffer = await response.arrayBuffer();
-    return audioContext.decodeAudioData(arrayBuffer);
+    try {
+        const response = await fetch(audioUrl);
+        if (!response.ok) {
+            throw new Error("Failed to fetch audio file: " + audioUrl);
+        }
+        const arrayBuffer = await response.arrayBuffer();
+        return audioContext.decodeAudioData(arrayBuffer);
+    } catch (error) {
+        console.error("Error loading audio file:", error);
+        throw error;
+    }
 }
 
 // Convolution function for applying reverb
 function partitionedConvolution(inputBuffer, irBuffer, fftSize) {
-    const inputData = inputBuffer.getChannelData(0); // Mono audio
-    const irData = irBuffer.getChannelData(0);
+    try {
+        const inputData = inputBuffer.getChannelData(0); // Mono audio
+        const irData = irBuffer.getChannelData(0);
 
-    const irPadded = new Float32Array(fftSize);
-    irPadded.set(irData);
-    const irFFT = fft(irPadded);
+        const irPadded = new Float32Array(fftSize);
+        irPadded.set(irData);
+        const irFFT = fft(irPadded);
 
-    const output = new Float32Array(inputData.length + irData.length - 1);
+        const output = new Float32Array(inputData.length + irData.length - 1);
 
-    for (let start = 0; start < inputData.length; start += fftSize / 2) {
-        const segment = new Float32Array(fftSize);
-        segment.set(inputData.slice(start, start + fftSize));
+        for (let start = 0; start < inputData.length; start += fftSize / 2) {
+            const segment = new Float32Array(fftSize);
+            segment.set(inputData.slice(start, start + fftSize));
 
-        const segmentFFT = fft(segment);
+            const segmentFFT = fft(segment);
 
-        const convolvedFFT = segmentFFT.map((value, index) => value * irFFT[index]);
+            const convolvedFFT = segmentFFT.map((value, index) => value * irFFT[index]);
 
-        const convolvedSegment = ifft(convolvedFFT);
+            const convolvedSegment = ifft(convolvedFFT);
 
-        for (let i = 0; i < convolvedSegment.length; i++) {
-            output[start + i] += convolvedSegment[i];
+            for (let i = 0; i < convolvedSegment.length; i++) {
+                output[start + i] += convolvedSegment[i];
+            }
         }
-    }
 
-    return output;
+        return output;
+    } catch (error) {
+        console.error("Error during convolution:", error);
+        throw error;
+    }
 }
 
 // Function to create an AudioBuffer from data
@@ -88,20 +101,27 @@ function createAudioBufferFromData(data, sampleRate, context) {
 async function applyReverbAndPlay(audioUrl, irUrl, fftSize) {
     const audioContext = new (window.AudioContext || window.webkitAudioContext)();
 
-    const [audioBuffer, irBuffer] = await Promise.all([
-        loadAudioFile(audioUrl, audioContext),
-        loadAudioFile(irUrl, audioContext)
-    ]);
+    try {
+        const [audioBuffer, irBuffer] = await Promise.all([
+            loadAudioFile(audioUrl, audioContext),
+            loadAudioFile(irUrl, audioContext)
+        ]);
 
-    const processedData = partitionedConvolution(audioBuffer, irBuffer, fftSize);
+        // Apply convolution to the audio
+        const processedData = partitionedConvolution(audioBuffer, irBuffer, fftSize);
 
-    const resultBuffer = createAudioBufferFromData(processedData, audioContext.sampleRate, audioContext);
+        // Create an audio buffer from the processed data
+        const resultBuffer = createAudioBufferFromData(processedData, audioContext.sampleRate, audioContext);
 
-    // Play the processed audio
-    const source = audioContext.createBufferSource();
-    source.buffer = resultBuffer;
-    source.connect(audioContext.destination);
-    source.start();
+        // Play the processed audio
+        const source = audioContext.createBufferSource();
+        source.buffer = resultBuffer;
+        source.connect(audioContext.destination);
+        source.start();
+    } catch (error) {
+        console.error("Error applying reverb:", error);
+        alert("An error occurred while applying the reverb. Please check the console for details.");
+    }
 }
 
 // Event listener for applying reverb
