@@ -109,7 +109,6 @@ function fftConvolution(inputBuffer, irBuffer) {
     return outputTimeDomain;
 }
 
-#
 function createAudioBufferFromData(data, sampleRate, context) {
     const buffer = context.createBuffer(1, data.length, sampleRate);
     buffer.getChannelData(0).set(data); // Fill the Mono channel
