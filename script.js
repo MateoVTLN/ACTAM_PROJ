@@ -9,9 +9,8 @@ const applyReverbButton = document.getElementById("apply-reverb");
 // Audio files and IR files (impulse responses)
 const irFiles = {
     "Taormina": "assets/ir_files/Taormina_scd1_32b_aio.wav",
-    "Wembley": "assets/ir_files/Wembley Arena_mcg1v2.wav",
-    "Sydney": "assets/ir_files/SOH Concert Hall_SBg2v2_32b_aio.wav",
-    "Sydney2 ": "assets/ir_files/SOH_44100.wav"
+    "Sydney": "assets/ir_files/SOH_441.wav",
+    "Classroom ": "assets/ir_files/IRclassroom_441.wav"
 };
 
 const audioFiles = {
