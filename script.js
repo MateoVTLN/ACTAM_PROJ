@@ -39,7 +39,7 @@ function handleAudioSourceChange() {
     }
 }
 
-// Event listeners for the radio buttons
+// Event listeners for the buttons
 localAudioRadio.addEventListener("change", handleAudioSourceChange);
 siteAudioRadio.addEventListener("change", handleAudioSourceChange);
 
