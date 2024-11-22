@@ -1,6 +1,4 @@
 
-src="https://cdnjs.cloudflare.com/ajax/libs/fft.js/0.3.0/fft.min.js"
-
 // References to HTML elements
 const localAudioRadio = document.getElementById("local-audio");
 const siteAudioRadio = document.getElementById("site-audio");
