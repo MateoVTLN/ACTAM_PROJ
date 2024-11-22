@@ -5,14 +5,15 @@ WEB PAGE PREVIEW : https://mateovtln.github.io/ACTAM_PROJ/
 Impulse responses Library: consulted the 5/11/2024
 https://www.waves.com/downloads/ir-convolution-reverb-library
 
+Another impulse response Library (WAV files):
+http://isophonics.net/content/room-impulse-response-data-set
+
 Study UNiv PARMA
 http://pcfarina.eng.unipr.it/Public/Papers/185-AES24.PDF
 
-
-
-
-
-
+ONLINE Downsampler fo IR (96k to 44.1k):
+# USE online  at : https://onlineaudioconverter.com/#
+# USE SETTINGS : WAV / Default / Mono / 44.1 kHz
 
 
 
