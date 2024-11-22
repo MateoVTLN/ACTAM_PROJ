@@ -1,3 +1,6 @@
+
+src="https://cdnjs.cloudflare.com/ajax/libs/fft.js/0.3.0/fft.min.js"
+
 // References to HTML elements
 const localAudioRadio = document.getElementById("local-audio");
 const siteAudioRadio = document.getElementById("site-audio");
@@ -57,69 +60,90 @@ async function loadAudioFile(audioUrl, audioContext) {
     }
 }
 
-// Convolution function for applying reverb
-function partitionedConvolution(inputBuffer, irBuffer, fftSize) {
-    const inputData = inputBuffer.getChannelData(0); // Mono
+function zeroPad(array, length) {
+    const padded = new Float32Array(length);
+    padded.set(array); // Copie les données de l'array existant dans le tableau étendu
+    return padded;
+}
+
+function fftConvolution(inputBuffer, irBuffer) {
+    const inputData = inputBuffer.getChannelData(0); // Première piste (mono)
     const irData = irBuffer.getChannelData(0);
 
-    // Ensure IR data is padded to match fftSize
-    const irPadded = new Float32Array(fftSize); // Create an array of size fftSize
-    irPadded.set(irData.slice(0, fftSize)); // Copy the IR data into the padded array, slicing if necessary
+    // Alignement of lengths by zero-padding method
+    const maxLength = Math.max(inputData.length, irData.length);
+    const paddedInput = zeroPad(inputData, maxLength);
+    const paddedIR = zeroPad(irData, maxLength);
 
-    const irFFT = fft(irPadded);
+    // Création of FFT instances
+    const fftSize = maxLength;
+    const fft = new FFT(fftSize);
+    const ifft = new FFT(fftSize);
 
-    const output = new Float32Array(inputData.length + irData.length - 1);
+    // FFT's --> x(n) -> X(f) ; y(n) -> Y(f)
+    const inputSpectrum = fft.createComplexArray();
+    fft.realTransform(inputSpectrum, paddedInput);
 
-    for (let start = 0; start < inputData.length; start += fftSize / 2) {
-        const segment = new Float32Array(fftSize);
-        segment.set(inputData.slice(start, start + fftSize));
+    const irSpectrum = fft.createComplexArray();
+    fft.realTransform(irSpectrum, paddedIR);
 
-        const segmentFFT = fft(segment);
+    // X(f) * Y(f)
+    const outputSpectrum = fft.createComplexArray();
+    for (let i = 0; i < outputSpectrum.length; i += 2) {
+        const realPart = inputSpectrum[i] * irSpectrum[i] - inputSpectrum[i + 1] * irSpectrum[i + 1];
+        const imagPart = inputSpectrum[i] * irSpectrum[i + 1] + inputSpectrum[i + 1] * irSpectrum[i];
+        outputSpectrum[i] = realPart;
+        outputSpectrum[i + 1] = imagPart;
+    }
 
-        const convolvedFFT = segmentFFT.map((value, index) => value * irFFT[index]);
+    // IFFT
+    const outputTimeDomain = new Float32Array(fftSize);
+    ifft.inverseTransform(outputTimeDomain, outputSpectrum);
 
-        const convolvedSegment = ifft(convolvedFFT);
-
-        for (let i = 0; i < convolvedSegment.length; i++) {
-            output[start + i] += convolvedSegment[i];
+    // Normalisation pour éviter les clips
+    const maxAmplitude = Math.max(...outputTimeDomain.map(Math.abs));
+    if (maxAmplitude > 1) {
+        for (let i = 0; i < outputTimeDomain.length; i++) {
+            outputTimeDomain[i] /= maxAmplitude;
         }
     }
 
-    return output;
+    return outputTimeDomain;
 }
 
-
-// Function to create an AudioBuffer from data
+#
 function createAudioBufferFromData(data, sampleRate, context) {
     const buffer = context.createBuffer(1, data.length, sampleRate);
-    buffer.getChannelData(0).set(data);
+    buffer.getChannelData(0).set(data); // Fill the Mono channel
     return buffer;
 }
 
-// Function to apply reverb and play the audio
-async function applyReverbAndPlay(audioUrl, irUrl, fftSize) {
+
+// Apply reverb and play the audio
+async function applyReverbAndPlay(audioUrl, irUrl) {
     const audioContext = new (window.AudioContext || window.webkitAudioContext)();
 
     try {
+        // Loading of audio and IR files
         const [audioBuffer, irBuffer] = await Promise.all([
             loadAudioFile(audioUrl, audioContext),
             loadAudioFile(irUrl, audioContext)
         ]);
 
-        // Apply convolution to the audio
-        const processedData = partitionedConvolution(audioBuffer, irBuffer, fftSize);
+        // Convolution by FFT
+        const processedData = fftConvolution(audioBuffer, irBuffer);
 
-        // Create an audio buffer from the processed data
+        // Création of AudioBuffer for the treated signal
         const resultBuffer = createAudioBufferFromData(processedData, audioContext.sampleRate, audioContext);
 
-        // Play the processed audio
+        // Read AudioBuffer
         const source = audioContext.createBufferSource();
         source.buffer = resultBuffer;
         source.connect(audioContext.destination);
         source.start();
     } catch (error) {
         console.error("Error applying reverb:", error);
-        alert("An error occurred while applying the reverb. Please check the console for details.");
+        alert("An error occurred while applying the reverb.");
     }
 }
 
