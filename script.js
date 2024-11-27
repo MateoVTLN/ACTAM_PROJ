@@ -11,7 +11,7 @@ const applyReverbButton = document.getElementById("apply-reverb");
 const irFiles = {
     "Taormina": "assets/ir_files/Taormina_441.wav",
     "Sydney": "assets/ir_files/SOH_441.wav",
-    "Classroom ": "assets/ir_files/IRclassroom_441.wav"
+    "Classroom": "assets/ir_files/IRclassroom_441.wav" // Remove the extra space
 };
 
 const audioFiles = {
