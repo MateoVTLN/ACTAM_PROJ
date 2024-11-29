@@ -1,5 +1,12 @@
 
 // References to HTML elements
+
+// const FFT = require('lib/fft.js');
+// const f = new FFT(4096);
+// const input = new Array(4096);
+// input.fill(0);
+// const out = f.createComplexArray();
+
 const localAudioRadio = document.getElementById("local-audio");
 const siteAudioRadio = document.getElementById("site-audio");
 const audioFileInput = document.getElementById("audio-file-input");
