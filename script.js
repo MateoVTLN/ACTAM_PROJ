@@ -17,6 +17,12 @@ const siteAudioSelect = document.getElementById("site-audio-select");
 const roomSelect = document.getElementById("room-select");
 const applyReverbButton = document.getElementById("apply-reverb");
 
+// Room background images
+const roomBackgrounds = {
+    "Taormina": "img/taormina.jpg",
+    "Sydney": "img/sydney.jpg",
+    "Classroom": "img/classroom.jpg"
+};
 
 // Audio files and IR files (impulse responses)
 const irFiles = {
@@ -181,3 +187,17 @@ applyReverbButton.addEventListener("click", async () => {
         alert("An error occurred while applying the reverb.");
     }
 });
+
+// Function to chnage the bckground of the page according to the room
+function setupRoomBackgroundChange() {
+    roomSelect.addEventListener("change", function() {
+        const room = roomSelect.value;
+        const backgroundUrl = roomBackgrounds[room];
+
+        // If bckground already present change it 
+        if (backgroundUrl) {
+            document.body.style.backgroundImage = `url(${backgroundUrl})`;
+            document.body.style.backgroundSize = "cover"; // to stretch the image on the whole screen
+            document.body.style.backgroundPosition = "center"; // center the bckground
+        }
+    });
