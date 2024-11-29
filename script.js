@@ -1,11 +1,7 @@
 
 // References to HTML elements
 
-// const FFT = require('lib/fft.js');
-// const f = new FFT(4096);
-// const input = new Array(4096);
-// input.fill(0);
-// const out = f.createComplexArray();
+import { FFT, RFFT } from 'lib/dsp.js';
 
 const localAudioRadio = document.getElementById("local-audio");
 const siteAudioRadio = document.getElementById("site-audio");
@@ -14,9 +10,6 @@ const siteAudioSelect = document.getElementById("site-audio-select");
 const roomSelect = document.getElementById("room-select");
 const applyReverbButton = document.getElementById("apply-reverb");
 
-if (typeof FFT === "undefined") {
-    console.error("FFT.js library is not loaded. Please check your script inclusion.");
-}
 
 // Audio files and IR files (impulse responses)
 const irFiles = {
@@ -72,45 +65,40 @@ async function loadAudioFile(audioUrl, audioContext) {
 
 function zeroPad(array, length) {
     const padded = new Float32Array(length);
-    padded.set(array); // Copie les données de l'array existant dans le tableau étendu
+    padded.set(array); //
     return padded;
 }
 
 function fftConvolution(inputBuffer, irBuffer) {
-    const inputData = inputBuffer.getChannelData(0); // Première piste (mono)
+    const inputData = inputBuffer.getChannelData(0);
     const irData = irBuffer.getChannelData(0);
 
-    // Alignement of lengths by zero-padding method
+    // Alignement des longueurs par zero-padding
     const maxLength = Math.max(inputData.length, irData.length);
     const paddedInput = zeroPad(inputData, maxLength);
     const paddedIR = zeroPad(irData, maxLength);
 
-    // Création of FFT instances
-    const fftSize = maxLength;
-    const fft = new FFT(fftSize);
-    const ifft = new FFT(fftSize);
+    // Creation of FFT & IFFT objects
+    const fft = new FFT(maxLength);
+    const ifft = new IFFT(maxLength);
 
-    // FFT's --> x(n) -> X(f) ; y(n) -> Y(f)
-    const inputSpectrum = fft.createComplexArray();
-    fft.realTransform(inputSpectrum, paddedInput);
+    // FFT of x(n) and y(n)
+    const inputSpectrum = fft.forward(paddedInput);
+    const irSpectrum = fft.forward(paddedIR);
 
-    const irSpectrum = fft.createComplexArray();
-    fft.realTransform(irSpectrum, paddedIR);
-
-    // X(f) * Y(f)
-    const outputSpectrum = fft.createComplexArray();
-    for (let i = 0; i < outputSpectrum.length; i += 2) {
-        const realPart = inputSpectrum[i] * irSpectrum[i] - inputSpectrum[i + 1] * irSpectrum[i + 1];
-        const imagPart = inputSpectrum[i] * irSpectrum[i + 1] + inputSpectrum[i + 1] * irSpectrum[i];
-        outputSpectrum[i] = realPart;
-        outputSpectrum[i + 1] = imagPart;
+    // Multiplication in Fourrier domain
+    const outputSpectrum = new Float32Array(inputSpectrum.length);
+    for (let i = 0; i < inputSpectrum.length; i += 2) {
+        const real = inputSpectrum[i] * irSpectrum[i] - inputSpectrum[i + 1] * irSpectrum[i + 1];
+        const imag = inputSpectrum[i] * irSpectrum[i + 1] + inputSpectrum[i + 1] * irSpectrum[i];
+        outputSpectrum[i] = real;
+        outputSpectrum[i + 1] = imag;
     }
 
     // IFFT
-    const outputTimeDomain = new Float32Array(fftSize);
-    ifft.inverseTransform(outputTimeDomain, outputSpectrum);
+    const outputTimeDomain = ifft.inverse(outputSpectrum);
 
-    // Normalisation pour éviter les clips
+    // Normalisation
     const maxAmplitude = Math.max(...outputTimeDomain.map(Math.abs));
     if (maxAmplitude > 1) {
         for (let i = 0; i < outputTimeDomain.length; i++) {
@@ -120,6 +108,7 @@ function fftConvolution(inputBuffer, irBuffer) {
 
     return outputTimeDomain;
 }
+
 
 function createAudioBufferFromData(data, sampleRate, context) {
     const buffer = context.createBuffer(1, data.length, sampleRate);
