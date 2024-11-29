@@ -1,7 +1,14 @@
 
 // References to HTML elements
 
-import { FFT, RFFT } from './lib/dsp.js';
+module.exports = {
+    fft: require('./src/fft').fft,
+    ifft: require('./src/ifft').ifft,
+    fftInPlace: require('./src/fft').fftInPlace,
+    util: require('./src/fftutil'),
+    dft: require('./src/dft'),
+    idft: require('./src/idft')
+};
 
 const localAudioRadio = document.getElementById("local-audio");
 const siteAudioRadio = document.getElementById("site-audio");
