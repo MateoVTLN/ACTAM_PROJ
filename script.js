@@ -19,7 +19,7 @@ const irFiles = {
 };
 
 const audioFiles = {
-    "Classical": "assets/audio_samples/onclassical_demo_demicheli_geminiani_pieces_allegro-in-f-major_small-version_32b_aio.wav"
+    "Classical": "assets/audio_samples/onclassical_demo_demicheli_geminiani_pieces_allegro-in-f-major_small-version_32b_aio.wav",
     "Fleetwood Mac": "assets/audio_samples/chain_solo_32.wav"
 };
 
