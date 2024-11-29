@@ -1,7 +1,7 @@
 
 // References to HTML elements
 
-import { FFT, RFFT } from 'lib/dsp.js';
+import { FFT, RFFT } from './lib/dsp.js';
 
 const localAudioRadio = document.getElementById("local-audio");
 const siteAudioRadio = document.getElementById("site-audio");
