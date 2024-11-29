@@ -19,9 +19,9 @@ const applyReverbButton = document.getElementById("apply-reverb");
 
 // Room background images
 const roomBackgrounds = {
-    "Taormina": "/img/taormina.jpg",
-    "Sydney": "/img/sydney.jpg",
-    "Classroom": "/img/classroom.jpg"
+    "Taormina": "img/taormina.jpg",
+    "Sydney": "img/sydney.jpg",
+    "Classroom": "img/classroom.jpg"
 };
 
 // Audio files and IR files (impulse responses)
