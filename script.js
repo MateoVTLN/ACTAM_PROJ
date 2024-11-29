@@ -1,14 +1,14 @@
 
 // References to HTML elements
 
-module.exports = {
-    fft: require('./src/fft').fft,
-    ifft: require('./src/ifft').ifft,
-    fftInPlace: require('./src/fft').fftInPlace,
-    util: require('./src/fftutil'),
-    dft: require('./src/dft'),
-    idft: require('./src/idft')
-};
+// module.exports = {
+//     fft: require('./src/fft').fft,
+//     ifft: require('./src/ifft').ifft,
+//     fftInPlace: require('./src/fft').fftInPlace,
+//     util: require('./src/fftutil'),
+//     dft: require('./src/dft'),
+//     idft: require('./src/idft')
+// };
 
 const localAudioRadio = document.getElementById("local-audio");
 const siteAudioRadio = document.getElementById("site-audio");
