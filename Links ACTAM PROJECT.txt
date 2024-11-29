@@ -8,6 +8,9 @@ https://www.waves.com/downloads/ir-convolution-reverb-library
 Another impulse response Library (WAV files):
 http://isophonics.net/content/room-impulse-response-data-set
 
+Another impulse response Library Amps (WAV files):
+https://www.soundwoofer.se/blog/about/top-20-list/
+
 Study UNiv PARMA
 http://pcfarina.eng.unipr.it/Public/Papers/185-AES24.PDF
 
