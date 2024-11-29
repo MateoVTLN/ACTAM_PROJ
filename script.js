@@ -7,6 +7,10 @@ const siteAudioSelect = document.getElementById("site-audio-select");
 const roomSelect = document.getElementById("room-select");
 const applyReverbButton = document.getElementById("apply-reverb");
 
+if (typeof FFT === "undefined") {
+    console.error("FFT.js library is not loaded. Please check your script inclusion.");
+}
+
 // Audio files and IR files (impulse responses)
 const irFiles = {
     "Taormina": "assets/ir_files/Taormina_441.wav",
