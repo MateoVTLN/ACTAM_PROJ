@@ -246,3 +246,4 @@ function setupRoomBackgroundChange() {
             document.body.style.backgroundPosition = "center"; // center the bckground
         }
     });
+}
