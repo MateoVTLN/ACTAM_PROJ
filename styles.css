@@ -17,7 +17,7 @@ div label {
 }
 
 input[type="radio"] {
-    accent-color: rgb(206, 255, 206); 
+    accent-color: rgb(255, 255, 255); 
 }
 
 label {
@@ -35,13 +35,13 @@ label {
 }
 
 .rectangle {
-    width: 50%; 
+    width: 45%; 
     height: 33%;
     background-color: black; 
     position: absolute; 
     top: 0; 
     left: 0; 
-    border-radius: 5%; 
+    border-radius: 10%; 
     opacity: 0.5;
     z-index: -1;
 }

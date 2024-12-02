@@ -11,18 +11,18 @@
 
     <!-- Audio Source Selection -->
     <div>
-        <label style="color: rgb(255, 255, 255);">
-            <input type="radio" id="site-audio" name="audio-source" style="accent-color: green;"> Select a predefined Audio 
+        <label style="color: rgb(0, 221, 0);">
+            <input type="radio" id="site-audio" name="audio-source" style="accent-color: rgb(0, 221, 0);"> Select a predefined Audio 
         </label>
-        <label style="color: rgb(255, 202, 202);">
-            <input type="radio" id="local-audio" name="audio-source" style="accent-color: green;"> Upload Your Own Audio
+        <label style="color: rgb(255, 174, 0);">
+            <input type="radio" id="local-audio" name="audio-source" style="accent-color: rgb(255, 174, 0);"> Upload Your Own Audio
         </label>
     </div>
 
     <!-- Audio File Selection -->
     <div id="audio-selection">
-        <input type="file" id="audio-file-input" disabled> 
-        <select id="site-audio-select" disabled>  
+        <input type="file" id="audio-file-input" style="color: rgb(255, 255, 255);" disabled>
+        <select id="site-audio-select" style="width: 40%;" disabled>  
             <option value="assets/audio_samples/onclassical_demo_demicheli_geminiani_pieces_allegro-in-f-major_small-version_32b_aio.wav">Classical</option>
             <option value="assets/audio_samples/chain_solo_32.wav">The Chain solo by Fleetwood Mac</option>
         </select>
@@ -44,6 +44,9 @@
 
     <!-- Apply Reverb Button -->
     <button id="apply-reverb">Apply Reverb</button>
+
+    <!-- Stop Button -->
+    <button id="stop-reverb">Stop</button>
 
     <!-- FFT and IFFT Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/fft-js@0.0.12/fft.min.js"></script> 

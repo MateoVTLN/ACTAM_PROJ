@@ -1,23 +1,10 @@
-
-// References to HTML elements    
-
-/*
-
-░█████╗░███╗░░██╗  ░██████╗████████╗░█████╗░░██████╗░███████╗██╗██████╗░
-██╔══██╗████╗░██║  ██╔════╝╚══██╔══╝██╔══██╗██╔════╝░██╔════╝╚█║██╔══██╗
-██║░░██║██╔██╗██║  ╚█████╗░░░░██║░░░███████║██║░░██╗░█████╗░░░╚╝██║░░██║
-██║░░██║██║╚████║  ░╚═══██╗░░░██║░░░██╔══██║██║░░╚██╗██╔══╝░░░░░██║░░██║
-╚█████╔╝██║░╚███║  ██████╔╝░░░██║░░░██║░░██║╚██████╔╝███████╗░░░██████╔╝
-░╚════╝░╚═╝░░╚══╝  ╚═════╝░░░░╚═╝░░░╚═╝░░╚═╝░╚═════╝░╚══════╝░░░╚═════╝░
-*/
-
-
 const localAudioRadio = document.getElementById("local-audio");
 const siteAudioRadio = document.getElementById("site-audio");
 const audioFileInput = document.getElementById("audio-file-input");
 const siteAudioSelect = document.getElementById("site-audio-select");
 const roomSelect = document.getElementById("room-select");
 const applyReverbButton = document.getElementById("apply-reverb");
+const stopReverbButton = document.getElementById("stop-reverb");  // Bouton stop
 
 // Room background images
 const roomBackgrounds = {
@@ -25,6 +12,22 @@ const roomBackgrounds = {
     "Sydney": "img/sydney.jpg",
     "Classroom": "img/classroom.jpg"
 };
+
+// Function to change the background of the page according to the room
+function setupRoomBackgroundChange() {
+    roomSelect.addEventListener("change", function() {
+        const room = roomSelect.value;
+        const backgroundUrl = roomBackgrounds[room];
+
+        // If background already present change it 
+        if (backgroundUrl) {
+            document.body.style.backgroundImage = `url(${backgroundUrl})`;
+            document.body.style.backgroundSize = "cover";  // Ensure the image covers the entire page
+            document.body.style.backgroundPosition = "top center";  // Align the top of the image to the top of the page
+            document.body.style.backgroundAttachment = "fixed";  // Optional: To create a parallax effect
+        }
+    });
+}
 
 // Audio files and IR files (impulse responses)
 const irFiles = {
@@ -43,7 +46,6 @@ window.addEventListener("DOMContentLoaded", () => {
     handleAudioSourceChange();
     setupRoomBackgroundChange();
 });
-
 
 // Function to handle audio source selection
 function handleAudioSourceChange() {
@@ -80,6 +82,8 @@ async function loadAudioFile(audioUrl, audioContext) {
 }
 
 // Apply reverb and play the audio using ConvolverNode
+let currentSourceNode = null;  // Reference to the current audio source being played
+
 async function applyReverbAndPlay(audioUrl, irUrl) {
     const audioContext = new (window.AudioContext || window.webkitAudioContext)();
 
@@ -104,11 +108,23 @@ async function applyReverbAndPlay(audioUrl, irUrl) {
         source.connect(convolver);
         convolver.connect(audioContext.destination);
 
+        // Save reference to the current source
+        currentSourceNode = source;
+
         // Start playing the audio
         source.start();
     } catch (error) {
         console.error("Error applying reverb:", error);
         alert("An error occurred while applying the reverb.");
+    }
+}
+
+// Stop the audio playback
+function stopAudio() {
+    if (currentSourceNode) {
+        currentSourceNode.stop();
+        currentSourceNode = null;  // Reset the source node reference
+        console.log("Audio stopped");
     }
 }
 
@@ -142,18 +158,8 @@ applyReverbButton.addEventListener("click", async () => {
     }
 });
 
+// Event listener for stopping the audio playback
+stopReverbButton.addEventListener("click", () => {
+    stopAudio();
+});
 
-// Function to chnage the bckground of the page according to the room
-function setupRoomBackgroundChange() {
-    roomSelect.addEventListener("change", function() {
-        const room = roomSelect.value;
-        const backgroundUrl = roomBackgrounds[room];
-
-        // If bckground already present change it 
-        if (backgroundUrl) {
-            document.body.style.backgroundImage = `url(${backgroundUrl})`;
-            document.body.style.backgroundSize = "cover"; // to stretch the image on the whole screen
-            document.body.style.backgroundPosition = "center"; // center the bckground
-        }
-    });
-}
