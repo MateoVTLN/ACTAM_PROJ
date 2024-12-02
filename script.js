@@ -8,10 +8,6 @@ const siteAudioSelect = document.getElementById("site-audio-select");
 const roomSelect = document.getElementById("room-select");
 const applyReverbButton = document.getElementById("apply-reverb");
 
-const fft = fftjs.fft;
-const ifft = fftjs.ifft;
-
-
 // Room background images
 const roomBackgrounds = {
     "Taormina": "img/taormina.jpg",
