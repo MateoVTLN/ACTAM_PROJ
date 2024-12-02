@@ -1,14 +1,5 @@
 
-// References to HTML elements
-
-// module.exports = {
-//     fft: require('./src/fft').fft,
-//     ifft: require('./src/ifft').ifft,
-//     fftInPlace: require('./src/fft').fftInPlace,
-//     util: require('./src/fftutil'),
-//     dft: require('./src/dft'),
-//     idft: require('./src/idft')
-// };
+// References to HTML elements    
 
 const localAudioRadio = document.getElementById("local-audio");
 const siteAudioRadio = document.getElementById("site-audio");
@@ -97,8 +88,17 @@ function fftConvolution(inputBuffer, irBuffer) {
     const ifft = new IFFT(maxLength);
 
     // FFT of x(n) and y(n)
-    const inputSpectrum = fft.forward(paddedInput);
-    const irSpectrum = fft.forward(paddedIR);
+    
+    // const inputSpectrum = fft.forward(paddedInput);
+    // const irSpectrum = fft.forward(paddedIR);
+    
+    // Method 2 #########################
+    var fft = require('fft-js').fft,
+    var inputSpectrum = fft(paddedInput),
+    var irSpectrum = fft(paddedIR);
+    //###################################
+    
+    
 
     // Multiplication in Fourrier domain
     const outputSpectrum = new Float32Array(inputSpectrum.length);
@@ -110,7 +110,12 @@ function fftConvolution(inputBuffer, irBuffer) {
     }
 
     // IFFT
-    const outputTimeDomain = ifft.inverse(outputSpectrum);
+    // const outputTimeDomain = ifft.inverse(outputSpectrum);
+    // Method 2 #########################
+    var ifft = require('fft-js').ifft,
+    var outputTimeDomain = ifft(outputSpectrum);
+    //###################################
+    
 
     // Normalisation
     const maxAmplitude = Math.max(...outputTimeDomain.map(Math.abs));
