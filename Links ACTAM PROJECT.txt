@@ -18,7 +18,19 @@ ONLINE Downsampler fo IR (96k to 44.1k):
 # USE online  at : https://onlineaudioconverter.com/#
 # USE SETTINGS : WAV / Default / Mono / 44.1 kHz
 
+Python to web:
+https://streamlit.io/
 
+https://pyodide.org/en/stable/
+
+FFT and IFFT:
+https://github.com/iVilja/kissfft-wasm
+
+Node convolver:
+https://stackoverflow.com/questions/66239266/adding-a-convolver-reverb-to-an-audio-file
+
+Multichannel renderer in web audio api:
+https://www.jsdelivr.com/package/npm/@tonejs/multichannel
 
 PLAN DU PROJET :
 
