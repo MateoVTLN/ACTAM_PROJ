@@ -8,6 +8,10 @@ const siteAudioSelect = document.getElementById("site-audio-select");
 const roomSelect = document.getElementById("room-select");
 const applyReverbButton = document.getElementById("apply-reverb");
 
+const fft = fftjs.fft;
+const ifft = fftjs.ifft;
+
+
 // Room background images
 const roomBackgrounds = {
     "Taormina": "img/taormina.jpg",
@@ -74,18 +78,24 @@ function zeroPad(array, length) {
     return padded;
 }
 
+/*
 function fftConvolution(inputBuffer, irBuffer) {
     const inputData = inputBuffer.getChannelData(0);
     const irData = irBuffer.getChannelData(0);
 
     // Alignement des longueurs par zero-padding
     const maxLength = Math.max(inputData.length, irData.length);
-    const paddedInput = zeroPad(inputData, maxLength);
-    const paddedIR = zeroPad(irData, maxLength);
+    //const paddedInput = zeroPad(inputData, maxLength);
+    //const paddedIR = zeroPad(irData, maxLength);
+    
+    // Method 2 #########################
+    const paddedInputArray = Array.from(paddedInput);
+    const paddedIRArray = Array.from(paddedIR);
+    // ##################################
 
     // Creation of FFT & IFFT objects
-    const fft = new FFT(maxLength);
-    const ifft = new IFFT(maxLength);
+    // const fft = new FFT(maxLength);
+    // const ifft = new IFFT(maxLength);
 
     // FFT of x(n) and y(n)
     
@@ -97,9 +107,6 @@ function fftConvolution(inputBuffer, irBuffer) {
     var inputSpectrum = fft(paddedInput),
     var irSpectrum = fft(paddedIR);
     //###################################
-    
-    
-
     // Multiplication in Fourrier domain
     const outputSpectrum = new Float32Array(inputSpectrum.length);
     for (let i = 0; i < inputSpectrum.length; i += 2) {
@@ -108,14 +115,51 @@ function fftConvolution(inputBuffer, irBuffer) {
         outputSpectrum[i] = real;
         outputSpectrum[i + 1] = imag;
     }
-
     // IFFT
     // const outputTimeDomain = ifft.inverse(outputSpectrum);
     // Method 2 #########################
     var ifft = require('fft-js').ifft,
     var outputTimeDomain = ifft(outputSpectrum);
     //###################################
-    
+    // Normalisation
+    const maxAmplitude = Math.max(...outputTimeDomain.map(Math.abs));
+    if (maxAmplitude > 1) {
+        for (let i = 0; i < outputTimeDomain.length; i++) {
+            outputTimeDomain[i] /= maxAmplitude;
+        }
+    }
+    return outputTimeDomain;
+}
+*/
+// SECOND METHOD ## PROTOTYPE
+function fftConvolution(inputBuffer, irBuffer) {
+    const inputData = Array.from(inputBuffer.getChannelData(0));
+    const irData = Array.from(irBuffer.getChannelData(0));
+
+    // Alignement of vectors by zero-padding
+    const maxLength = Math.max(inputData.length, irData.length);
+    const paddedInput = zeroPad(inputData, maxLength);
+    const paddedIR = zeroPad(irData, maxLength);
+
+    // Use of fft-js
+    const fft = fftjs.fft;
+    const ifft = fftjs.ifft;
+
+    // FFT of input signals (audio and IR)
+    const inputSpectrum = fft(paddedInput);
+    const irSpectrum = fft(paddedIR);
+
+    // Multiplication in Fourier's domain
+    const outputSpectrum = new Array(inputSpectrum.length);
+    for (let i = 0; i < inputSpectrum.length; i += 2) {
+        const real = inputSpectrum[i] * irSpectrum[i] - inputSpectrum[i + 1] * irSpectrum[i + 1];
+        const imag = inputSpectrum[i] * irSpectrum[i + 1] + inputSpectrum[i + 1] * irSpectrum[i];
+        outputSpectrum[i] = real;
+        outputSpectrum[i + 1] = imag;
+    }
+
+    // Return in temporal domain (IFFT)
+    const outputTimeDomain = ifft(outputSpectrum);
 
     // Normalisation
     const maxAmplitude = Math.max(...outputTimeDomain.map(Math.abs));
@@ -125,9 +169,8 @@ function fftConvolution(inputBuffer, irBuffer) {
         }
     }
 
-    return outputTimeDomain;
+    return Float32Array.from(outputTimeDomain);
 }
-
 
 function createAudioBufferFromData(data, sampleRate, context) {
     const buffer = context.createBuffer(1, data.length, sampleRate);
