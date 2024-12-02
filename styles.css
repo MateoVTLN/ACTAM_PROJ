@@ -25,8 +25,8 @@ label {
     margin-top: 5px;
 }
 .rectangle {
-    width: 100px; /* Width of the rectangle */
-    height: 50px; /* Height of the rectangle */
+    width: 33%; /* Width of the rectangle */
+    height: 33%; /* Height of the rectangle */
     background-color: black; /* Black color */
     position: absolute; /* Position relative to the page */
     top: 0; /* Align with the top edge */
