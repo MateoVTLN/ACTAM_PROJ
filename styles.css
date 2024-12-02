@@ -24,13 +24,15 @@ label {
 #audio-file-input {
     margin-top: 5px;
 }
+/*
 .rectangle {
-    width: 33%; /* Width of the rectangle */
-    height: 33%; /* Height of the rectangle */
-    background-color: black; /* Black color */
-    position: absolute; /* Position relative to the page */
-    top: 0; /* Align with the top edge */
-    left: 0; /* Align with the left edge */
-    border-radius: 5%; /* Rounds the corners */
-    opacity: 0.5; /* Set opacity to 80% */
+    width: 33%; 
+    height: 33%;
+    background-color: black; 
+    position: absolute; 
+    top: 0; 
+    left: 0; 
+    border-radius: 5%; 
+    opacity: 0.5; 
 }
+*/
