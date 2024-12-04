@@ -11,8 +11,8 @@ const roomBackgrounds = {
     "Taormina": "img/taormina.jpg",
     "Sydney": "img/sydney.jpg",
     "Classroom": "img/classroom.jpg",
-    "parma" : "img/parma.png",
-    "knights" : "img/knights.png"
+    "parma" : "img/parma.jpg",
+    "knights" : "img/knights.jpg"
 };
 
 // Function to change the background of the page according to the room
