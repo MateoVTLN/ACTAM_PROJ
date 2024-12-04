@@ -36,8 +36,8 @@ const irFiles = {
     "Taormina": "assets/ir_files/Taormina_441.wav",
     "Sydney": "assets/ir_files/SOH_441.wav",
     "Classroom": "assets/ir_files/IRclassroom_441.wav",
-    "parma": "assets/ir_files/parma.wav",
-    "knights": "assets/ir_files/knights.wav"
+    "parma": "assets/ir_files/Parma Auditorium_mcd1.wav",
+    "knights": "assets/ir_files/Knights Refectorium_MQg1v2.wav"
 
 };
 
