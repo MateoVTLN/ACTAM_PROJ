@@ -10,7 +10,9 @@ const stopReverbButton = document.getElementById("stop-reverb");  // Bouton stop
 const roomBackgrounds = {
     "Taormina": "img/taormina.jpg",
     "Sydney": "img/sydney.jpg",
-    "Classroom": "img/classroom.jpg"
+    "Classroom": "img/classroom.jpg",
+    "parma" : "img/parma.png",
+    "knights" : "img/knights.png"
 };
 
 // Function to change the background of the page according to the room
@@ -33,7 +35,10 @@ function setupRoomBackgroundChange() {
 const irFiles = {
     "Taormina": "assets/ir_files/Taormina_441.wav",
     "Sydney": "assets/ir_files/SOH_441.wav",
-    "Classroom": "assets/ir_files/IRclassroom_441.wav" // Remove the extra space
+    "Classroom": "assets/ir_files/IRclassroom_441.wav",
+    "parma": "assets/ir_files/parma.wav",
+    "knights": "assets/ir_files/knights.wav"
+
 };
 
 const audioFiles = {
@@ -81,6 +86,29 @@ async function loadAudioFile(audioUrl, audioContext) {
     }
 }
 
+function normalizeBuffer(buffer) {
+    let maxAmplitude = 0;
+
+    // Trouver la valeur absolue maximale en parcourant le tableau
+    for (let i = 0; i < buffer.length; i++) {
+        const absValue = Math.abs(buffer[i]);
+        if (absValue > maxAmplitude) {
+            maxAmplitude = absValue;
+        }
+    }
+
+    // Normaliser le buffer si une amplitude maximale est trouvée
+    if (maxAmplitude > 0) {
+        const normalizedBuffer = new Float32Array(buffer.length);
+        for (let i = 0; i < buffer.length; i++) {
+            normalizedBuffer[i] = buffer[i] / maxAmplitude;
+        }
+        return normalizedBuffer;
+    }
+
+    return buffer; // Renvoyer tel quel si aucune normalisation n'est nécessaire
+}
+
 // Apply reverb and play the audio using ConvolverNode
 let currentSourceNode = null;  // Reference to the current audio source being played
 
@@ -88,36 +116,53 @@ async function applyReverbAndPlay(audioUrl, irUrl) {
     const audioContext = new (window.AudioContext || window.webkitAudioContext)();
 
     try {
-        // Loading of audio and IR files
+        // Chargement des fichiers audio et IR
         const [audioBuffer, irBuffer] = await Promise.all([
             loadAudioFile(audioUrl, audioContext),
             loadAudioFile(irUrl, audioContext)
         ]);
 
-        // Create a ConvolverNode
+        // Normalisation des buffers
+        const normalizedAudioBuffer = normalizeBuffer(audioBuffer.getChannelData(0)); // Normaliser le premier canal
+        const normalizedIRBuffer = normalizeBuffer(irBuffer.getChannelData(0)); // Normaliser le premier canal
+
+        // Créer un ConvolverNode
         const convolver = audioContext.createConvolver();
 
-        // Set the IR buffer as the convolution response
-        convolver.buffer = irBuffer;
+        // Remplir la réponse impulsionnelle normalisée dans le buffer IR
+        const irNormalizedBuffer = audioContext.createBuffer(
+            1,
+            normalizedIRBuffer.length,
+            audioContext.sampleRate
+        );
+        irNormalizedBuffer.copyToChannel(normalizedIRBuffer, 0);
+        convolver.buffer = irNormalizedBuffer;
 
-        // Create the audio source from the loaded audio file
+        // Créer une source audio avec l'audio normalisé
         const source = audioContext.createBufferSource();
-        source.buffer = audioBuffer;
+        const audioNormalizedBuffer = audioContext.createBuffer(
+            1,
+            normalizedAudioBuffer.length,
+            audioContext.sampleRate
+        );
+        audioNormalizedBuffer.copyToChannel(normalizedAudioBuffer, 0);
+        source.buffer = audioNormalizedBuffer;
 
-        // Connect the source to the convolver and then to the audio context's destination (speakers)
+        // Connecter les nodes au graphe audio
         source.connect(convolver);
         convolver.connect(audioContext.destination);
 
-        // Save reference to the current source
+        // Sauvegarder la référence à la source actuelle
         currentSourceNode = source;
 
-        // Start playing the audio
+        // Démarrer la lecture
         source.start();
     } catch (error) {
         console.error("Error applying reverb:", error);
         alert("An error occurred while applying the reverb.");
     }
 }
+
 
 // Stop the audio playback
 function stopAudio() {
@@ -162,4 +207,3 @@ applyReverbButton.addEventListener("click", async () => {
 stopReverbButton.addEventListener("click", () => {
     stopAudio();
 });
-
