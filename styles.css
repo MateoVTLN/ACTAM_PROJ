@@ -1,10 +1,18 @@
 body {
     font-family: Arial, sans-serif;
     margin: 20px;
+    background-size: cover; 
+    background-position: bottom center; 
+    background-attachment: fixed; 
 }
+
 
 h1 {
     color: #e6e6e6;
+}
+
+#page-title {
+    width: 40%;            /* Définit la largeur à 40% de la page */
 }
 
 div {
@@ -36,7 +44,7 @@ label {
 
 .rectangle {
     width: 45%; 
-    height: 33%;
+    height: 45%;
     background-color: black; 
     position: absolute; 
     top: 0; 

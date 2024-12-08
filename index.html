@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="styles.css"> <!-- Link to external CSS -->
 </head>
 <body>
-    <h1>ON Stage'd : Convolution and Reverb Web Audio App</h1>
+    <h1 id="page-title">ON Stage'd : Convolution and Reverb Web Audio App</h1>
 
     <!-- Audio Source Selection -->
     <div>
@@ -32,18 +32,55 @@
     <!-- Black Rectangle in Top-Left Corner -->
     <div class="rectangle"></div>
 
-    <!-- Room Selection -->
-    <div>
-        <label for="room-select">Select the Room:</label>
-        <select id="room-select">
-            <option value="">--Choose a Room--</option>
-            <option value="Taormina">Taormina</option>
-            <option value="Sydney">Sydney</option>
-            <option value="Classroom">Classroom</option>
-            <option value="parma">Parma Audit</option>
-            <option value="knights">Knights Refectorium</option>
-        </select>
-    </div>
+
+<!-- Room Categories -->
+<div>
+    <label for="room-category-select">Select the Room Category:</label>
+    <select id="room-category-select">
+        <option value="">--Choose a Category--</option>
+        <option value="Concert Halls">Concert Halls</option>
+        <option value="Churches">Churches</option>
+        <option value="Auditoriums">Auditoriums</option>
+        <option value="Amphitheatres">Amphitheatres</option>
+        <option value="Others">Others</option>
+        <option value="Home">Home Rooms</option>
+    </select>
+</div>
+
+<!-- Specific Room Selection -->
+<div id="room-selection" style="display: none;">
+    <label for="specific-room-select">Select the Room:</label>
+    <select id="specific-room-select">
+
+        <!-- DYNAMIC GENERATION  DONT REMOVE COMMENT-->
+        <!--
+        <option value="bellemeade">Belle Meade Church (USA)</option>
+        <option value="classroom">Classroom (Italy)</option>
+        <option value="dinkelspiel">Dinkelspiel Auditorium (Ca. USA)</option>
+        <option value="disney">Disney Concert Hall (Ca. USA)</option>
+        <option value="kitchen">Kitchen (Italy)</option>
+        <option value="knightshall">Knights Refectorium (Israel)</option>
+        <option value="living">Living Room (Italy)</option>
+        <option value="londonarena">London Arena (UK)</option>
+        <option value="luzit">Luzit Caves (Israel)</option>
+        <option value="parma">Parma Auditorium (Italy)</option>
+        <option value="siracusa">Sircusa Amphitheatre(Italy)</option>
+        <option value="sydney">Sydney Opera House Concert Hall (Australia)</option>
+        <option value="taormina">Taormina Amphitheatre (Italy)</option>
+        <option value="trinity">Trinity Church (NY USA)</option>
+        <option value="wembley">Wembley Arena (UK)</option>
+        -->
+    </select>
+</div>
+
+<!-- Impulse Response Selection -->
+<div id="ir-selection" style="display: none;">
+    <label for="ir-select">Select the Impulse Response:</label>
+    <select id="ir-select">
+        
+    </select>
+</div>
+
 
     <!-- Apply Reverb Button -->
     <button id="apply-reverb">Apply Reverb</button>
