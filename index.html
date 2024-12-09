@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="styles.css"> <!-- Link to external CSS -->
 </head>
 <body>
-    <h1 id="page-title">ON Stage'd : Convolution and Reverb Web Audio App</h1>
+    <h1 id="page-title">ON Stage'd : A convolution reverb Web Audio App</h1>
 
     <!-- Audio Source Selection -->
     <div>
@@ -24,6 +24,8 @@
     <div id="audio-selection">
         <input type="file" id="audio-file-input" style="color: rgb(255, 255, 255);" disabled>
         <select id="site-audio-select" style="width: 40%;" disabled>
+            <option value = "" > -- Available audio samples --</option>
+            <option value = "assets/audio_samples/Boring Conversation Anyway [vocals].mp3"> Han Solo - A boring Conversation</option>
             <option value ="assets/audio_samples/VOXScrm_Wilhelm scream (ID 0477)_BSB.wav">Mythical Sound Effect</option>
             <option value="assets/audio_samples/onclassical_demo_demicheli_geminiani_pieces_allegro-in-f-major_small-version_32b_aio.wav">Classical</option>
             <option value="assets/audio_samples/chain_solo_32.wav">The Chain solo by Fleetwood Mac</option>
@@ -39,45 +41,51 @@
         <label for="volume-control">Volume:</label>
         <input id="volume-control" type="range" min="0" max="1" step="0.01" value="0.5">
     </div>
-    
 
-<!-- Room Categories -->
-<div>
-    <label for="room-category-select">Select the Room Category:</label>
-    <select id="room-category-select">
-        <option value="">--Choose a Category--</option>
-        <option value="Arenas">Arenas</option>
-        <option value="Concert Halls">Concert Halls</option>
-        <option value="Churches">Churches</option>
-        <option value="Auditoriums">Auditoriums</option>
-        <option value="Amphitheatres">Amphitheatres</option>
-        <option value="Others">Others</option>
-        <option value="Home">Home Rooms</option>
-    </select>
-</div>
+    <!-- IR volume -->
+    <label for="ir-amplitude">Room Effect :</label>
+    <input type="range" id="ir-amplitude" min="0" max="1" step="0.01" value="0.8">
+    <span id="ir-amplitude-value">1</span>
 
-<!-- Specific Room Selection -->
-<div id="room-selection" style="display: none;">
-    <label for="specific-room-select">Select the Room:</label>
-    <select id="specific-room-select">
-        <!-- DYNAMIC GENERATION-->
-    </select>
-</div>
+    <!-- Room Categories -->
+    <div>
+        <label for="room-category-select">Select the Room Category:</label>
+        <select id="room-category-select">
+            <option value="">--Choose a Category--</option>
+            <option value="Arenas">Arenas</option>
+            <option value="Concert Halls">Concert Halls</option>
+            <option value="Churches">Churches</option>
+            <option value="Auditoriums">Auditoriums</option>
+            <option value="Amphitheatres">Amphitheatres</option>
+            <option value="Others">Others</option>
+            <option value="Home">Home Rooms</option>
+        </select>
+    </div>
 
-<!-- Impulse Response Selection -->
-<div id="ir-selection" style="display: none;">
-    <label for="ir-select">Select the Impulse Response:</label>
-    <select id="ir-select">
-        
-    </select>
-</div>
+    <!-- Specific Room Selection -->
+    <div id="room-selection" style="display: none;">
+        <label for="specific-room-select">Choose a place:</label>
+        <select id="specific-room-select">
+            <!-- DYNAMIC GENERATION-->
+        </select>
+    </div>
 
+    <!-- Impulse Response Selection -->
+    <div id="ir-selection" style="display: none;">
+        <label for="ir-select">Choose an Impulse Response :</label>
+        <select id="ir-select">
+            
+        </select>
+    </div>
+
+    <!-- Download button -->
+    <a id="download-audio" style="display: none;" class="button">| Download the Audio |</a>
 
     <!-- Apply Reverb Button -->
     <button id="apply-reverb">Apply Reverb</button>
 
     <!-- Stop Button -->
-    <button id="stop-reverb">Stop</button>
+    <button id="stop-reverb">Stop / Save</button>
 
     <!-- Main Script -->
     <script src="script.js"></script>

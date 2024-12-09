@@ -14,6 +14,8 @@ const roomSelectDiv = document.getElementById("room-selection");
 const specificRoomSelect = document.getElementById("specific-room-select");
 const irSelectDiv = document.getElementById("ir-selection");
 const irSelect = document.getElementById("ir-select");
+const downloadButton = document.getElementById("download-audio");
+const volumeControl = document.getElementById("volume-control");
 
 //////////////////////////////////////////////////////////////////////////
 // ############################# PATHS TO ASSETS #########################
@@ -70,10 +72,23 @@ const roomData = {
         "Kitchen (Italy)": ["assets/ir_files/Kitchen_mcg1v2.wav", "assets/ir_files/Kitchen_xcg1v2.wav"]
     }
 };
-
 //////////////////////////////////////////////////////////////////////////
 // ############################# FUNCTIONS ###############################
 //////////////////////////////////////////////////////////////////////////
+
+let audioContext = null;
+let currentSourceNode = null;
+let gainNode = null;
+let mediaRecorder = null;
+const recordedChunks = [];
+
+// Initialize a single AudioContext
+function initializeAudioContext() {
+    if (!audioContext) {
+        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    }
+    return audioContext;
+}
 
 function handleAudioSourceChange() {
     audioFileInput.disabled = !localAudioRadio.checked;
@@ -84,42 +99,31 @@ function handleAudioSourceChange() {
 }
 
 function setupRoomBackgroundChange() {
-    const specificRoomSelect = document.getElementById("specific-room-select");
+    // Initialiser avec un fond d'écran par défaut
+    document.body.style.backgroundImage = "url('img/stage.png')";
+    document.body.style.backgroundSize = "cover";
+    document.body.style.backgroundPosition = "center center";
+    document.body.style.backgroundAttachment = "fixed";
 
-    // Vérifie que l'élément existe dans le DOM
-    if (!specificRoomSelect) {
-        console.error("specificRoomSelect is null. Please check the element ID in your HTML.");
-        return;
-    }
-
-    // Écoute les changements sur la sélection de salle spécifique
     specificRoomSelect.addEventListener("change", () => {
-        const room = specificRoomSelect.value; // Récupère la valeur de la salle sélectionnée
-        if (!room) {
-            // Si aucune salle n'est sélectionnée (valeur vide), n'applique pas de fond d'écran
-            document.body.style.backgroundImage = "";
-            return;
-        }
-
-        const backgroundUrl = roomBackgrounds[room]; // Cherche l'image de fond correspondante
+        const room = specificRoomSelect.value;
+        const backgroundUrl = roomBackgrounds[room];
         if (backgroundUrl) {
             document.body.style.backgroundImage = `url(${backgroundUrl})`;
-            document.body.style.backgroundSize = "cover";
-            document.body.style.backgroundPosition = "bottom center";
-            document.body.style.backgroundAttachment = "fixed";
         } else {
-            console.warn(`No background defined for room: ${room}`);
+            document.body.style.backgroundImage = "url('img/default.jpg')";
         }
+        document.body.style.backgroundSize = "cover";
+        document.body.style.backgroundPosition = "bottom center";
+        document.body.style.backgroundAttachment = "fixed";
     });
 }
 
-// #####################################
 
-
-async function loadAudioFile(url, audioContext) {
+async function loadAudioFile(url) {
     try {
         const response = await fetch(url);
-        if (!response.ok) throw new Error('Failed to fetch: ${url}');
+        if (!response.ok) throw new Error(`Failed to fetch: ${url}`);
         const arrayBuffer = await response.arrayBuffer();
         return await audioContext.decodeAudioData(arrayBuffer);
     } catch (error) {
@@ -128,36 +132,54 @@ async function loadAudioFile(url, audioContext) {
     }
 }
 
+/////////////////////////////////////////////
+function reduceImpulseResponseAmplitude(buffer, reductionFactor) {
+    for (let channel = 0; channel < buffer.numberOfChannels; channel++) {
+        const channelData = buffer.getChannelData(channel);
+        for (let i = 0; i < channelData.length; i++) {
+            channelData[i] *= reductionFactor;
+        }
+    }
+    return buffer;
+}
+/////////////////////////////////////////////
+
 function normalizeBuffer(buffer) {
     const maxAmplitude = Math.max(...buffer.map(Math.abs));
-    if (maxAmplitude === 0) return buffer;
-    return buffer.map(sample => sample / maxAmplitude);
+    return maxAmplitude === 0 ? buffer : buffer.map(sample => sample / maxAmplitude);
 }
 
-let currentSourceNode = null;
-let gainNode = null; 
-
 async function applyReverbAndPlay(audioUrl, irUrl) {
-    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    const context = initializeAudioContext();
     try {
         const [audioBuffer, irBuffer] = await Promise.all([
-            loadAudioFile(audioUrl, audioContext),
-            loadAudioFile(irUrl, audioContext)
+            loadAudioFile(audioUrl),
+            loadAudioFile(irUrl)
         ]);
 
-        const audioSource = audioContext.createBufferSource();
-        const convolver = audioContext.createConvolver();
-        gainNode = audioContext.createGain(); // Initialise le gainNode global
+        const audioSource = context.createBufferSource();
+        const convolver = context.createConvolver();
+        irGainNode = context.createGain(); // Créer le GainNode pour l'IR
+        gainNode = context.createGain(); // GainNode pour l'audio
 
+        // Charger l'audio et l'IR
         audioSource.buffer = audioBuffer;
         convolver.buffer = irBuffer;
 
-        // Connecter les nœuds
-        audioSource.connect(convolver);
-        convolver.connect(gainNode); // Convolution passe par le gain
-        gainNode.connect(audioContext.destination);
+        // Réduire l'amplitude de l'IR en fonction du curseur
+        const initialIrGain = parseFloat(irAmplitudeSlider.value);
+        irGainNode.gain.value = initialIrGain; // Initialiser avec la valeur du curseur
 
-        gainNode.gain.value = 0.5; // Volume par défaut à 50%
+        // Connecter les noeuds
+        audioSource.connect(convolver);
+        convolver.connect(irGainNode); // Connecter l'IR à son GainNode
+        irGainNode.connect(gainNode); // Connecter le GainNode de l'IR au gainNode global
+        gainNode.connect(context.destination); // Connecter à la sortie audio
+
+        // Connexion de l'audio source au gain node global
+        audioSource.connect(gainNode);
+
+        gainNode.gain.value = 0.5; // Vous pouvez ajuster cette valeur si nécessaire
 
         currentSourceNode = audioSource;
         audioSource.start();
@@ -168,6 +190,34 @@ async function applyReverbAndPlay(audioUrl, irUrl) {
 }
 
 
+function startRecording() {
+    const context = initializeAudioContext();
+    const destination = context.createMediaStreamDestination();
+    gainNode.connect(destination);
+
+    mediaRecorder = new MediaRecorder(destination.stream);
+    recordedChunks.length = 0;
+
+    mediaRecorder.ondataavailable = (event) => {
+        if (event.data.size > 0) recordedChunks.push(event.data);
+    };
+
+    mediaRecorder.onstop = () => {
+        const blob = new Blob(recordedChunks, { type: "audio/wav" });
+        const url = URL.createObjectURL(blob);
+        downloadButton.href = url;
+        downloadButton.download = "processed_audio.wav";
+        downloadButton.style.display = "block";
+    };
+
+    mediaRecorder.start();
+}
+
+function stopRecording() {
+    if (mediaRecorder && mediaRecorder.state !== "inactive") {
+        mediaRecorder.stop();
+    }
+}
 
 function stopAudio() {
     if (currentSourceNode) {
@@ -189,22 +239,15 @@ localAudioRadio.addEventListener("change", handleAudioSourceChange);
 siteAudioRadio.addEventListener("change", handleAudioSourceChange);
 
 roomCategorySelect.addEventListener("change", () => {
-    const category = roomCategorySelect.value; // Récupère la catégorie sélectionnée
-    const rooms = roomData[category]; // Trouve les salles associées à cette catégorie
-
-    // Affiche ou masque la section de sélection de salle
+    const category = roomCategorySelect.value;
+    const rooms = roomData[category];
     roomSelectDiv.style.display = rooms ? "block" : "none";
-
-    // Génère les options pour le menu déroulant des salles
     specificRoomSelect.innerHTML = rooms
-        ? `<option value="">--Choose a Room--</option>` + // Ajoute l'option par défaut
-          Object.keys(rooms)
+        ? `<option value="">--Choose a Room--</option>` + Object.keys(rooms)
               .map(room => `<option value="${room}">${room}</option>`)
               .join("")
         : "";
 });
-
-
 
 specificRoomSelect.addEventListener("change", () => {
     const category = roomCategorySelect.value;
@@ -226,21 +269,33 @@ applyReverbButton.addEventListener("click", async () => {
         alert("Please select audio source and impulse response.");
         return;
     }
+
     await applyReverbAndPlay(audioUrl, irUrl);
+    startRecording();
 });
 
-stopReverbButton.addEventListener("click", stopAudio);
-
-const volumeControl = document.getElementById("volume-control");
+stopReverbButton.addEventListener("click", () => {
+    stopAudio();
+    stopRecording();
+});
 
 volumeControl.addEventListener("input", () => {
     if (gainNode) {
-        gainNode.gain.value = parseFloat(volumeControl.value);
+        const linearValue = parseFloat(volumeControl.value);
+        const logarithmicValue = Math.pow(10, (linearValue - 1) * 2);
+        gainNode.gain.value = logarithmicValue;
     }
 });
 
+const irAmplitudeSlider = document.getElementById("ir-amplitude");
+const irAmplitudeValue = document.getElementById("ir-amplitude-value");
 
-window.addEventListener("DOMContentLoaded", () => {
-    handleAudioSourceChange(); // Pour gérer la sélection de l'audio
-    setupRoomBackgroundChange(); // Pour gérer le changement de fond d'écran
+// Ajouter un écouteur d'événements pour le curseur
+irAmplitudeSlider.addEventListener("input", () => {
+    const irAmplitude = parseFloat(irAmplitudeSlider.value); // Récupérer la valeur du curseur
+    irAmplitudeValue.textContent = irAmplitude.toFixed(2); // Mettre à jour l'affichage de la valeur à côté du curseur
+    
+    if (irGainNode) {
+        irGainNode.gain.value = irAmplitude; // Appliquer la nouvelle valeur au GainNode de l'IR
+    }
 });
