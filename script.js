@@ -30,7 +30,7 @@ const roomBackgrounds = {
     "Dinkelspiel Auditorium (Ca. USA)": "img/dinkelspiel.jpeg",
     "London Arena (UK)": "img/londonarena.jpg",
     "Wembley Arena (UK)": "img/wembley.jpg",
-    "Sircusa Amphitheatre(Italy)": "img/siracusa.jpg",
+    "Siracusa Amphitheatre(Italy)": "img/siracusa.jpg",
     "Disney Concert Hall (Ca. USA)" : "img/disney.jpg",
     "Living Room (Italy)" : "img/living.png",
     "Kitchen (Italy)" : "img/kitchen.png",
@@ -58,7 +58,7 @@ const roomData = {
     },
     "Amphitheatres": {
         "Taormina Amphitheatre (Italy)": ["assets/ir_files/Taormina_mcd1.wav", "assets/ir_files/Taormina_scd1.wav", "assets/ir_files/Taormina_xcd1.wav"],
-        "Sircusa Amphitheatre(Italy)": ["assets/ir_files/Siracusa_mcd1.wav", "assets/ir_files/Siracusa_xcd1.wav"]
+        "Siracusa Amphitheatre(Italy)": ["assets/ir_files/Siracusa_mcd1.wav", "assets/ir_files/Siracusa_xcd1.wav"]
     },
     "Others": {
         "Knights Refectorium (Israel)": ["assets/ir_files/Knights Refectorium_mWg1v2.wav", "assets/ir_files/Knights Refectorium_sWg1v2.wav", "assets/ir_files/Knights Refectorium_xWg1v2.wav"],
@@ -105,7 +105,7 @@ function setupRoomBackgroundChange() {
         if (backgroundUrl) {
             document.body.style.backgroundImage = `url(${backgroundUrl})`;
             document.body.style.backgroundSize = "cover";
-            document.body.style.backgroundPosition = "top center";
+            document.body.style.backgroundPosition = "bottom center";
             document.body.style.backgroundAttachment = "fixed";
         } else {
             console.warn(`No background defined for room: ${room}`);
