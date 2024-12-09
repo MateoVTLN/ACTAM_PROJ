@@ -23,21 +23,30 @@
     <!-- Audio File Selection -->
     <div id="audio-selection">
         <input type="file" id="audio-file-input" style="color: rgb(255, 255, 255);" disabled>
-        <select id="site-audio-select" style="width: 40%;" disabled>  
+        <select id="site-audio-select" style="width: 40%;" disabled>
+            <option value ="assets/audio_samples/VOXScrm_Wilhelm scream (ID 0477)_BSB.wav">Mythical Sound Effect</option>
             <option value="assets/audio_samples/onclassical_demo_demicheli_geminiani_pieces_allegro-in-f-major_small-version_32b_aio.wav">Classical</option>
             <option value="assets/audio_samples/chain_solo_32.wav">The Chain solo by Fleetwood Mac</option>
+            <option value="assets/audio_samples/frere-Jacques2.wav">Fra' Jacques</option>
         </select>
     </div>
 
     <!-- Black Rectangle in Top-Left Corner -->
     <div class="rectangle"></div>
 
+    <!-- VOLUME CONTROL-->
+    <div>
+        <label for="volume-control">Volume:</label>
+        <input id="volume-control" type="range" min="0" max="1" step="0.01" value="0.5">
+    </div>
+    
 
 <!-- Room Categories -->
 <div>
     <label for="room-category-select">Select the Room Category:</label>
     <select id="room-category-select">
         <option value="">--Choose a Category--</option>
+        <option value="Arenas">Arenas</option>
         <option value="Concert Halls">Concert Halls</option>
         <option value="Churches">Churches</option>
         <option value="Auditoriums">Auditoriums</option>
@@ -51,25 +60,7 @@
 <div id="room-selection" style="display: none;">
     <label for="specific-room-select">Select the Room:</label>
     <select id="specific-room-select">
-
-        <!-- DYNAMIC GENERATION  DONT REMOVE COMMENT-->
-        <!--
-        <option value="bellemeade">Belle Meade Church (USA)</option>
-        <option value="classroom">Classroom (Italy)</option>
-        <option value="dinkelspiel">Dinkelspiel Auditorium (Ca. USA)</option>
-        <option value="disney">Disney Concert Hall (Ca. USA)</option>
-        <option value="kitchen">Kitchen (Italy)</option>
-        <option value="knightshall">Knights Refectorium (Israel)</option>
-        <option value="living">Living Room (Italy)</option>
-        <option value="londonarena">London Arena (UK)</option>
-        <option value="luzit">Luzit Caves (Israel)</option>
-        <option value="parma">Parma Auditorium (Italy)</option>
-        <option value="siracusa">Sircusa Amphitheatre(Italy)</option>
-        <option value="sydney">Sydney Opera House Concert Hall (Australia)</option>
-        <option value="taormina">Taormina Amphitheatre (Italy)</option>
-        <option value="trinity">Trinity Church (NY USA)</option>
-        <option value="wembley">Wembley Arena (UK)</option>
-        -->
+        <!-- DYNAMIC GENERATION-->
     </select>
 </div>
 
