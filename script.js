@@ -6,7 +6,6 @@ const localAudioRadio = document.getElementById("local-audio");
 const siteAudioRadio = document.getElementById("site-audio");
 const audioFileInput = document.getElementById("audio-file-input");
 const siteAudioSelect = document.getElementById("site-audio-select");
-const roomSelect = document.getElementById("room-select");
 const applyReverbButton = document.getElementById("apply-reverb");
 const stopReverbButton = document.getElementById("stop-reverb");
 const roomCategorySelect = document.getElementById("room-category-select");

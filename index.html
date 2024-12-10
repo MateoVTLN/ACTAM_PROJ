@@ -12,11 +12,11 @@
 
     <!-- Audio Source Selection -->
     <div>
-        <label style="color: rgb(0, 221, 0);">
-            <input type="radio" id="site-audio" name="audio-source" style="accent-color: rgb(0, 221, 0);"> Select a predefined Audio 
+        <label style="color: rgb(203, 0, 221);">
+            <input type="radio" id="site-audio" name="audio-source" style="accent-color: rgb(203, 0, 221);"> Select a predefined Audio 
         </label>
-        <label style="color: rgb(255, 174, 0);">
-            <input type="radio" id="local-audio" name="audio-source" style="accent-color: rgb(255, 174, 0);"> Upload Your Own Audio
+        <label style="color: rgb(255, 153, 0);">
+            <input type="radio" id="local-audio" name="audio-source" style="accent-color: rgb(255, 153, 0);"> Upload Your Own Audio
         </label>
     </div>
 
@@ -27,6 +27,7 @@
             <option value = "" > -- Available audio samples --</option>
             <option value = "assets/audio_samples/Boring Conversation Anyway [vocals].mp3"> Han Solo - A boring Conversation</option>
             <option value ="assets/audio_samples/VOXScrm_Wilhelm scream (ID 0477)_BSB.wav">Mythical Sound Effect</option>
+            <option value="assets/audio_samples/bohemian_mama.mp3">Mama Ouuuoouuouuu from Queen - Bohemian Rhapsody</option>
             <option value="assets/audio_samples/onclassical_demo_demicheli_geminiani_pieces_allegro-in-f-major_small-version_32b_aio.wav">Classical</option>
             <option value="assets/audio_samples/chain_solo_32.wav">The Chain solo by Fleetwood Mac</option>
             <option value="assets/audio_samples/frere-Jacques2.wav">Fra' Jacques</option>
@@ -39,7 +40,7 @@
     <!-- VOLUME CONTROL-->
     <div>
         <label for="volume-control">Volume:</label>
-        <input id="volume-control" type="range" min="0" max="1" step="0.01" value="0.5">
+        <input id="volume-control" type="range" min="0" max="1" step="0.01" value="0.3">
     </div>
 
     <!-- IR volume -->
@@ -90,4 +91,7 @@
     <!-- Main Script -->
     <script src="script.js"></script>
 </body>
+<footer id="footer">
+    ACTAM Project made by VITALONE Matéo and GOMEZ MARTINEZ Sebastian Raul
+</footer>
 </html>

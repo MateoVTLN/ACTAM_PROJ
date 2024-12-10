@@ -88,4 +88,15 @@ label {
     opacity: 0.5;
     z-index: -1;
 }
-
+#footer {
+    position: fixed; /* Le pied de page reste en bas même si la page est scrollée */
+    bottom: 0; /* Place le pied de page en bas de la page */
+    width: 100%; /* S'étend sur toute la largeur de la page */
+    background-color: #000; /* Couleur de fond noire */
+    color: #fff; /* Texte blanc */
+    text-align: center; /* Centre le texte horizontalement */
+    padding: 10px 0; /* Espace intérieur pour rendre le texte plus lisible */
+    font-size: 14px; /* Taille de la police */
+    z-index: 1; /* Assure que le pied de page reste visible au-dessus des autres éléments */
+    opacity: 0.5;
+}
