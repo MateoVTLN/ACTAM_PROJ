@@ -1,72 +1,75 @@
-body {
-    font-family: Arial, sans-serif;
-    margin: 20px;
-    background-size: cover; 
-    background-position: bottom center; 
-    background-attachment: fixed; 
+/* ====== Global Styles ====== */
+
+.rectangle {
+    width: 45%; 
+    height: 50%;
+    background-color: black; 
+    position: absolute; 
+    top: 0; 
+    left: 0; 
+    border-radius: 5%; 
+    opacity: 0.5;
+    z-index: -1;
 }
+.rectangle-map {
+    width: 45%; 
+    height: 47.5%;
+    background-color: black; 
+    position: absolute; 
+    bottom: 0; 
+    left: 0; 
+    border-radius: 5%; 
+    opacity: 0.5;
+    z-index: -1;
+}
+body {font-family: Arial, sans-serif;margin: 20px;background-size: cover; background-position: bottom center; background-attachment: fixed; }
+
+h1 {color: #e6e6e6;}
+
+div {margin-bottom: 10px;}
+
+#page-title {width: 40%;}
+
+#download-audio {margin-top: 10px; z-index: 1; margin-bottom: 10px;}
+
+
+label[for="ir-amplitude"] {margin-bottom: 10px;color: rgb(231, 231, 231);}
+
+#ir-amplitude-value{margin-bottom: 10px;color: rgb(231, 231, 231); }
+
+#room-category-select {margin-top: 15px;}
+
+div label {color: rgb(231, 231, 231); font-size: 16px;}
+
+input[type="radio"] {accent-color: rgb(255, 255, 255);}
+
+label {margin-right: 10px;}
+
+/* ====== Buttons ========================================================== */
 
 .button {
-    background-color: #1e65b1; /* Bleu par défaut */
-    color: rgb(60, 255, 0); /* Texte en blanc */
+    background-color: #1e65b1; 
+    color: rgb(60, 255, 0); 
     border: none;
     padding: 10px 20px;
     text-align: center;
-    text-decoration: none; /* Retirer la décoration des liens */
+    text-decoration: none;
     display: inline-block;
     font-size: 14px;
-    border-radius: 5px; /* Coins arrondis */
+    border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s ease;
     width: 40%;
-
 }
 
+#apply-reverb{background-color: #008829;color: #fff; }
+#stop-reverb{background-color: #880000;color: #fff; }
+#tutorial-button{background-color: #a19f00;color: #000000;}
 .button:hover {
     background-color: #001881; 
 }
-h1 {
-    color: #e6e6e6;
-}
 
-#page-title {
-    width: 40%;
-}
-
-div {
-    margin-bottom: 10px;
-}
-#download-audio {
-    margin-top: 10px;
-    z-index: 1;
-    margin-bottom: 10px;
-}
-
-
-label[for="ir-amplitude"] {
-    margin-bottom: 10px;
-    color: rgb(231, 231, 231);
-}
-#ir-amplitude-value{
-    margin-bottom: 10px;
-    color: rgb(231, 231, 231); 
-}
-#room-category-select {
-    margin-top: 15px;
-}
-div label {
-    color: rgb(231, 231, 231); 
-    font-size: 16px;
-}
-
-input[type="radio"] {
-    accent-color: rgb(255, 255, 255); 
-}
-
-label {
-    margin-right: 10px;
-}
-
+/* ====== Audio Selection Section ========================================================== */
 #audio-selection {
     display: flex;
     flex-direction: column;
@@ -77,26 +80,54 @@ label {
     margin-top: 5px;
 }
 
-.rectangle {
-    width: 45%; 
-    height: 50%;
-    background-color: black; 
-    position: absolute; 
-    top: 0; 
-    left: 0; 
-    border-radius: 10%; 
-    opacity: 0.5;
-    z-index: -1;
-}
+/* ====== Footer ========================================================== */
 #footer {
-    position: fixed; /* Le pied de page reste en bas même si la page est scrollée */
-    bottom: 0; /* Place le pied de page en bas de la page */
-    width: 100%; /* S'étend sur toute la largeur de la page */
-    background-color: #000; /* Couleur de fond noire */
-    color: #fff; /* Texte blanc */
-    text-align: center; /* Centre le texte horizontalement */
-    padding: 10px 0; /* Espace intérieur pour rendre le texte plus lisible */
-    font-size: 14px; /* Taille de la police */
-    z-index: 1; /* Assure que le pied de page reste visible au-dessus des autres éléments */
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: #000;
+    color: #fff;
+    text-align: center;
+    padding: 10px 0;
+    font-size: 14px;
+    z-index: 1;
     opacity: 0.5;
 }
+
+/* ====== Tutorial Page Styles ========================================================== */
+
+#tutorial-page {
+    background-color: #272727; 
+    color: #c7c7c7; 
+    line-height: 1.6; 
+    font-family: 'Arial', sans-serif;
+}
+
+#tutorial-page header h1 {
+    color: #ffffff;
+    text-align: center;
+    font-size: 2rem;
+}
+
+#tutorial-page main ol {
+    padding-left: 2rem;
+    font-size: 1rem;
+}
+
+#tutorial-page main ol li {
+    margin: 1rem 0;
+    color: #dfdfdf;
+}
+.purple {color: rgb(203, 0, 221);}
+.orange {color: rgb(255, 153, 0);}
+.red {color: #ff0000;}
+.green {color: #00d841;}
+
+
+#tutorial-page footer {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 0.9rem;
+    color: #777;
+}
+/*=============================================================================================/*

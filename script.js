@@ -298,3 +298,7 @@ irAmplitudeSlider.addEventListener("input", () => {
         irGainNode.gain.value = irAmplitude; // Appliquer la nouvelle valeur au GainNode de l'IR
     }
 });
+// TUTORIAL
+document.getElementById("tutorial-button").addEventListener("click", () => {
+    window.location.href = "tutorial.html";
+});
