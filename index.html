@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ON Stage'd</title>
     <link rel="stylesheet" href="styles.css"> <!-- Link to CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 </head>
 <body>
     <h1 id="page-title">ON Stage'd : A convolution reverb Web Audio App</h1>
@@ -44,6 +45,17 @@
     <div class="rectangle"></div>
     <!-- Black Rectangle in Bottom-Left Corner -->
     <div class="rectangle-map"></div>
+
+    <!-- VOLUME CONTROL-->
+    <div>
+        <label for="volume-control">Volume:</label>
+        <input id="volume-control" type="range" min="0" max="1" step="0.01" value="0.3">
+    </div>
+
+    <!-- IR volume -->
+    <label for="ir-amplitude">Room Effect :</label>
+    <input type="range" id="ir-amplitude" min="0" max="1" step="0.01" value="0.8">
+    <span id="ir-amplitude-value">1</span>
 
     <!-- Room Categories -->
     <div>
@@ -104,3 +116,5 @@
     ACTAM Project made by VITALONE Matéo and GOMEZ MARTINEZ Sebastian Raul
 </footer>
 </html>
+
+<canvas id="audio-visualizer" width="800" height="200"></canvas>
