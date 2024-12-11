@@ -13,10 +13,10 @@
 }
 .rectangle-map {
     width: 45%; 
-    height: 47.5%;
+    height: 45%;
     background-color: black; 
     position: absolute; 
-    bottom: 0; 
+    bottom: 25px; 
     left: 0; 
     border-radius: 5%; 
     opacity: 0.5;
@@ -31,7 +31,6 @@ div {margin-bottom: 10px;}
 #page-title {width: 40%;}
 
 #download-audio {margin-top: 10px; z-index: 1; margin-bottom: 10px;}
-
 
 label[for="ir-amplitude"] {margin-bottom: 10px;color: rgb(231, 231, 231);}
 
@@ -64,7 +63,7 @@ label {margin-right: 10px;}
 
 #apply-reverb{background-color: #008829;color: #fff; }
 #stop-reverb{background-color: #880000;color: #fff; }
-#tutorial-button{background-color: #a19f00;color: #000000;}
+#tutorial-button{background-color: #a19f00;color: #000000;margin-top: 10px; z-index: 1; margin-bottom: 10px;}
 .button:hover {
     background-color: #001881; 
 }
@@ -122,6 +121,7 @@ label {margin-right: 10px;}
 .orange {color: rgb(255, 153, 0);}
 .red {color: #ff0000;}
 .green {color: #00d841;}
+.blue {color: #002ae6;}
 
 
 #tutorial-page footer {
