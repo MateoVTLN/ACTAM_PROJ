@@ -22,21 +22,21 @@ const volumeControl = document.getElementById("volume-control");
 
 // Room background images
 const roomBackgrounds = {
-    "Taormina Amphitheatre (Italy)": "img/taormina.jpg",
-    "Sydney Opera House Concert Hall (Australia)": "img/sydney.jpg",
-    "Classroom (Italy)": "img/classroom.jpg",
-    "Parma Auditorium (Italy)": "img/parma.jpg",
-    "Knights Refectorium (Israel)": "img/knightshall.jpg",
-    "Luzit Caves (Israel)": "img/luzit.jpg",
-    "Dinkelspiel Auditorium (Ca. USA)": "img/dinkelspiel.jpeg",
-    "London Arena (UK)": "img/londonarena.jpg",
-    "Wembley Arena (UK)": "img/wembley.jpg",
-    "Siracusa Amphitheatre(Italy)": "img/siracusa.jpg",
-    "Disney Concert Hall (Ca. USA)" : "img/disney.jpg",
-    "Living Room (Italy)" : "img/living.png",
-    "Kitchen (Italy)" : "img/kitchen.png",
-    "Trinity Church (NY USA)" : "img/trinity.jpg",
-    "Belle Meade Church (USA)" : "img/bellemeade.png"
+    "Taormina Amphitheatre (Italy)": "assets/img/taormina.jpg",
+    "Sydney Opera House Concert Hall (Australia)": "assets/img/sydney.jpg",
+    "Classroom (Italy)": "assets/img/classroom.jpg",
+    "Parma Auditorium (Italy)": "assets/img/parma.jpg",
+    "Knights Refectorium (Israel)": "assets/img/knightshall.jpg",
+    "Luzit Caves (Israel)": "assets/img/luzit.jpg",
+    "Dinkelspiel Auditorium (Ca. USA)": "assets/img/dinkelspiel.jpeg",
+    "London Arena (UK)": "assets/img/londonarena.jpg",
+    "Wembley Arena (UK)": "assets/img/wembley.jpg",
+    "Siracusa Amphitheatre(Italy)": "assets/img/siracusa.jpg",
+    "Disney Concert Hall (Ca. USA)" : "assets/img/disney.jpg",
+    "Living Room (Italy)" : "assets/img/living.png",
+    "Kitchen (Italy)" : "assets/img/kitchen.png",
+    "Trinity Church (NY USA)" : "assets/img/trinity.jpg",
+    "Belle Meade Church (USA)" : "assets/img/bellemeade.png"
 };
 
 // IR files (impulse responses)
@@ -64,7 +64,7 @@ const roomData = {
     "Others": {
         "Knights Refectorium (Israel)": ["assets/ir_files/Knights Refectorium_mWg1v2.wav", "assets/ir_files/Knights Refectorium_sWg1v2.wav", "assets/ir_files/Knights Refectorium_xWg1v2.wav"],
         "Luzit Caves (Israel)": ["assets/ir_files/Luzit Cave - Medium_mWg1v2.wav", "assets/ir_files/Luzit Cave - Medium_sWg1v2.wav", "assets/ir_files/Luzit Cave - Medium_xWg1v2.wav"],
-        "Classroom (Italy)": ["assets/ir_files/IRclassroom_441.wav"]
+        "Classroom (Italy)": ["assets/ir_files/classroom_30x25y.wav"]
     },
     "Home": {
         "Living Room (Italy)": ["assets/ir_files/Living Room_mcg1v2.wav", "assets/ir_files/Living Room_scg1v2.wav", "assets/ir_files/Living Room_xcg1v2.wav"],
@@ -99,7 +99,7 @@ function handleAudioSourceChange() {
 
 function setupRoomBackgroundChange() {
     // Initialiser avec un fond d'écran par défaut
-    document.body.style.backgroundImage = "url('img/stage.png')";
+    document.body.style.backgroundImage = "url('assets/img/stage.png')";
     document.body.style.backgroundSize = "cover";
     document.body.style.backgroundPosition = "center center";
     document.body.style.backgroundAttachment = "fixed";
@@ -110,7 +110,7 @@ function setupRoomBackgroundChange() {
         if (backgroundUrl) {
             document.body.style.backgroundImage = `url(${backgroundUrl})`;
         } else {
-            document.body.style.backgroundImage = "url('img/default.jpg')";
+            document.body.style.backgroundImage = "url('assets/img/default.jpg')";
         }
         document.body.style.backgroundSize = "cover";
         document.body.style.backgroundPosition = "bottom center";
@@ -131,7 +131,7 @@ async function loadAudioFile(url) {
     }
 }
 
-/////////////////////////////////////////////
+
 function reduceImpulseResponseAmplitude(buffer, reductionFactor) {
     for (let channel = 0; channel < buffer.numberOfChannels; channel++) {
         const channelData = buffer.getChannelData(channel);
@@ -141,7 +141,6 @@ function reduceImpulseResponseAmplitude(buffer, reductionFactor) {
     }
     return buffer;
 }
-/////////////////////////////////////////////
 
 function normalizeBuffer(buffer) {
     const maxAmplitude = Math.max(...buffer.map(Math.abs));
@@ -158,27 +157,27 @@ async function applyReverbAndPlay(audioUrl, irUrl) {
 
         const audioSource = context.createBufferSource();
         const convolver = context.createConvolver();
-        irGainNode = context.createGain(); // Créer le GainNode pour l'IR
-        gainNode = context.createGain(); // GainNode pour l'audio
+        irGainNode = context.createGain(); // IR Gain Node
+        gainNode = context.createGain(); // Audio GainNode
 
-        // Charger l'audio et l'IR
+        // Load IR and Audio
         audioSource.buffer = audioBuffer;
         convolver.buffer = irBuffer;
 
-        // Réduire l'amplitude de l'IR en fonction du curseur
+        // Reduce IR amp with cursor
         const initialIrGain = parseFloat(irAmplitudeSlider.value);
         irGainNode.gain.value = initialIrGain; // Initialiser avec la valeur du curseur
 
-        // Connecter les noeuds
+        // Connect the nodes
         audioSource.connect(convolver);
-        convolver.connect(irGainNode); // Connecter l'IR à son GainNode
-        irGainNode.connect(gainNode); // Connecter le GainNode de l'IR au gainNode global
-        gainNode.connect(context.destination); // Connecter à la sortie audio
+        convolver.connect(irGainNode); // Connect IR to IR Node
+        irGainNode.connect(gainNode); // Connect IR Gain Node to Global Gain Node
+        gainNode.connect(context.destination); // Connect to audio output
 
-        // Connexion de l'audio source au gain node global
+        // Connexion of audio source to global gain node
         audioSource.connect(gainNode);
 
-        gainNode.gain.value = 0.5; // Vous pouvez ajuster cette valeur si nécessaire
+        gainNode.gain.value = 0.5; // default setting
 
         currentSourceNode = audioSource;
         audioSource.start();
@@ -289,16 +288,21 @@ volumeControl.addEventListener("input", () => {
 const irAmplitudeSlider = document.getElementById("ir-amplitude");
 const irAmplitudeValue = document.getElementById("ir-amplitude-value");
 
-// Ajouter un écouteur d'événements pour le curseur
+
 irAmplitudeSlider.addEventListener("input", () => {
-    const irAmplitude = parseFloat(irAmplitudeSlider.value); // Récupérer la valeur du curseur
-    irAmplitudeValue.textContent = irAmplitude.toFixed(2); // Mettre à jour l'affichage de la valeur à côté du curseur
+    const irAmplitude = parseFloat(irAmplitudeSlider.value); // Get cursor value
+    irAmplitudeValue.textContent = irAmplitude.toFixed(2); // Update display of cursor value
     
     if (irGainNode) {
-        irGainNode.gain.value = irAmplitude; // Appliquer la nouvelle valeur au GainNode de l'IR
+        irGainNode.gain.value = irAmplitude; // Update IR Gain values
     }
 });
-// TUTORIAL
+
+// TUTORIAL Page //
+
 document.getElementById("tutorial-button").addEventListener("click", () => {
     window.location.href = "tutorial.html";
 });
+
+
+
