@@ -15,6 +15,7 @@ const irSelectDiv = document.getElementById("ir-selection");
 const irSelect = document.getElementById("ir-select");
 const downloadButton = document.getElementById("download-audio");
 const volumeControl = document.getElementById("volume-control");
+const map = L.map("minimap").setView([0, 0], 2); 
 
 //////////////////////////////////////////////////////////////////////////
 // ############################# PATHS TO ASSETS #########################
@@ -378,18 +379,35 @@ function drawSpectrum() {
 
 // Coordenadas geográficas para cada sala
 const roomCoordinates = {
-    "Sydney Opera House Concert Hall (Australia)": [-33.8568, 151.2153],
+    // Amphitheatres
     "Taormina Amphitheatre (Italy)": [37.8522, 15.2877],
-    "Knights Refectorium (Israel)": [32.7940, 34.9896],
-    "London Arena (UK)": [51.5072, -0.1276],
-    "Wembley Arena (UK)": [51.5560, -0.2796],
+    "Siracusa Amphitheatre(Italy)": [37.0682, 15.2836],
+
+    // Concert Halls
+    "Sydney Opera House Concert Hall (Australia)": [-33.8568, 151.2153],
     "Disney Concert Hall (Ca. USA)": [34.0554, -118.2498],
+
+    // Classrooms and Homes
+    "Classroom (Italy)": [41.9028, 12.4964], // Ubicación genérica en Italia
+    "Living Room (Italy)": [45.4642, 9.1900], // Ubicación genérica en Milán, Italia
+    "Kitchen (Italy)": [45.4642, 9.1900], // Ubicación genérica en Milán, Italia
+
+    // Churches
     "Trinity Church (NY USA)": [40.7056, -74.0139],
+    "Belle Meade Church (USA)": [36.1004, -86.8669],
+
+    // Auditoriums
+    "Parma Auditorium (Italy)": [44.8015, 10.3279],
+    "Dinkelspiel Auditorium (Ca. USA)": [37.4275, -122.1697],
+
+    // Arenas
+    "Wembley Arena (UK)": [51.5560, -0.2796],
+    "London Arena (UK)": [51.5072, -0.1276],
+
+    // Other Locations
+    "Knights Refectorium (Israel)": [32.7940, 34.9896],
     "Luzit Caves (Israel)": [31.6391, 34.8352]
 };
-
-// Inicializar el mapa
-const map = L.map("minimap").setView([0, 0], 2); // Vista inicial del mapa
 
 // Añadir el mapa base
 L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
