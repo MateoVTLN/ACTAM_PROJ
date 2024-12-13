@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ON Stage'd</title>
@@ -8,6 +11,12 @@
 </head>
 <body>
     <h1 id="page-title">ON Stage'd : A convolution reverb Web Audio App</h1>
+
+    <!-- Elementos del DOM -->
+    <div id="minimap" class="map"></div>
+
+    <!-- Scripts externos -->
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
     <!-- TUTORIAL button-->
     <button id="tutorial-button">TUTORIAL</button>
