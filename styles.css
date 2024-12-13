@@ -63,7 +63,7 @@ label {margin-right: 10px;}
 
 #apply-reverb{background-color: #008829;color: #fff; }
 #stop-reverb{background-color: #880000;color: #fff; }
-#tutorial-button{background-color: #a19f00;color: #000000;margin-top: 10px; z-index: 1; margin-bottom: 10px;}
+#tutorial-button{background-color: #a19f00;color: #000000; z-index: 1; margin-bottom: 10px;}
 .button:hover {
     background-color: #001881; 
 }
@@ -130,4 +130,16 @@ label {margin-right: 10px;}
     font-size: 0.9rem;
     color: #777;
 }
-/*=============================================================================================/*
+/*===VISUALIZER=============================================================================*/
+.visualizer {
+    position: absolute;
+    width: 45%; 
+    height: 50%;
+    background-color: black;
+    border: 2px solid #fff;
+    top: 0; 
+    right: 0;
+    opacity: 0.5;
+    border-radius: 5%;
+    z-index: 1;
+  }
