@@ -94,7 +94,7 @@ const roomCoordinates = {
 
     // Churches
     "Trinity Church (NY USA)": [40.7056, -74.0139],
-    "Belle Meade Church (USA)": [36.1004, -86.8669],
+    "Belle Meade Church (USA)": [36.11517571698035, -86.86428396863387],
 
     // Auditoriums
     "Parma Auditorium (Italy)": [44.8015, 10.3279],
