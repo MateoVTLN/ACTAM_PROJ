@@ -46,33 +46,33 @@ const roomBackgrounds = {
 // IR files (impulse responses)
 const roomData = {
    "Arenas": {
-       "Wembley Arena (UK)": ["assets/ir_files/Wembley Arena_mcg1v2.wav", "assets/ir_files/Wembley Arena_scg1v2.wav", "assets/ir_files/Wembley Arena_xcg1v2.wav"],
-       "London Arena (UK)": ["assets/ir_files/London Arena_mcg1v2.wav", "assets/ir_files/London Arena_scg1v2.wav", "assets/ir_files/London Arena_xcg1v2.wav"]
+       "Wembley Arena (UK)": ["assets/ir_files/Wembley Arena_scg1v2.wav"],
+       "London Arena (UK)": ["assets/ir_files/London Arena_scg1v2.wav"]
    },
    "Concert Halls": {
-       "Sydney Opera House Concert Hall (Australia)": ["assets/ir_files/SOH Concert Hall_mWg2v2.wav", "assets/ir_files/SOH Concert Hall_sWg2v2.wav", "assets/ir_files/SOH Concert Hall_xWg2v2.wav"],
-       "Disney Concert Hall (Ca. USA)": ["assets/ir_files/Disney_mcg2v2.wav", "assets/ir_files/Disney_scg2v2.wav", "assets/ir_files/Disney_xcg2v2.wav"]
+       "Sydney Opera House Concert Hall (Australia)": ["assets/ir_files/SOH Concert Hall_sWg1v2.wav", "assets/ir_files/SOH Concert Hall_sWg2v2.wav", "assets/ir_files/SOH Concert Hall_sWg3v2.wav"],
+       "Disney Concert Hall (Ca. USA)": ["assets/ir_files/Disney_scg1v2.wav", "assets/ir_files/Disney_scg2v2.wav", "assets/ir_files/Disney_scg3v2.wav"]
    },
    "Churches": {
-       "Trinity Church (NY USA)": ["assets/ir_files/Trinity Church_mWg1v2.wav", "assets/ir_files/Trinity Church_sWg1v2.wav", "assets/ir_files/Trinity Church_xWg1v2.wav"],
-       "Belle Meade Church (USA)": ["assets/ir_files/Belle Meade_mWg1v2.wav", "assets/ir_files/Belle Meade_sWg1v2.wav", "assets/ir_files/Belle Meade_xWg1v2.wav"]
+       "Trinity Church (NY USA)": ["assets/ir_files/Trinity Church_sWg1v2.wav"],
+       "Belle Meade Church (USA)": ["assets/ir_files/Belle Meade_sWg1v2.wav"]
    },
    "Auditoriums": {
-       "Dinkelspiel Auditorium (Ca. USA)": ["assets/ir_files/Dinkelspiel Aud_mWg1v2.wav", "assets/ir_files/Dinkelspiel Aud_sWg1v2.wav", "assets/ir_files/Dinkelspiel Aud_xWg1v2.wav"],
-       "Parma Auditorium (Italy)": ["assets/ir_files/Parma Auditorium_mcd2.wav", "assets/ir_files/Parma Auditorium_scd2.wav", "assets/ir_files/Parma Auditorium_xcd2.wav"]
+       "Dinkelspiel Auditorium (Ca. USA)": ["assets/ir_files/Dinkelspiel Aud_sWg1v2.wav"],
+       "Parma Auditorium (Italy)": ["assets/ir_files/Parma Auditorium_mcd1.wav", "assets/ir_files/Parma Auditorium_mcd2.wav", "assets/ir_files/Parma Auditorium_mcd3.wav"]
    },
    "Amphitheatres": {
-       "Taormina Amphitheatre (Italy)": ["assets/ir_files/Taormina_mcd1.wav", "assets/ir_files/Taormina_scd1.wav", "assets/ir_files/Taormina_xcd1.wav"],
-       "Siracusa Amphitheatre(Italy)": ["assets/ir_files/Siracusa_mcd1.wav", "assets/ir_files/Siracusa_xcd1.wav"]
+       "Taormina Amphitheatre (Italy)": ["assets/ir_files/Taormina_scd1.wav"],
+       "Siracusa Amphitheatre(Italy)": ["assets/ir_files/Siracusa_mcd1.wav"]
    },
    "Others": {
-       "Knights Refectorium (Israel)": ["assets/ir_files/Knights Refectorium_mWg1v2.wav", "assets/ir_files/Knights Refectorium_sWg1v2.wav", "assets/ir_files/Knights Refectorium_xWg1v2.wav"],
-       "Luzit Caves (Israel)": ["assets/ir_files/Luzit Cave - Medium_mWg1v2.wav", "assets/ir_files/Luzit Cave - Medium_sWg1v2.wav", "assets/ir_files/Luzit Cave - Medium_xWg1v2.wav"],
+       "Knights Refectorium (Israel)": ["assets/ir_files/Knights Refectorium_sWg1v2.wav"],
+       "Luzit Caves (Israel)": ["assets/ir_files/Luzit Cave - Medium_sWg1v2.wav"],
        "Classroom (Italy)": ["assets/ir_files/classroom_30x25y.wav"]
    },
    "Home": {
-       "Living Room (Italy)": ["assets/ir_files/Living Room_mcg1v2.wav", "assets/ir_files/Living Room_scg1v2.wav", "assets/ir_files/Living Room_xcg1v2.wav"],
-       "Kitchen (Italy)": ["assets/ir_files/Kitchen_mcg1v2.wav", "assets/ir_files/Kitchen_xcg1v2.wav"]
+       "Living Room (Italy)": ["assets/ir_files/Living Room_scg1v2.wav"],
+       "Kitchen (Italy)": ["assets/ir_files/Kitchen_mcg1v2.wav"]
    }
 };
 //////////////////////////////////////////////////////////////////////////
@@ -218,26 +218,22 @@ function drawVisualizer(analyser, bufferLength, dataArray) { /*#################
    function draw() { /*################## VISUALIZER DRAW ###########################*/
        requestAnimationFrame(draw);
 
-       analyser.getByteFrequencyData(dataArray); // Obtener datos de frecuencia
-
-       // Limpia el canvas
+       analyser.getByteFrequencyData(dataArray); //
+       // 
        canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
-
-       // Dibuja las barras del espectro
+       // 
        const barWidth = (canvas.width / bufferLength) * 2.5;
        let barHeight;
        let x = 0;
-
-       // NUEVO: Obtener el valor actual de ganancia
-       const volumeScale = gainNode ? gainNode.gain.value : 1; // Escala según el volumen actual
-
+       // 
+       const volumeScale = gainNode ? gainNode.gain.value : 1; // 
 
        for (let i = 0; i < bufferLength; i++) {
-           // NUEVO: Normalizar la altura de las barras
-           barHeight = (dataArray[i] / 256) * canvas.height * volumeScale; // Normalizar y escalar
+           // 
+           barHeight = (dataArray[i] / 256) * canvas.height * volumeScale; // 
 
 
-           // Cambiar el color según la amplitud
+           // 
            canvasCtx.fillStyle = `rgb(${barHeight + 100}, ${150}, ${0})`;
            canvasCtx.fillRect(x, canvas.height - barHeight, barWidth, barHeight);
 
@@ -245,7 +241,7 @@ function drawVisualizer(analyser, bufferLength, dataArray) { /*#################
        }
    }
 
-   draw(); // Iniciar el bucle de dibujo
+   draw(); 
 }
 
 function startRecording() { /*################## RECORDING START ###########################*/
@@ -276,14 +272,14 @@ function startRecording() { /*################## RECORDING START ###############
 }
 
 
-function stopRecording() {
+function stopRecording() { /*################## RECORDING STOPS ###########################*/
    if (mediaRecorder && mediaRecorder.state !== "inactive") {
        mediaRecorder.stop();
    }
 }
 
 
-function stopAudio() {
+function stopAudio() { /*################## STOP AUDIO BUTTON ###########################*/
    if (currentSourceNode) {
        currentSourceNode.stop();
        currentSourceNode = null;
