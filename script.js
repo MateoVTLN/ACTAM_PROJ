@@ -16,6 +16,7 @@ const irSelectDiv = document.getElementById("ir-selection");
 const irSelect = document.getElementById("ir-select");
 const downloadButton = document.getElementById("download-audio");
 const volumeControl = document.getElementById("volume-control");
+const map = L.map("minimap").setView([0, 0], 2); 
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -75,6 +76,39 @@ const roomData = {
        "Kitchen (Italy)": ["assets/ir_files/Kitchen_mcg1v2.wav"]
    }
 };
+
+// Coordenadas geográficas para cada sala
+const roomCoordinates = {
+    // Amphitheatres
+    "Taormina Amphitheatre (Italy)": [37.8522, 15.2877],
+    "Siracusa Amphitheatre(Italy)": [37.0682, 15.2836],
+
+    // Concert Halls
+    "Sydney Opera House Concert Hall (Australia)": [-33.8568, 151.2153],
+    "Disney Concert Hall (Ca. USA)": [34.0554, -118.2498],
+
+    // Classrooms and Homes
+    "Classroom (Italy)": [41.9028, 12.4964], // Ubicación genérica en Italia
+    "Living Room (Italy)": [45.4642, 9.1900], // Ubicación genérica en Milán, Italia
+    "Kitchen (Italy)": [45.4642, 9.1900], // Ubicación genérica en Milán, Italia
+
+    // Churches
+    "Trinity Church (NY USA)": [40.7056, -74.0139],
+    "Belle Meade Church (USA)": [36.11517571698035, -86.86428396863387],
+
+    // Auditoriums
+    "Parma Auditorium (Italy)": [44.8015, 10.3279],
+    "Dinkelspiel Auditorium (Ca. USA)": [37.4275, -122.1697],
+
+    // Arenas
+    "Wembley Arena (UK)": [51.5560, -0.2796],
+    "London Arena (UK)": [51.5072, -0.1276],
+
+    // Other Locations
+    "Knights Refectorium (Israel)": [32.7940, 34.9896],
+    "Luzit Caves (Israel)": [31.6391, 34.8352]
+};
+
 //////////////////////////////////////////////////////////////////////////
 // ############################# FUNCTIONS ###############################
 //////////////////////////////////////////////////////////////////////////
@@ -85,7 +119,7 @@ let currentSourceNode = null;
 let gainNode = null;
 let mediaRecorder = null;
 const recordedChunks = [];
-
+let marker; // MARK MAP
 
 // Initialize a single AudioContext
 function initializeAudioContext() { /*################## INIT AUDIO ###########################*/
@@ -95,6 +129,10 @@ function initializeAudioContext() { /*################## INIT AUDIO ############
    return audioContext;
 }
 
+// INITIALIZE MAP
+L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+}).addTo(map);
 
 function handleAudioSourceChange() { /*################## IMPORT IMAGES ###########################*/
    audioFileInput.disabled = !localAudioRadio.checked;
@@ -243,6 +281,21 @@ function drawVisualizer(analyser, bufferLength, dataArray) { /*#################
 
    draw(); 
 }
+
+
+// REFRESH MAP
+specificRoomSelect.addEventListener("change", () => {
+    const room = specificRoomSelect.value;
+    const coordinates = roomCoordinates[room];
+
+    if (coordinates) {
+        if (marker) map.removeLayer(marker); // Remover marcador previo
+        marker = L.marker(coordinates).addTo(map); // Añadir marcador
+        map.setView(coordinates, 10); // Centrar el mapa en las coordenadas con un nivel de zoom 10
+    }
+});
+
+
 
 function startRecording() { /*################## RECORDING START ###########################*/
    const context = initializeAudioContext();
