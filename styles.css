@@ -53,23 +53,21 @@ label {margin-right: 10px;}
 
 #apply-reverb{background-color: #008829;color: #fff; z-index: 1; border-radius: 5%; }
 #stop-reverb{background-color: #880000;color: #fff; z-index: 1; border-radius: 5%; }
-#tutorial-button{background-color: #a19f00;color: #000000; z-index: 1; margin-bottom: 10px;}
+#tutorial-button{background-color: #a19f00;color: #000000; z-index: 1; margin-right: 60px;}
 .button:hover {background-color: #001881; }
 
-#toggle-rectangle-map{background-color: #1d0513;color: #ffffff; z-index: 1; border-radius: 5%; font-size: 14px;}
+#toggle-rectangle-map{background-color: #1d0513;color: #ffffff; z-index: 1; border-radius: 5%; font-size: 14px;margin-left: 30px;}
 #toggle-visualizer{background-color: #1d0513;color: #ffffff; z-index: 1; border-radius: 5%;font-size: 14px;}
 #toggle-location-map{background-color: #1d0513;color: #ffffff; z-index: 1; border-radius: 5%;font-size: 14px;}
 
 /* ====== Audio Selection Section ========================================================== */
 #audio-selection {
     display: flex;
-    flex-direction: column;
-}
+    flex-direction: column;}
 
 #site-audio-select,
 #audio-file-input {
-    margin-top: 5px;
-}
+    margin-top: 5px;margin-right: 60px;}
 
 /* ====== Footer ========================================================== */
 #footer {
