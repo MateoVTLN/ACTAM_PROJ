@@ -25,8 +25,26 @@ const map = L.map("minimap").setView([0, 0], 2);
 
 
 // Room background images
+const roomMaps = {
+   "Taormina Amphitheatre (Italy)": "assets/img/maps/taormina_map.jpg",
+   "Sydney Opera House Concert Hall (Australia)": "assets/img/maps/soh_map.png",
+   "Classroom (Italy)": "assets/img/maps/classroom_map.png",
+   "Parma Auditorium (Italy)": "assets/img/maps/parma_map.png",
+   "Knights Refectorium (Israel)": "assets/img/maps/knights_map.png",
+   "Luzit Caves (Israel)": "assets/img/maps/luzit_map.jpeg",
+   "Dinkelspiel Auditorium (Ca. USA)": "assets/img/maps/dinkelspiel_map.png",
+   "London Arena (UK)": "assets/img/maps/londonarena_map.png",
+   "Wembley Arena (UK)": "assets/img/maps/wembley_map.jpg",
+   "Siracusa Amphitheatre(Italy)": "assets/img/maps/siracusa_map.png",
+   "Disney Concert Hall (Ca. USA)" : "assets/img/maps/disney_map.jpg",
+   "Living Room (Italy)" : "assets/img/maps/living_map.png",
+   "Kitchen (Italy)" : "assets/img/maps/kitchen_map.png",
+   "Trinity Church (NY USA)" : "assets/img/maps/trinity_map.jpg",
+   "Belle Meade Church (USA)" : "assets/img/maps/bellemeade_map.png"
+};
+
 const roomBackgrounds = {
-   "Taormina Amphitheatre (Italy)": "assets/img/taormina.jpg",
+    "Taormina Amphitheatre (Italy)": "assets/img/taormina.jpg",
    "Sydney Opera House Concert Hall (Australia)": "assets/img/sydney.jpg",
    "Classroom (Italy)": "assets/img/classroom.jpg",
    "Parma Auditorium (Italy)": "assets/img/parma.jpg",
@@ -41,7 +59,7 @@ const roomBackgrounds = {
    "Kitchen (Italy)" : "assets/img/kitchen.png",
    "Trinity Church (NY USA)" : "assets/img/trinity.jpg",
    "Belle Meade Church (USA)" : "assets/img/bellemeade.png"
-};
+}
 
 
 // IR files (impulse responses)
@@ -144,27 +162,63 @@ function handleAudioSourceChange() { /*################## IMPORT IMAGES ########
 }
 
 
-function setupRoomBackgroundChange() { /*################## BACKGROUNDS ###########################*/
-   // Initialiser avec un fond d'écran par défaut
-   document.body.style.backgroundImage = "url('assets/img/stage.png')";
-   document.body.style.backgroundSize = "cover";
-   document.body.style.backgroundPosition = "center center";
-   document.body.style.backgroundAttachment = "fixed";
+function setupRoomBackgroundChange() {
+    // Initialiser avec un fond d'écran par défaut
+    document.body.style.backgroundImage = "url('assets/img/stage.png')";
+    document.body.style.backgroundSize = "cover";
+    document.body.style.backgroundPosition = "center center";
+    document.body.style.backgroundAttachment = "fixed";
+ 
+    specificRoomSelect.addEventListener("change", () => {
+        const room = specificRoomSelect.value;
+        const backgroundUrl = roomBackgrounds[room];
+        const roomMapUrl = roomMaps[room];
+ 
+        // Changer l'arrière-plan
+        if (backgroundUrl) {
+            document.body.style.backgroundImage = `url(${backgroundUrl})`;
+        } else {
+            document.body.style.backgroundImage = "url('assets/img/stage.png')";
+        }
+        document.body.style.backgroundSize = "cover";
+        document.body.style.backgroundPosition = "bottom center";
+        document.body.style.backgroundAttachment = "fixed";
+ 
+        // Mettre à jour l'image du rectangle
+        updateRoomMapImage(roomMapUrl); // Appel à la fonction pour changer l'image de la salle
+    });
+ }
 
+ // Fonction pour changer l'image dans le rectangle-map
+function updateRoomMapImage(imageUrl) {
+    const rectangleMap = document.querySelector('.rectangle-map'); // Utilisation du bon sélecteur pour le div
+    if (rectangleMap && imageUrl) { // Vérifier si l'élément .rectangle-map existe et si une URL d'image est définie
+        // Créer une balise <img> avec l'URL de l'image
+        const img = document.createElement('img');
+        img.src = imageUrl;
+        img.alt = "Room Map";
+        img.style.width = "100%"; // Adapter l'image à la taille du rectangle
+        img.style.height = "100%";
+        img.style.objectFit = "cover"; // Couvrir toute la zone sans déformation
+        img.style.position = "absolute";
+        //img.style.backgroundColor = "black";
+        img.style.border = "2px solid #fff";
+        img.style.opacity = "1";
+        img.style.borderRadius = "5%";
+        img.style.zIndex = "1";
 
-   specificRoomSelect.addEventListener("change", () => {
-       const room = specificRoomSelect.value;
-       const backgroundUrl = roomBackgrounds[room];
-       if (backgroundUrl) {
-           document.body.style.backgroundImage = `url(${backgroundUrl})`;
-       } else {
-           document.body.style.backgroundImage = "url('assets/img/stage.png')";
-       }
-       document.body.style.backgroundSize = "cover";
-       document.body.style.backgroundPosition = "bottom center";
-       document.body.style.backgroundAttachment = "fixed";
-   });
+        // Vider le contenu de rectangle-map et ajouter l'image
+        rectangleMap.innerHTML = ''; // Supprimer l'image précédente
+        rectangleMap.appendChild(img); // Ajouter la nouvelle image
+    } else {
+        // Si aucune image n'est trouvée, laisser un fond noir
+        if (rectangleMap) {
+            rectangleMap.innerHTML = ''; // Vider le contenu précédent
+            rectangleMap.style.backgroundColor = "black";
+        }
+    }
 }
+
 
 async function loadAudioFile(url) { /*################## LOAD AUDIO ###########################*/
    try {
