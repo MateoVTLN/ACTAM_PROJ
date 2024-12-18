@@ -469,8 +469,6 @@ const irAmplitudeSlider = document.getElementById("ir-amplitude");
 const irAmplitudeValue = document.getElementById("ir-amplitude-value");
 
 
-
-
 irAmplitudeSlider.addEventListener("input", () => {
    const irAmplitude = parseFloat(irAmplitudeSlider.value); // Get cursor value
    irAmplitudeValue.textContent = irAmplitude.toFixed(2); // Update display of cursor value
@@ -480,6 +478,31 @@ irAmplitudeSlider.addEventListener("input", () => {
    }
 });
 
+document.addEventListener("DOMContentLoaded", () => {
+    // Sélection des éléments
+    const miniMap = document.getElementById("minimap");
+    const rectangleMap = document.querySelector(".rectangle-map");
+    const visualizer = document.getElementById("visualizer");
+
+    // Sélection des boutons
+    const toggleminiMapButton = document.getElementById("toggle-location-map");
+    const toggleRectangleMapButton = document.getElementById("toggle-rectangle-map");
+    const toggleVisualizerButton = document.getElementById("toggle-visualizer");
+
+    // Fonction pour afficher/masquer un élément
+    function toggleElementVisibility(element) {
+        if (element.style.display === "none" || !element.style.display) {
+            element.style.display = "block"; // Afficher
+        } else {
+            element.style.display = "none"; // Masquer
+        }
+    }
+
+    // Gestion des clics
+    toggleminiMapButton.addEventListener("click", () => toggleElementVisibility(miniMap));
+    toggleRectangleMapButton.addEventListener("click", () => toggleElementVisibility(rectangleMap));
+    toggleVisualizerButton.addEventListener("click", () => toggleElementVisibility(visualizer));
+});
 
 // TUTORIAL Page //
 

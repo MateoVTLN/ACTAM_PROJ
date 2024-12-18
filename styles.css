@@ -23,6 +23,7 @@
     opacity: 0.79;
     z-index: 1;
     border: 2px solid #fff;
+    display: none; 
 }
 body {font-family: Arial, sans-serif;margin: 20px;background-size: cover; background-position: bottom center; background-attachment: fixed; }
 
@@ -68,6 +69,10 @@ label {margin-right: 10px;}
 #stop-reverb{background-color: #880000;color: #fff; z-index: 1; border-radius: 5%; }
 #tutorial-button{background-color: #a19f00;color: #000000; z-index: 1; margin-bottom: 10px;}
 .button:hover {background-color: #001881; }
+
+#toggle-rectangle-map{background-color: #ce0279;color: #2913ac; z-index: 1; border-radius: 5%; }
+#toggle-visualizer{background-color: #ce0279;color: #2913ac; z-index: 1; border-radius: 5%;}
+#toggle-location-map{background-color: #ce0279;color: #2913ac; z-index: 1; border-radius: 5%;}
 
 /* ====== Audio Selection Section ========================================================== */
 #audio-selection {
@@ -143,6 +148,7 @@ label {margin-right: 10px;}
     opacity: 0.5;
     border-radius: 5%;
     z-index: 1;
+    display: none;
   }
 /*===MAP =============================================================================*/
 
@@ -157,4 +163,5 @@ label {margin-right: 10px;}
     opacity: 0.82;
     border-radius: 5%;
     z-index: 1;
+    display: none;
   }
