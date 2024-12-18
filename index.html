@@ -18,9 +18,6 @@
     <!-- Script external -->
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
-    <!-- TUTORIAL button-->
-    <button id="tutorial-button">TUTORIAL</button>
-
     <!-- Audio Source Selection -->
     <div>
         <label style="color: rgb(203, 0, 221);">
@@ -96,19 +93,24 @@
         <input type="range" id="ir-amplitude" min="0" max="1" step="0.01" value="0.8">
         <span id="ir-amplitude-value">1</span>
     </div>
+    
     <!-- Download button -->
     <a id="download-audio" style="display: none;" class="button">| Download the Audio |</a>
+
+    <!-- TUTORIAL button-->
+    <button id="tutorial-button">TUTORIAL</button>
 
     <!-- PLAY -->
     <button id="apply-reverb">PLAY</button>
 
     <!-- Stop Button -->
     <button id="stop-reverb">STOP / SAVE</button>
+
     <!-- Toggles for switching ON/OFF Visualizer /maps -->
     <button id="toggle-rectangle-map">Room Map</button>
     <button id="toggle-visualizer">Visualizer</button>
     <button id="toggle-location-map">Location Map</button>
-    
+
     <!-- Main Script -->
     <script src="script.js"></script>
 
