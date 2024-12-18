@@ -49,30 +49,16 @@ label {margin-right: 10px;}
 
 /* ====== Buttons ========================================================== */
 
-.button {
-    background-color: #1e65b1; 
-    color: rgb(60, 255, 0); 
-    border: none;
-    padding: 10px 20px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 14px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    width: 40%;
-    border-radius: 5%;
-}
+.button {background-color: #1e65b1; color: rgb(60, 255, 0); border: none;padding: 10px 20px;text-align: center;Text-decoration: none;display: inline-block;font-size: 14px;border-radius: 5px;cursor: pointer;transition: background-color 0.3s ease;width: 40%;border-radius: 5%;}
 
 #apply-reverb{background-color: #008829;color: #fff; z-index: 1; border-radius: 5%; }
 #stop-reverb{background-color: #880000;color: #fff; z-index: 1; border-radius: 5%; }
 #tutorial-button{background-color: #a19f00;color: #000000; z-index: 1; margin-bottom: 10px;}
 .button:hover {background-color: #001881; }
 
-#toggle-rectangle-map{background-color: #ce0279;color: #2913ac; z-index: 1; border-radius: 5%; }
-#toggle-visualizer{background-color: #ce0279;color: #2913ac; z-index: 1; border-radius: 5%;}
-#toggle-location-map{background-color: #ce0279;color: #2913ac; z-index: 1; border-radius: 5%;}
+#toggle-rectangle-map{background-color: #1d0513;color: #ffffff; z-index: 1; border-radius: 5%; font-size: 14px;}
+#toggle-visualizer{background-color: #1d0513;color: #ffffff; z-index: 1; border-radius: 5%;font-size: 14px;}
+#toggle-location-map{background-color: #1d0513;color: #ffffff; z-index: 1; border-radius: 5%;font-size: 14px;}
 
 /* ====== Audio Selection Section ========================================================== */
 #audio-selection {
