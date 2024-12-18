@@ -138,6 +138,7 @@ label {margin-right: 10px;}
   }
 /*===MAP =============================================================================*/
 
+
   .map{
     position: absolute;
     width: 48%; 
@@ -151,3 +152,4 @@ label {margin-right: 10px;}
     z-index: 1;
     display: none;
   }
+

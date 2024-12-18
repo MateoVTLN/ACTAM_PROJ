@@ -151,6 +151,18 @@ function initializeAudioContext() { /*################## INIT AUDIO ############
 L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 }).addTo(map);
+// REFRESH MAP
+specificRoomSelect.addEventListener("change", () => {
+    const room = specificRoomSelect.value;
+    const coordinates = roomCoordinates[room];
+
+    if (coordinates) {
+        if (marker) map.removeLayer(marker); // Remover marcador previo
+        marker = L.marker(coordinates).addTo(map); // Añadir marcador
+        map.setView(coordinates, 10); // Centrar el mapa en las coordenadas con un nivel de zoom 10
+    }
+});
+
 
 function handleAudioSourceChange() { /*################## IMPORT IMAGES ###########################*/
    audioFileInput.disabled = !localAudioRadio.checked;
@@ -336,21 +348,6 @@ function drawVisualizer(analyser, bufferLength, dataArray) { /*#################
    draw(); 
 }
 
-
-// REFRESH MAP
-specificRoomSelect.addEventListener("change", () => {
-    const room = specificRoomSelect.value;
-    const coordinates = roomCoordinates[room];
-
-    if (coordinates) {
-        if (marker) map.removeLayer(marker); // Remover marcador previo
-        marker = L.marker(coordinates).addTo(map); // Añadir marcador
-        map.setView(coordinates, 10); // Centrar el mapa en las coordenadas con un nivel de zoom 10
-    }
-});
-
-
-
 function startRecording() { /*################## RECORDING START ###########################*/
    const context = initializeAudioContext();
    const destination = context.createMediaStreamDestination();
@@ -478,35 +475,34 @@ irAmplitudeSlider.addEventListener("input", () => {
    }
 });
 
-document.addEventListener("DOMContentLoaded", () => {
-    // Sélection des éléments
-    const miniMap = document.getElementById("minimap");
+
+document.addEventListener("DOMContentLoaded", () => { /* ################# HIDE OR MAKE APPEAR ELEMENTS #############*/
+
     const rectangleMap = document.querySelector(".rectangle-map");
     const visualizer = document.getElementById("visualizer");
-
-    // Sélection des boutons
-    const toggleminiMapButton = document.getElementById("toggle-location-map");
     const toggleRectangleMapButton = document.getElementById("toggle-rectangle-map");
     const toggleVisualizerButton = document.getElementById("toggle-visualizer");
 
+    const miniMap = document.getElementById("minimap");
+    const toggleMiniMapButton = document.getElementById("toggle-location-map");
     // Fonction pour afficher/masquer un élément
     function toggleElementVisibility(element) {
         if (element.style.display === "none" || !element.style.display) {
-            element.style.display = "block"; // Afficher
+            element.style.display = "block"; // Afficher l'élément
+            if (element.id === "minimap") {
+                setTimeout(() => map.invalidateSize(), 200); // Ajuster la carte après un léger délai
+            }
         } else {
-            element.style.display = "none"; // Masquer
+            element.style.display = "none"; // Masquer l'élément
         }
     }
 
-    // Gestion des clics
-    toggleminiMapButton.addEventListener("click", () => toggleElementVisibility(miniMap));
     toggleRectangleMapButton.addEventListener("click", () => toggleElementVisibility(rectangleMap));
     toggleVisualizerButton.addEventListener("click", () => toggleElementVisibility(visualizer));
+    toggleMiniMapButton.addEventListener("click", () => toggleElementVisibility(miniMap));
 });
 
 // TUTORIAL Page //
-
-
 document.getElementById("tutorial-button").addEventListener("click", () => {
    window.location.href = "tutorial.html";
 });
