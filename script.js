@@ -508,3 +508,20 @@ document.addEventListener("DOMContentLoaded", () => { /* ################# HIDE 
 document.getElementById("tutorial-button").addEventListener("click", () => {
    window.location.href = "tutorial.html";
 });
+
+
+/* ##################### QUICK HELP IMAGE POP-UP #############################*/
+// Quick Help Button and Overlay Elements
+const quickHelpButton = document.getElementById('quick-help-button');
+const quickHelpOverlay = document.getElementById('quick-help-overlay');
+const closeQuickHelpButton = document.getElementById('close-quick-help');
+
+// Show the overlay when the button is clicked
+quickHelpButton.addEventListener('click', () => {
+    quickHelpOverlay.style.display = 'flex';
+});
+
+// Hide the overlay when the close button is clicked
+closeQuickHelpButton.addEventListener('click', () => {
+    quickHelpOverlay.style.display = 'none';
+});
