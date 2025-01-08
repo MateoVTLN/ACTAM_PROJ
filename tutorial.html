@@ -11,18 +11,24 @@
         <h1>Tutorial: How to Use ON Stage'd</h1>
     </header>
     <main>
-        <ol>
+        <ul>
             <li>
                 <strong>Select an audio source:</strong>
                 Use one of the two first buttons to choose between an <span class="purple">available audio</span> or <span class="orange">your own audio</span>.
             </li>
+        </ul>
+        <ol>
             <li>
                 <strong>Choose a room:</strong>
-                Select a room category and then a specific room from the dropdown menus.
+                Select a room category from Auditoriums, Amphitheatres, Arenas, Churches, Home Rooms and others.
             </li>
             <li>
-                <strong>Adjust the settings:</strong>
-                Use the sliders and controls to set the reverb intensity and the volume.
+                <strong>Select a specific room</strong>
+                Select one of the rooms available inside that category.
+            </li>
+            <li>
+                <strong>Select an Impulse Response Location</strong>
+                For certain rooms, multiple locations of Impulse response recordings are available, you can choose of of them or just let the default one. To get a representation of the location open the Room Map (see Toggles point 1).
             </li>
             <li>
                 <strong>Apply reverb and hear :</strong>
@@ -32,17 +38,39 @@
                 <strong>Stop audio:</strong>
                 Use the <span class="red">"STOP / SAVE"</span> button to stop playback at any time. Make sure to stop the audio before launching another process.
             </li>
+        </ol>
+        <ul>
+            <li>
+                <strong>Adjust the settings:</strong>
+                Use the sliders and controls to set the reverb intensity and the volume.
+            </li>
             <li>
                 <strong>Download the processed audio:</strong>
                 After clicking on <span class="red">"STOP / SAVE"</span> the recording should be available at download throught a pop-pup <span class="blue">"DOWNLOAD"</span> button.
             </li>
-            
-        </ol>
+        </ul>
+    <strong>====================| Toggles For Options ( VISUALIZER / ROOM MAP / LOCATION MAP) |================================</strong>
+        <ul>
+            <li>
+                <strong>Room Map : </strong>
+                Reveal the map of the room and Impulse response measure points by clicking on the  <strong>Room Map </strong> toggle button. Click on it again to switch it off.
+            </li>
+            <li>
+                <strong>Visualizer : </strong>
+                To view the band visualizer click on the <strong>Visualizer </strong> toggle button. Click on it again to switch it off.
+            </li>
+            <li>
+                <strong>Location Map : </strong>
+                To view the location of the room click on the <strong>Location Map </strong> toggle button. You can interact with the map (zoom, unzoom, drag) to wonder around the space. Click on the toggle button again to switch it off.
+            </li>
+        </ul>
     </main>
+
     <footer>
         <p>ACTAM Project made by VITALONE Matéo and GOMEZ MARTINEZ Sebastian Raul</p>
-        <button onclick="goBack()">Go Back</button>
+        <button onclick="goBack()">Go back to main page</button>
     </footer>
+    
     <script>
         function goBack() {
             window.history.back();

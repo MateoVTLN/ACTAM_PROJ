@@ -1,5 +1,5 @@
 //////////////////////////////////////////////////////////////////////////
-// ########################## HTML ELEMENTS #############################
+// ########################## HTML ELEMENTS ########################### //
 //////////////////////////////////////////////////////////////////////////
 
 
@@ -20,9 +20,8 @@ const map = L.map("minimap").setView([0, 0], 2);
 
 
 //////////////////////////////////////////////////////////////////////////
-// ############################# PATHS TO ASSETS #########################
+// ############################# PATHS TO ASSETS #####################  //
 //////////////////////////////////////////////////////////////////////////
-
 
 // Room background images
 const roomMaps = {
@@ -62,7 +61,7 @@ const roomBackgrounds = {
 }
 
 
-// IR files (impulse responses)
+// IR files (impulse responses) //
 const roomData = {
    "Arenas": {
        "Wembley Arena (UK)": ["assets/ir_files/Wembley Arena_scg1v2.wav"],
@@ -95,7 +94,8 @@ const roomData = {
    }
 };
 
-// Coordenadas geográficas para cada sala
+// GPS COORDINATES FOR EACH ROOM //
+
 const roomCoordinates = {
     // Amphitheatres
     "Taormina Amphitheatre (Italy)": [37.8522, 15.2877],
@@ -106,9 +106,9 @@ const roomCoordinates = {
     "Disney Concert Hall (Ca. USA)": [34.0554, -118.2498],
 
     // Classrooms and Homes
-    "Classroom (Italy)": [41.9028, 12.4964], // Ubicación genérica en Italia
-    "Living Room (Italy)": [45.4642, 9.1900], // Ubicación genérica en Milán, Italia
-    "Kitchen (Italy)": [45.4642, 9.1900], // Ubicación genérica en Milán, Italia
+    "Classroom (Italy)": [41.9028, 12.4964], // RANDOM PLACE IN MILAN BECAUSE PRECISE ADDRESS NOT MENTIONNED
+    "Living Room (Italy)": [45.4642, 9.1900], // RANDOM PLACE IN MILAN BECAUSE PRECISE ADDRESS NOT MENTIONNED
+    "Kitchen (Italy)": [45.4642, 9.1900], // RANDOM PLACE IN MILAN BECAUSE PRECISE ADDRESS NOT MENTIONNED
 
     // Churches
     "Trinity Church (NY USA)": [40.7056, -74.0139],
@@ -127,8 +127,9 @@ const roomCoordinates = {
     "Luzit Caves (Israel)": [31.6391, 34.8352]
 };
 
+
 //////////////////////////////////////////////////////////////////////////
-// ############################# FUNCTIONS ###############################
+// ############################# FUNCTIONS ############################ //
 //////////////////////////////////////////////////////////////////////////
 
 
@@ -151,20 +152,21 @@ function initializeAudioContext() { /*################## INIT AUDIO ############
 L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 }).addTo(map);
+
 // REFRESH MAP
 specificRoomSelect.addEventListener("change", () => {
     const room = specificRoomSelect.value;
     const coordinates = roomCoordinates[room];
 
     if (coordinates) {
-        if (marker) map.removeLayer(marker); // Remover marcador previo
-        marker = L.marker(coordinates).addTo(map); // Añadir marcador
-        map.setView(coordinates, 10); // Centrar el mapa en las coordenadas con un nivel de zoom 10
+        if (marker) map.removeLayer(marker);       // UPDATES MARKER //
+        marker = L.marker(coordinates).addTo(map); 
+        map.setView(coordinates, 10); 
     }
 });
 
 
-function handleAudioSourceChange() { /*################## IMPORT IMAGES ###########################*/
+function handleAudioSourceChange() { //  IMPORT IMAGES //
    audioFileInput.disabled = !localAudioRadio.checked;
    siteAudioSelect.disabled = !siteAudioRadio.checked;
 
@@ -174,7 +176,7 @@ function handleAudioSourceChange() { /*################## IMPORT IMAGES ########
 }
 
 
-function setupRoomBackgroundChange() {
+function setupRoomBackgroundChange() { //  SETTING UP THE BACKGROUND IMAGE ACCORDING TO THE SELCTED ROOM  //
     // Initialiser avec un fond d'écran par défaut
     document.body.style.backgroundImage = "url('assets/img/stage.png')";
     document.body.style.backgroundSize = "cover";
@@ -186,7 +188,7 @@ function setupRoomBackgroundChange() {
         const backgroundUrl = roomBackgrounds[room];
         const roomMapUrl = roomMaps[room];
  
-        // Changer l'arrière-plan
+        //  CHANGE THE BACKGROUND //
         if (backgroundUrl) {
             document.body.style.backgroundImage = `url(${backgroundUrl})`;
         } else {
@@ -196,34 +198,35 @@ function setupRoomBackgroundChange() {
         document.body.style.backgroundPosition = "bottom center";
         document.body.style.backgroundAttachment = "fixed";
  
-        // Mettre à jour l'image du rectangle
-        updateRoomMapImage(roomMapUrl); // Appel à la fonction pour changer l'image de la salle
+        // UPDATE THE ROOM MAP //
+        updateRoomMapImage(roomMapUrl); // CALL FOR THE  ROOM MAP CHANGE FUNCTION //
     });
  }
 
- // Fonction pour changer l'image dans le rectangle-map
+ // FUNCTION TO CHANGE THE ROOM MAP //
 function updateRoomMapImage(imageUrl) {
-    const rectangleMap = document.querySelector('.rectangle-map'); // Utilisation du bon sélecteur pour le div
-    if (rectangleMap && imageUrl) { // Vérifier si l'élément .rectangle-map existe et si une URL d'image est définie
-        // Créer une balise <img> avec l'URL de l'image
+    const rectangleMap = document.querySelector('.rectangle-map');
+    if (rectangleMap && imageUrl) { // VERIFY THE EXISTENCE OF THE IMAGE ( IN CASE THERE IS NO MAP PROVIDED) //
+
+        // CREATE <img> WITH THE IMAGE URLS //
         const img = document.createElement('img');
         img.src = imageUrl;
         img.alt = "Room Map";
-        img.style.width = "100%"; // Adapter l'image à la taille du rectangle
+        img.style.width = "100%"; // ADAPT THE SIZE OF THE IMAGE //
         img.style.height = "100%";
-        img.style.objectFit = "cover"; // Couvrir toute la zone sans déformation
+        img.style.objectFit = "cover"; // FETCH ON ALL THE ZONE WITHOUT DISTORTORTING THE SHAPE //
         img.style.position = "absolute";
-        //img.style.backgroundColor = "black";
+        //img.style.backgroundColor = "black"; # Minor adjustment : line ignored
         img.style.border = "2px solid #fff";
         img.style.opacity = "1";
         img.style.borderRadius = "5%";
         img.style.zIndex = "1";
 
-        // Vider le contenu de rectangle-map et ajouter l'image
-        rectangleMap.innerHTML = ''; // Supprimer l'image précédente
-        rectangleMap.appendChild(img); // Ajouter la nouvelle image
+        // EMPTY THE CONTENT OF RECTANGLE MAP AND ADD THE IMAGE //
+        rectangleMap.innerHTML = ''; // DELETE PREVIOUS IMAGE FROM THE RECT //
+        rectangleMap.appendChild(img); // ADD THE NEW IMAGE //
     } else {
-        // Si aucune image n'est trouvée, laisser un fond noir
+        // IF NO IMAGE FOUND BLACK BACKGROUND
         if (rectangleMap) {
             rectangleMap.innerHTML = ''; // Vider le contenu précédent
             rectangleMap.style.backgroundColor = "black";
@@ -232,7 +235,7 @@ function updateRoomMapImage(imageUrl) {
 }
 
 
-async function loadAudioFile(url) { /*################## LOAD AUDIO ###########################*/
+async function loadAudioFile(url) { // ########################### LOAD AUDIO ########################### //
    try {
        const response = await fetch(url);
        if (!response.ok) throw new Error(`Failed to fetch: ${url}`);
@@ -244,7 +247,7 @@ async function loadAudioFile(url) { /*################## LOAD AUDIO ############
    }
 }
 
-function reduceImpulseResponseAmplitude(buffer, reductionFactor) { /*################## IR LEVEL CHANGE ###########################*/
+function reduceImpulseResponseAmplitude(buffer, reductionFactor) { // ########################### IR LEVEL CHANGE ########################### //
    for (let channel = 0; channel < buffer.numberOfChannels; channel++) {
        const channelData = buffer.getChannelData(channel);
        for (let i = 0; i < channelData.length; i++) {
@@ -259,7 +262,7 @@ function normalizeBuffer(buffer) {
    return maxAmplitude === 0 ? buffer : buffer.map(sample => sample / maxAmplitude);
 }
 
-async function applyReverbAndPlay(audioUrl, irUrl) { /*################## APPLY RVB AND PLAY ###########################*/
+async function applyReverbAndPlay(audioUrl, irUrl) { // ########################### APPLY RVB AND PLAY ###########################
    const context = initializeAudioContext();
    try {
        const [audioBuffer, irBuffer] = await Promise.all([
@@ -272,11 +275,11 @@ async function applyReverbAndPlay(audioUrl, irUrl) { /*################## APPLY 
        irGainNode = context.createGain(); // IR Gain Node
        gainNode = context.createGain(); // Audio GainNode
 
-       // NUEVO: Crear el AnalyserNode para el visualizador
+       // ######################## CREATE AN ANALYSER NODE FOR THE VISUALIZER
        const analyser = context.createAnalyser();
-       analyser.fftSize = 256; // Ajustar resolución del espectro
-       const bufferLength = analyser.frequencyBinCount; // Número de bandas de frecuencia
-       const dataArray = new Uint8Array(bufferLength); // Array para datos de frecuencia
+       analyser.fftSize = 256; // AJUST THE RESOLUTION OF THE SPECTER 
+       const bufferLength = analyser.frequencyBinCount; // NB OF FREQUENCY BANDS
+       const dataArray = new Uint8Array(bufferLength); // ARRAY FOR THOSE FREQUENCIES
 
        // Load IR and Audio
        audioSource.buffer = audioBuffer;
@@ -290,19 +293,19 @@ async function applyReverbAndPlay(audioUrl, irUrl) { /*################## APPLY 
        audioSource.connect(convolver);
        convolver.connect(irGainNode); // Connect IR to IR Node
        irGainNode.connect(gainNode); // Connect IR Gain Node to Global Gain Node
-       gainNode.connect(analyser); //  NUEVO Asegúrate de esta conexión
-       analyser.connect(context.destination); //  NUEVO Conexión final
+       gainNode.connect(analyser); //  Connect the Gain node (final one) to the analyser
+       analyser.connect(context.destination); //  Final connexion
 
        // Connexion of audio source to global gain node
        audioSource.connect(gainNode);
 
-       gainNode.gain.value = 0.5; // default setting
+       gainNode.gain.value = 0.5; // default setting setat 50 %
 
        currentSourceNode = audioSource;
        audioSource.start();
        audioSource.onended = () => (currentSourceNode = null);
 
-       // NUEVO: Llamar al visualizador después de configurar todo
+       // DRAW the visualization after all the setup
        drawVisualizer(analyser, bufferLength, dataArray);
 
    } catch (error) {
@@ -348,7 +351,7 @@ function drawVisualizer(analyser, bufferLength, dataArray) { /*#################
    draw(); 
 }
 
-function startRecording() { /*################## RECORDING START ###########################*/
+function startRecording() { /*################## RECORDING STARTS ###########################*/
    const context = initializeAudioContext();
    const destination = context.createMediaStreamDestination();
    gainNode.connect(destination);
@@ -363,7 +366,7 @@ function startRecording() { /*################## RECORDING START ###############
    };
 
 
-   mediaRecorder.onstop = () => {
+   mediaRecorder.onstop = () => { 
        const blob = new Blob(recordedChunks, { type: "audio/wav" });
        const url = URL.createObjectURL(blob);
        downloadButton.href = url;
@@ -435,12 +438,10 @@ applyReverbButton.addEventListener("click", async () => {
        : siteAudioSelect.value;
    const irUrl = irSelect.value;
 
-
    if (!audioUrl || !irUrl) {
        alert("Please select audio source and impulse response.");
        return;
    }
-
 
    await applyReverbAndPlay(audioUrl, irUrl);
    startRecording();
@@ -453,7 +454,7 @@ stopReverbButton.addEventListener("click", () => {
 });
 
 
-volumeControl.addEventListener("input", () => {
+volumeControl.addEventListener("input", () => {  // ############### use of an logarithmic scale for the volume  -> Acoustic fields properties Wave Amp decreasing (see Course of Fundamentals of Acoustics)
    if (gainNode) {
        const linearValue = parseFloat(volumeControl.value);
        const logarithmicValue = Math.pow(10, (linearValue - 1) * 2);
@@ -476,7 +477,7 @@ irAmplitudeSlider.addEventListener("input", () => {
 });
 
 
-document.addEventListener("DOMContentLoaded", () => { /* ################# HIDE OR MAKE APPEAR ELEMENTS #############*/
+document.addEventListener("DOMContentLoaded", () => { /* ################# HIDE OR MAKE APPEAR ELEMENTS (location map, room map and visualizer#############*/
 
     const rectangleMap = document.querySelector(".rectangle-map");
     const visualizer = document.getElementById("visualizer");
@@ -485,19 +486,20 @@ document.addEventListener("DOMContentLoaded", () => { /* ################# HIDE 
 
     const miniMap = document.getElementById("minimap");
     const toggleMiniMapButton = document.getElementById("toggle-location-map");
-    // Fonction pour afficher/masquer un élément
+
+    // ########################## FUNCTION TO HIDE OR DISPLAY ELEMNTS (location map, room map and visualizer #############
     function toggleElementVisibility(element) {
         if (element.style.display === "none" || !element.style.display) {
-            element.style.display = "block"; // Afficher l'élément
+            element.style.display = "block"; // Display the elemnt
             if (element.id === "minimap") {
-                setTimeout(() => map.invalidateSize(), 200); // Ajuster la carte après un léger délai
+                setTimeout(() => map.invalidateSize(), 200); // Ajust the map after a certain choosen delay
             }
         } else {
-            element.style.display = "none"; // Masquer l'élément
+            element.style.display = "none"; // Hide the element
         }
     }
 
-    toggleRectangleMapButton.addEventListener("click", () => toggleElementVisibility(rectangleMap));
+    toggleRectangleMapButton.addEventListener("click", () => toggleElementVisibility(rectangleMap)); // ############# TOGGLE BUTTONS TO SWITCH ON OR OFF THOSE ELEMENTS
     toggleVisualizerButton.addEventListener("click", () => toggleElementVisibility(visualizer));
     toggleMiniMapButton.addEventListener("click", () => toggleElementVisibility(miniMap));
 });

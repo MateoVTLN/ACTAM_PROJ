@@ -33,8 +33,6 @@ div {margin-bottom: 10px;}
 
 #page-title {width: 40%;}
 
-#download-audio {margin-top: 10px; z-index: 1; margin-bottom: 10px;}
-
 label[for="ir-amplitude"] {margin-bottom: 10px;color: rgb(231, 231, 231);}
 
 #ir-amplitude-value{margin-bottom: 10px;color: rgb(231, 231, 231); }
@@ -51,15 +49,16 @@ label {margin-right: 10px;}
 
 .button {background-color: #1e65b1; color: rgb(60, 255, 0); border: none;padding: 10px 20px;text-align: center;Text-decoration: none;display: inline-block;font-size: 14px;border-radius: 5px;cursor: pointer;transition: background-color 0.3s ease;width: 40%;border-radius: 5%;}
 
-#apply-reverb{background-color: #008829;color: #fff; z-index: 1; border-radius: 5%; }
+#download-audio {margin-top: 10px; z-index: 1; margin-bottom: 10px;}#apply-reverb{background-color: #008829;color: #fff; z-index: 1; border-radius: 5%; } /*SET IT UP */
 #stop-reverb{background-color: #880000;color: #fff; z-index: 1; border-radius: 5%; }
 #tutorial-button{background-color: #a19f00;color: #000000; z-index: 1; margin-right: 60px;}
 .button:hover {background-color: #001881; }
 
-#toggle-rectangle-map{background-color: #1d0513;color: #ffffff; z-index: 1; border-radius: 5%; font-size: 14px;margin-left: 30px;}
-#toggle-visualizer{background-color: #1d0513;color: #ffffff; z-index: 1; border-radius: 5%;font-size: 14px;}
-#toggle-location-map{background-color: #1d0513;color: #ffffff; z-index: 1; border-radius: 5%;font-size: 14px;}
+#toggle-rectangle-map{background-color: #1d0513;color: #ffffff; z-index: 2; border-radius: 5%; font-size: 14px;margin-left: 30px;}
+#toggle-visualizer{background-color: #1d0513;color: #ffffff; z-index: 2; border-radius: 5%;font-size: 14px;}
+#toggle-location-map{background-color: #1d0513;color: #ffffff; z-index: 2; border-radius: 5%;font-size: 14px;}
 
+#volume-control{background-color: #f000c8;}
 /* ====== Audio Selection Section ========================================================== */
 #audio-selection {
     display: flex;
@@ -131,7 +130,6 @@ label {margin-right: 10px;}
     right: 0;
     opacity: 0.5;
     border-radius: 5%;
-    z-index: 1;
     display: none;
   }
 /*===MAP =============================================================================*/
