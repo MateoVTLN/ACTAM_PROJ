@@ -1,92 +1,84 @@
-Links ACTAM PROJECT
-WEB PAGE PREVIEW : https://mateovtln.github.io/ACTAM_PROJ/
-
+Links ACTAM PROJECT -----------------------------
 
 Impulse responses Library: consulted the 5/11/2024
 https://www.waves.com/downloads/ir-convolution-reverb-library
 
 Another impulse response Library (WAV files):
+CLASSROOM Impulse response
 http://isophonics.net/content/room-impulse-response-data-set
 
-Another impulse response Library Amps (WAV files):
-https://www.soundwoofer.se/blog/about/top-20-list/
-
-Study UNiv PARMA
+Study UNiv PARMA - FARINA Article
 http://pcfarina.eng.unipr.it/Public/Papers/185-AES24.PDF
 
-ONLINE Downsampler fo IR (96k to 44.1k):
-# USE online  at : https://onlineaudioconverter.com/#
-# USE SETTINGS : WAV / Default / Mono / 44.1 kHz
+.WIR to .WAV Converter Code :
+https://github.com/opcode81/wir2wav
+_______________
+Sound Library : -----------------------------
 
-Python to web:
-https://streamlit.io/
+Fleetwood Mac : The Chain (cropped on Audacity):
+https://www.youtube.com/watch?v=xwTPvcPYaOo
 
-https://pyodide.org/en/stable/
+Star Wars : Han Solo's Boring Conversation :
+https://www.youtube.com/watch?v=4FSV8w1UoZA
 
-FFT and IFFT:
-https://github.com/iVilja/kissfft-wasm
+Classical piece : Demicheli Geminiani - Allegro in F-major:
+https://archive.org/details/onclassical-quality-wav-audio-files-of-classical-music
 
-Node convolver:
-https://stackoverflow.com/questions/66239266/adding-a-convolver-reverb-to-an-audio-file
+Mythical Movie Scream : The Wilhelm Scream :
+https://bigsoundbank.com/wilhelm-scream-s0477.html
 
-Multichannel renderer in web audio api:
-https://www.jsdelivr.com/package/npm/@tonejs/multichannel
+Chandmani nutag by Batzorig Vaanchig :
+https://www.youtube.com/watch?v=Ctb7B2QkDfQ
 
-PLAN DU PROJET :
+Mario 64 Fall :
+https://www.youtube.com/watch?v=VbKU58flqH4
 
-Projet Simplifié : Simulateur d'Effets Acoustiques de Salles de Concert
-Objectif
-Permettre aux utilisateurs de sélectionner ou d’enregistrer un fichier audio (instrument, voix, ambiance sonore) et d’appliquer des effets d'acoustique propres à des salles de concert célèbres, comme le Carnegie Hall ou le Royal Albert Hall.
+Bohemian Rhapsody - Queen , isolated vocals :
+https://youtu.be/w7VA54b0Z-Y?si=ZW2cySLGKwTxviM0
 
-Fonctionnalités Principales
-Choix et chargement de l’audio :
+Misty Mountains - The Wellermen :
+https://www.youtube.com/watch?v=f1Vkh1Iy5IA
 
-L’utilisateur peut charger un fichier audio (par exemple, un enregistrement de sa voix ou de son instrument).
-Une petite base de données d’audios pré-enregistrés pourrait être intégrée (sons d’instruments ou autres extraits typiques).
-Application des effets de salle :
+________
+Images :-----------------------------
 
-L'application applique un effet acoustique spécifique correspondant à une salle de concert choisie dans une liste.
-Les effets sont simulés à l’aide de filtres d'égalisation (EQ), de réverbération, et de filtres de retard pour recréer l'acoustique de chaque salle.
-Restitution et comparaison en temps réel :
+Background On stage'd (modified in Local on Photoshop 2022)
+https://www.google.com/url?sa=i&url=https%3A%2F%2Fcommons.wikimedia.org%2Fwiki%2FFile%3AMeshuggah_Stage_Design_2022%2C_Ancienne_Belgique%2C_Belgium._06.jpg&psig=AOvVaw16zP5cVgbqvogRvj4Ve_2x&ust=1736180938618000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCMCihpaA34oDFQAAAAAdAAAAABAE
 
-L’utilisateur écoute son audio transformé par les effets de la salle sélectionnée.
-Possibilité d’écouter et de comparer l’audio original et celui transformé.
-Implémentation et Technologies
-Technologies Principales :
+Luzit Caves:
+https://live.staticflickr.com/8053/8087247038_6138284941_b.jpg
 
-HTML/CSS : pour la structure de la page et le style.
-JavaScript et Web Audio API : pour le traitement sonore et l’application d'effets acoustiques.
-Bibliothèque de filtres de réverbération (via Web Audio API) : pour intégrer des réponses impulsionnelles simples correspondant aux salles de concert.
-Étapes de Mise en Œuvre :
+Parma Auditorium:
+https://www.google.com/url?sa=i&url=https%3A%2F%2Farchidiap.com%2Fopera%2Fauditorium-paganini%2F&psig=AOvVaw2kIqmjHR93ADh3HOse3Mr1&ust=1736435206780000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCLCKj6-z5ooDFQAAAAAdAAAAABAE
 
-Étape 1 : Création de la base de données d'effets :
+London Arena :
+https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.flickr.com%2Fphotos%2F57511216%40N04%2F52339256508&psig=AOvVaw00WXD47J_ZQelOYdUU1fG1&ust=1736435350449000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCIic8PSz5ooDFQAAAAAdAAAAABAE
 
-Pour chaque salle, on utilise une réponse impulsionnelle simplifiée correspondant à l’acoustique de la salle. Ces réponses peuvent être trouvées dans des bibliothèques de réponses impulsionnelles ou recréées à partir d'effets de réverbération et de filtre.
-Étape 2 : Chargement et lecture de l’audio utilisateur :
+Knighst Hall Refectorium:
+https://www.google.com/url?sa=i&url=http%3A%2F%2Fmelbourneblogger.blogspot.com%2F2018%2F01%2Facreakko-architectural-historians-dream.html&psig=AOvVaw0rchRVOncxubqDrF1_im4t&ust=1736435411279000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCLDaqqi05ooDFQAAAAAdAAAAABAE
 
-L'utilisateur charge un fichier audio ou en choisit un dans la base.
-Le fichier est traité par la Web Audio API pour être lu en temps réel.
-Étape 3 : Application de l'effet de salle :
+Classroom :
+https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.reddit.com%2Fr%2Ffeeltheworld%2Fcomments%2Fy4516x%2Fa_classroom_in_a_japanese_school_during_the_day%2F&psig=AOvVaw1tp6NhnnL-mbcaOQ5Sp-TE&ust=1736435573492000&source=images&cd=vfe&opi=89978449&ved=0CBAQjRxqFwoTCLDcqOC05ooDFQAAAAAdAAAAABAE
 
-Selon la salle choisie, un effet de réverbération avec la signature acoustique correspondante est appliqué.
-Des filtres d’égalisation simples peuvent être ajoutés pour reproduire l’égalisation spectrale propre à chaque salle (ajustement des basses, médiums, aigus).
-Étape 4 : Comparaison audio :
+Taormina amphitheatre:
+https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.flickr.com%2Fphotos%2Fyoungrobv%2F570178093%2F&psig=AOvVaw1s5cgxASnq7_EE8CRp2PnG&ust=1736436123396000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCPDl2uu25ooDFQAAAAAdAAAAABAE
 
-L’interface permet de basculer entre le son original et le son traité pour comparaison.
-Une option de téléchargement de l’audio transformé pourrait être ajoutée.
-Estimation de Temps de Développement
-Phase	Tâches principales	Estimation (en jours)
-Phase 1 : Base de Données des Effets	Rassembler ou générer des réponses impulsionnelles simplifiées.	2 jours
-Phase 2 : Interface Utilisateur	Création de l’interface web avec HTML/CSS.	1 jour
-Phase 3 : Chargement et Lecture Audio	Gestion de l'upload et lecture du fichier audio en temps réel.	1-2 jours
-Phase 4 : Application des Effets	Intégration des effets de réverbération avec la Web Audio API.	2-3 jours
-Phase 5 : Comparaison et Téléchargement	Comparaison audio et ajout d’une option de téléchargement.	1-2 jours
-Tests et Ajustements	Tests d’interface et optimisation pour la fluidité.	2 jours
-Temps total estimé : 9 à 12 jours (environ 2 semaines).
+Siracusa Amphitheatre:
+https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.flickr.com%2Fphotos%2Faschaf%2F25678297608&psig=AOvVaw14mdKScVyBdYDXFioY3MtG&ust=1736436206959000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCNiv4ou35ooDFQAAAAAdAAAAABAE
 
-Points Clés et Originalité
-Expérience Utilisateur : Le projet permet une immersion rapide et simple dans l’acoustique de salles de concert mythiques, accessible depuis un navigateur.
-Réalisme des effets : En utilisant la Web Audio API, on peut reproduire une réverbération approximative mais convaincante, qui donne une bonne idée des caractéristiques acoustiques de chaque salle.
-Portabilité : L’application reste légère et peut être hébergée sur une simple page web sans serveur.
-Ce projet, bien qu’allégé, permet de toucher aux aspects fondamentaux de l’acoustique des salles tout en restant dans un cadre de développement réalisable en peu de temps.
+DinkelSpiel Auditorium:
+https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.prosoundweb.com%2Fdinkelspiel-auditorium-at-stanford-university-outfitted-with-dual-db-soundscape-systems%2F&psig=AOvVaw1MhRamJpN4bf8VbZT-Hzid&ust=1736436263116000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCKD5xKa35ooDFQAAAAAdAAAAABAE
+
+Trinity Church:
+https://www.google.com/url?sa=i&url=https%3A%2F%2Fcommons.wikimedia.org%2Fwiki%2FFile%3AInterior_of_Trinity_Church%2C_Manhattan.jpg&psig=AOvVaw2C92FuBRXsx04Ryif7kV4l&ust=1736436678528000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCNjj8uy45ooDFQAAAAAdAAAAABAI
+
+Bellemeade Methodolist Church / Kitchen / Living Room
+Inside the PDF from : https://www.waves.com/downloads/ir-convolution-reverb-library
+
+SOH Concert Hall:
+https://www.google.com/url?sa=i&url=https%3A%2F%2Feventseeker.com%2Fvenue%2F656555-th%C3%A9%C3%A2tre-municipal-jean-alary-carcassonne&psig=AOvVaw0eB8Scx1rG2egMh8YRZbq-&ust=1736438447855000&source=images&cd=vfe&opi=89978449&ved=0CBAQjRxqFwoTCLiwnb6_5ooDFQAAAAAdAAAAABAE
+
+Disney Concert Hall:
+https://upload.wikimedia.org/wikipedia/commons/8/8d/Disney_Concert_Hall_%2810920404614%29.jpg
+
 
