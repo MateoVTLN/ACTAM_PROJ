@@ -8,7 +8,7 @@
 
 WEB PAGE : https://mateovtln.github.io/ACTAM_PROJ/
 
-    Welcome on the Github Repository of the ON Stage'd Web Audio App made for the A.C.T.A.M class project of Politecnico di Milano.
+    Welcome on the Github Repository of the ON Stage'd Web Audio App made for the A.C.T.A.M class project of the first Cycle of the Acoustic Master Degree Politecnico di Milano.
 This project was made by Sebastian GOMEZ and Matéo VITALONE and under the supervision of Mr F.Bruschi, Mr V.Rana and Mr M.Esposito.
 
 _______________________________________________
