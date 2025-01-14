@@ -84,4 +84,4 @@ Even compressed, some pictures or audio files don't load up quickly. If after 10
 ----CONTACTS :
 
     - Matéo VITALONE : mateovtln@gmail.com //
-    - Sebastian GOMEZ : //
+    - Sebastian GOMEZ : sebastianraulgm@gmail.com //
